@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.8 • Energy</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.9 • Inbox</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -70,8 +70,8 @@
             <button onclick="showSection('energy')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-energy">
                 <i class="fa-solid fa-battery-full w-4"></i><span>Energy</span>
             </button>
-            <button onclick="showSection('reminders')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-reminders">
-                <i class="fa-solid fa-bell w-4"></i><span>Reminders</span>
+            <button onclick="showSection('inbox')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-inbox">
+                <i class="fa-solid fa-inbox w-4"></i><span>Inbox</span>
             </button>
         </div>
 
@@ -91,7 +91,18 @@
                 <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700"></div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Quick Capture Bar -->
+            <div class="glass border border-zinc-800 rounded-3xl p-2 mb-8 flex">
+                <input id="quick-capture" type="text" placeholder="Capture anything... (thought, idea, task)" 
+                       class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" 
+                       onkeypress="if(event.key === 'Enter') quickCapture()">
+                <button onclick="quickCapture()" class="px-6 bg-indigo-600 hover:bg-indigo-500 rounded-3xl text-sm font-medium flex items-center gap-x-2">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Capture</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div onclick="showSection('tasks')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
                     <div class="flex items-center gap-x-3">
                         <i class="fa-solid fa-check-circle text-indigo-400 text-xl"></i>
@@ -110,39 +121,21 @@
                         </div>
                     </div>
                 </div>
+                <div onclick="showSection('inbox')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
+                    <div class="flex items-center gap-x-3">
+                        <i class="fa-solid fa-inbox text-purple-400 text-xl"></i>
+                        <div>
+                            <div class="font-medium">Inbox</div>
+                            <div class="text-xs text-zinc-400"><span id="quick-inbox-count">0</span> captured</div>
+                        </div>
+                    </div>
+                </div>
                 <div onclick="showSection('focus')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
                     <div class="flex items-center gap-x-3">
                         <i class="fa-solid fa-clock text-sky-400 text-xl"></i>
                         <div>
                             <div class="font-medium">Focus Timer</div>
                             <div class="text-xs text-zinc-400">Deep work</div>
-                        </div>
-                    </div>
-                </div>
-                <div onclick="showSection('blockers')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-exclamation-triangle text-orange-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Blockers</div>
-                            <div class="text-xs text-zinc-400"><span id="quick-blocker-count">0</span> open</div>
-                        </div>
-                    </div>
-                </div>
-                <div onclick="showSection('habits')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-chart-line text-emerald-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Habits</div>
-                            <div class="text-xs text-zinc-400"><span id="quick-habit-count">0</span> tracked</div>
-                        </div>
-                    </div>
-                </div>
-                <div onclick="showSection('energy')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-battery-full text-sky-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Energy</div>
-                            <div class="text-xs text-zinc-400">Track focus</div>
                         </div>
                     </div>
                 </div>
@@ -265,6 +258,23 @@
             </div>
         </div>
 
+        <!-- INBOX -->
+        <div id="inbox" class="section">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-3xl font-semibold tracking-tighter">Inbox</h2>
+                <div class="text-xs px-3 py-1 bg-purple-400/10 text-purple-400 rounded-full"><span id="inbox-count">0</span> items</div>
+            </div>
+
+            <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
+                <div class="flex gap-2">
+                    <input id="inbox-input" type="text" placeholder="Capture anything here..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addToInbox()">
+                    <button onclick="addToInbox()" class="px-6 bg-purple-600 hover:bg-purple-500 rounded-3xl text-sm font-medium">Capture</button>
+                </div>
+            </div>
+
+            <div id="inbox-list" class="space-y-2"></div>
+        </div>
+
         <!-- REMINDERS -->
         <div id="reminders" class="section">
             <h2 class="text-3xl font-semibold tracking-tighter mb-4">Reminders</h2>
@@ -285,6 +295,7 @@
         let blockers = JSON.parse(localStorage.getItem('cakehub_blockers')) || [];
         let habits = JSON.parse(localStorage.getItem('cakehub_habits')) || [];
         let energyLogs = JSON.parse(localStorage.getItem('cakehub_energy')) || [];
+        let inboxItems = JSON.parse(localStorage.getItem('cakehub_inbox')) || [];
         let currentMIT = JSON.parse(localStorage.getItem('cakehub_mit')) || null;
         let sessionsToday = parseInt(localStorage.getItem('cakehub_sessions') || '0');
 
@@ -294,6 +305,7 @@
         function saveBlockers() { localStorage.setItem('cakehub_blockers', JSON.stringify(blockers)); }
         function saveHabits() { localStorage.setItem('cakehub_habits', JSON.stringify(habits)); }
         function saveEnergy() { localStorage.setItem('cakehub_energy', JSON.stringify(energyLogs)); }
+        function saveInbox() { localStorage.setItem('cakehub_inbox', JSON.stringify(inboxItems)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -351,6 +363,72 @@
             currentMIT = null;
             localStorage.removeItem('cakehub_mit');
             renderMIT();
+        }
+
+        // ==================== QUICK CAPTURE ====================
+        function quickCapture() {
+            const input = document.getElementById('quick-capture');
+            if (!input || !input.value.trim()) return;
+            
+            inboxItems.unshift({
+                text: input.value.trim(),
+                timestamp: new Date().toISOString()
+            });
+            input.value = '';
+            saveInbox();
+            updateQuickCounts();
+        }
+
+        // ==================== INBOX ====================
+        function renderInbox() {
+            const container = document.getElementById('inbox-list');
+            const countEl = document.getElementById('inbox-count');
+            const quick = document.getElementById('quick-inbox-count');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (inboxItems.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">Inbox is empty. Capture anything above.</div>`;
+                if (countEl) countEl.textContent = '0';
+                if (quick) quick.textContent = '0';
+                return;
+            }
+
+            inboxItems.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
+                div.innerHTML = `
+                    <div class="flex-1 text-sm">${item.text}</div>
+                    <button onclick="deleteInboxItem(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
+                        <i class="fa-solid fa-times text-sm"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+
+            if (countEl) countEl.textContent = inboxItems.length;
+            if (quick) quick.textContent = inboxItems.length;
+        }
+
+        function addToInbox() {
+            const input = document.getElementById('inbox-input');
+            if (!input || !input.value.trim()) return;
+            
+            inboxItems.unshift({
+                text: input.value.trim(),
+                timestamp: new Date().toISOString()
+            });
+            input.value = '';
+            saveInbox();
+            renderInbox();
+            updateQuickCounts();
+        }
+
+        function deleteInboxItem(index) {
+            inboxItems.splice(index, 1);
+            saveInbox();
+            renderInbox();
+            updateQuickCounts();
         }
 
         // ==================== MONEY MOVES ====================
@@ -606,7 +684,6 @@
             saveEnergy();
             renderEnergyLogs();
             
-            // Reset form
             note.value = '';
             slider.value = 7;
             document.getElementById('energy-value').textContent = '7';
@@ -767,6 +844,20 @@
             dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         }
 
+        function updateQuickCounts() {
+            const taskEl = document.getElementById('quick-task-count');
+            const moneyEl = document.getElementById('quick-money-count');
+            const inboxEl = document.getElementById('quick-inbox-count');
+            const blockerEl = document.getElementById('quick-blocker-count');
+            const habitEl = document.getElementById('quick-habit-count');
+
+            if (taskEl) taskEl.textContent = todos.filter(t => !t.completed).length;
+            if (moneyEl) moneyEl.textContent = moneyMoves.length;
+            if (inboxEl) inboxEl.textContent = inboxItems.length;
+            if (blockerEl) blockerEl.textContent = blockers.filter(b => !b.resolved).length;
+            if (habitEl) habitEl.textContent = habits.length;
+        }
+
         function showSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('[id^="nav-"]').forEach(n => n.classList.remove('nav-active', 'bg-indigo-600'));
@@ -778,9 +869,8 @@
                 updateTimerDisplay();
                 document.getElementById('session-count').innerHTML = `Sessions completed today: <span class="font-medium text-white">${sessionsToday}</span>`;
             }
-            if (section === 'energy') {
-                renderEnergyLogs();
-            }
+            if (section === 'energy') renderEnergyLogs();
+            if (section === 'inbox') renderInbox();
         }
 
         // ==================== INIT ====================
@@ -793,7 +883,9 @@
             renderBlockers();
             renderHabits();
             renderEnergyLogs();
+            renderInbox();
             updateTimerDisplay();
+            updateQuickCounts();
 
             document.getElementById('dashboard').classList.add('active');
             document.getElementById('nav-dashboard').classList.add('nav-active', 'bg-indigo-600');
