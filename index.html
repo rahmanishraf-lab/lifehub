@@ -14,6 +14,12 @@
         .nav-active { background-color: #6366f1; color: white; border-radius: 9999px; }
         .glass { background: rgba(255,255,255, 0.06); backdrop-filter: blur(20px); }
         .mit-card { background: linear-gradient(135deg, #1e2937 0%, #0f172a 100%); border: 1px solid #334155; }
+        .timer-display {
+            font-size: 72px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -4px;
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -26,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.4 • Money Moves</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.5 • Focus</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -49,21 +55,19 @@
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
             </button>
-            <button onclick="showSection('reminders')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-reminders">
-                <i class="fa-solid fa-bell w-4"></i><span>Reminders</span>
-            </button>
             <button onclick="showSection('money')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-money">
                 <i class="fa-solid fa-dollar-sign w-4"></i><span>Money</span>
             </button>
-            <button onclick="showSection('spark')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-spark">
-                <i class="fa-solid fa-lightbulb w-4"></i><span>Spark</span>
+            <button onclick="showSection('focus')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-focus">
+                <i class="fa-solid fa-clock w-4"></i><span>Focus</span>
+            </button>
+            <button onclick="showSection('reminders')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-reminders">
+                <i class="fa-solid fa-bell w-4"></i><span>Reminders</span>
             </button>
         </div>
 
         <!-- DASHBOARD -->
         <div id="dashboard" class="section active">
-            
-            <!-- MIT SECTION -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
@@ -78,7 +82,6 @@
                 <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700"></div>
             </div>
 
-            <!-- Quick Actions -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div onclick="showSection('tasks')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
                     <div class="flex items-center gap-x-3">
@@ -98,21 +101,21 @@
                         </div>
                     </div>
                 </div>
+                <div onclick="showSection('focus')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
+                    <div class="flex items-center gap-x-3">
+                        <i class="fa-solid fa-clock text-sky-400 text-xl"></i>
+                        <div>
+                            <div class="font-medium">Focus Timer</div>
+                            <div class="text-xs text-zinc-400">Deep work</div>
+                        </div>
+                    </div>
+                </div>
                 <div onclick="showSection('reminders')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
                     <div class="flex items-center gap-x-3">
                         <i class="fa-solid fa-bell text-violet-400 text-xl"></i>
                         <div>
                             <div class="font-medium">Reminders</div>
                             <div class="text-xs text-zinc-400"><span id="quick-reminder-count">0</span> upcoming</div>
-                        </div>
-                    </div>
-                </div>
-                <div onclick="showSection('spark')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-lightbulb text-amber-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Spark</div>
-                            <div class="text-xs text-zinc-400">Random knowledge</div>
                         </div>
                     </div>
                 </div>
@@ -135,7 +138,6 @@
                 <h2 class="text-3xl font-semibold tracking-tighter">Money Moves</h2>
                 <div class="text-xs px-3 py-1 bg-emerald-400/10 text-emerald-400 rounded-full"><span id="money-count">0</span> ideas</div>
             </div>
-            
             <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
                 <div class="flex gap-2">
                     <input id="money-input" type="text" placeholder="Business idea or revenue opportunity..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addMoneyMove()">
@@ -143,8 +145,35 @@
                     <button onclick="addMoneyMove()" class="px-6 bg-emerald-600 hover:bg-emerald-500 rounded-3xl text-sm font-medium">Log</button>
                 </div>
             </div>
-
             <div id="money-list" class="space-y-2"></div>
+        </div>
+
+        <!-- FOCUS TIMER -->
+        <div id="focus" class="section">
+            <div class="max-w-md mx-auto text-center">
+                <h2 class="text-3xl font-semibold tracking-tighter mb-2">Focus Timer</h2>
+                <p class="text-zinc-400 mb-8">Deep work sessions</p>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-10 mb-8">
+                    <div id="timer-display" class="timer-display text-white tabular-nums">25:00</div>
+                </div>
+
+                <div class="flex justify-center gap-3 mb-8">
+                    <button onclick="setTimer(25)" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">25 min</button>
+                    <button onclick="setTimer(50)" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">50 min</button>
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <button onclick="startTimer()" id="start-btn" class="px-8 py-3 bg-sky-600 hover:bg-sky-500 rounded-3xl font-medium flex items-center gap-x-2">
+                        <i class="fa-solid fa-play"></i>
+                        <span>Start</span>
+                    </button>
+                    <button onclick="pauseTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Pause</button>
+                    <button onclick="resetTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Reset</button>
+                </div>
+
+                <div id="session-count" class="mt-6 text-xs text-zinc-400">Sessions completed today: <span class="font-medium text-white">0</span></div>
+            </div>
         </div>
 
         <!-- REMINDERS -->
@@ -157,15 +186,6 @@
             </div>
             <div id="reminder-list" class="space-y-2"></div>
         </div>
-
-        <!-- SPARK -->
-        <div id="spark" class="section">
-            <h2 class="text-3xl font-semibold tracking-tighter mb-4">Spark</h2>
-            <div class="glass border border-zinc-800 rounded-3xl p-8 max-w-2xl">
-                <div id="fact-content" class="text-xl min-h-[100px]"></div>
-                <button onclick="showRandomFact()" class="mt-6 px-5 py-2 bg-zinc-900 rounded-3xl text-sm">New Fact</button>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -174,6 +194,7 @@
         let reminders = JSON.parse(localStorage.getItem('cakehub_reminders')) || [];
         let moneyMoves = JSON.parse(localStorage.getItem('cakehub_money')) || [];
         let currentMIT = JSON.parse(localStorage.getItem('cakehub_mit')) || null;
+        let sessionsToday = parseInt(localStorage.getItem('cakehub_sessions') || '0');
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -241,14 +262,14 @@
         function renderMoneyMoves() {
             const container = document.getElementById('money-list');
             const countEl = document.getElementById('money-count');
-            const quickCount = document.getElementById('quick-money-count');
+            const quick = document.getElementById('quick-money-count');
             if (!container) return;
             container.innerHTML = '';
 
             if (moneyMoves.length === 0) {
                 container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No money moves logged yet.</div>`;
                 if (countEl) countEl.textContent = '0';
-                if (quickCount) quickCount.textContent = '0';
+                if (quick) quick.textContent = '0';
                 return;
             }
 
@@ -267,28 +288,21 @@
                 `;
                 container.appendChild(div);
             });
-
             if (countEl) countEl.textContent = moneyMoves.length;
-            if (quickCount) quickCount.textContent = moneyMoves.length;
+            if (quick) quick.textContent = moneyMoves.length;
         }
 
         function addMoneyMove() {
             const input = document.getElementById('money-input');
             const valueInput = document.getElementById('money-value');
             if (!input || !input.value.trim()) return;
-
-            const move = {
-                text: input.value.trim(),
-                value: valueInput.value ? parseInt(valueInput.value) : null,
-                date: new Date().toISOString()
-            };
+            const move = { text: input.value.trim(), value: valueInput.value ? parseInt(valueInput.value) : null, date: new Date().toISOString() };
             moneyMoves.unshift(move);
             input.value = '';
             valueInput.value = '';
             saveMoney();
             renderMoneyMoves();
         }
-
         function deleteMoneyMove(index) {
             moneyMoves.splice(index, 1);
             saveMoney();
@@ -301,13 +315,11 @@
             const quick = document.getElementById('quick-task-count');
             if (!container) return;
             container.innerHTML = '';
-
             if (todos.length === 0) {
                 container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No tasks yet.</div>`;
                 if (quick) quick.textContent = '0';
                 return;
             }
-
             todos.forEach((todo, index) => {
                 const div = document.createElement('div');
                 div.className = `flex items-center gap-x-3 glass border border-zinc-800 px-5 py-4 rounded-3xl ${todo.completed ? 'opacity-60' : ''}`;
@@ -324,7 +336,6 @@
             });
             if (quick) quick.textContent = todos.filter(t => !t.completed).length;
         }
-
         function addTodo() {
             const input = document.getElementById('todo-input');
             if (!input || !input.value.trim()) return;
@@ -350,13 +361,11 @@
             const quick = document.getElementById('quick-reminder-count');
             if (!container) return;
             container.innerHTML = '';
-
             if (reminders.length === 0) {
                 container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No reminders.</div>`;
                 if (quick) quick.textContent = '0';
                 return;
             }
-
             reminders.forEach((reminder, index) => {
                 const div = document.createElement('div');
                 div.className = `flex items-center gap-x-4 glass border border-zinc-800 px-5 py-4 rounded-3xl`;
@@ -372,7 +381,6 @@
             });
             if (quick) quick.textContent = reminders.length;
         }
-
         function addReminder() {
             const input = document.getElementById('reminder-input');
             const dateInput = document.getElementById('reminder-date');
@@ -390,15 +398,58 @@
             renderReminders();
         }
 
-        // ==================== SPARK ====================
-        const facts = [
-            { text: "The human brain generates enough electricity to power a small light bulb.", category: "Neuroscience" },
-            { text: "Octopuses have three hearts and blue blood.", category: "Biology" },
-            { text: "A single teaspoon of honey represents the lifetime work of 12 bees.", category: "Nature" }
-        ];
-        function showRandomFact() {
-            const random = facts[Math.floor(Math.random() * facts.length)];
-            document.getElementById('fact-content').innerHTML = random.text;
+        // ==================== FOCUS TIMER ====================
+        let timerInterval = null;
+        let timeLeft = 25 * 60;
+        let isRunning = false;
+
+        function updateTimerDisplay() {
+            const display = document.getElementById('timer-display');
+            if (!display) return;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function setTimer(minutes) {
+            if (isRunning) return;
+            timeLeft = minutes * 60;
+            updateTimerDisplay();
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            document.getElementById('start-btn').innerHTML = `<i class="fa-solid fa-play"></i><span> Running...</span>`;
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    sessionsToday++;
+                    localStorage.setItem('cakehub_sessions', sessionsToday);
+                    document.getElementById('session-count').innerHTML = `Sessions completed today: <span class="font-medium text-white">${sessionsToday}</span>`;
+                    alert("Session complete! Great work.");
+                    resetTimer();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            document.getElementById('start-btn').innerHTML = `<i class="fa-solid fa-play"></i><span> Start</span>`;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+            document.getElementById('start-btn').innerHTML = `<i class="fa-solid fa-play"></i><span> Start</span>`;
         }
 
         // ==================== HELPERS ====================
@@ -414,6 +465,12 @@
             document.getElementById(section).classList.add('active');
             const nav = document.getElementById('nav-' + section);
             if (nav) nav.classList.add('nav-active', 'bg-indigo-600');
+
+            // Initialize timer display when entering focus section
+            if (section === 'focus') {
+                updateTimerDisplay();
+                document.getElementById('session-count').innerHTML = `Sessions completed today: <span class="font-medium text-white">${sessionsToday}</span>`;
+            }
         }
 
         // ==================== INIT ====================
@@ -423,6 +480,7 @@
             renderTodos();
             renderReminders();
             renderMoneyMoves();
+            updateTimerDisplay();
 
             document.getElementById('dashboard').classList.add('active');
             document.getElementById('nav-dashboard').classList.add('nav-active', 'bg-indigo-600');
