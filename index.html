@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.2 • Correlation</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.3 • Leaks</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -84,6 +84,9 @@
             </button>
             <button onclick="showSection('body')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-body">
                 <i class="fa-solid fa-dumbbell w-4"></i><span>Body</span>
+            </button>
+            <button onclick="showSection('leaks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-leaks">
+                <i class="fa-solid fa-exclamation-circle w-4"></i><span>Leaks</span>
             </button>
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
@@ -162,12 +165,12 @@
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('body')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-sky-400 transition-colors">
+                <div onclick="showSection('leaks')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-orange-400 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-dumbbell text-sky-400 text-xl"></i>
+                        <i class="fa-solid fa-exclamation-circle text-orange-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Body Check-in</div>
-                            <div class="text-xs text-zinc-400">Daily physical</div>
+                            <div class="font-medium">Focus Leaks</div>
+                            <div class="text-xs text-zinc-400">Track distractions</div>
                         </div>
                     </div>
                 </div>
@@ -490,41 +493,30 @@
             </div>
         </div>
 
-        <!-- MOOD + ENERGY CORRELATION -->
-        <div id="energy" class="section">
+        <!-- FOCUS LEAKS (DISTRACTION TRACKER) -->
+        <div id="leaks" class="section">
             <div class="max-w-2xl mx-auto">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Mood &amp; Energy Insights</h2>
-                    <p class="text-zinc-400 mt-2">See what actually moves the needle</p>
+                    <h2 class="text-3xl font-semibold tracking-tighter">Focus Leaks</h2>
+                    <p class="text-zinc-400 mt-2">What’s stealing your attention?</p>
                 </div>
 
-                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
-                    <div class="font-medium mb-4">Log today’s mood &amp; energy</div>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <span>Energy</span>
-                                <span id="mood-energy-value">7</span>
-                            </div>
-                            <input type="range" id="mood-energy" min="1" max="10" value="7" class="w-full accent-sky-500" oninput="document.getElementById('mood-energy-value').textContent = this.value">
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-sm mb-2">
-                                <span>Mood</span>
-                                <span id="mood-mood-value">7</span>
-                            </div>
-                            <input type="range" id="mood-mood" min="1" max="10" value="7" class="w-full accent-purple-500" oninput="document.getElementById('mood-mood-value').textContent = this.value">
-                        </div>
+                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
+                    <div class="flex gap-2">
+                        <select id="leak-type" class="bg-zinc-900 border border-zinc-700 px-4 text-sm rounded-3xl">
+                            <option value="Phone">Phone</option>
+                            <option value="Email">Email</option>
+                            <option value="Social Media">Social Media</option>
+                            <option value="People">People interrupting</option>
+                            <option value="Fatigue">Fatigue / Low energy</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input id="leak-note" type="text" placeholder="Optional note" class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none border border-zinc-700 rounded-3xl">
+                        <button onclick="logLeak()" class="px-6 bg-orange-600 hover:bg-orange-500 rounded-3xl text-sm font-medium">Log</button>
                     </div>
-                    <button onclick="logMoodEnergy()" class="mt-6 w-full py-3 bg-purple-600 hover:bg-purple-500 rounded-3xl font-medium">Log Today</button>
                 </div>
 
-                <div class="glass border border-zinc-800 rounded-3xl p-6">
-                    <div class="font-medium mb-4">Key Insights</div>
-                    <div id="mood-insights" class="space-y-3 text-sm">
-                        <div class="text-zinc-400">Log a few days to see patterns...</div>
-                    </div>
-                </div>
+                <div id="leaks-list" class="space-y-2"></div>
             </div>
         </div>
 
@@ -713,6 +705,7 @@
         let financeSnapshot = JSON.parse(localStorage.getItem('cakehub_finance')) || {};
         let timeAllocation = JSON.parse(localStorage.getItem('cakehub_time')) || {};
         let bodyCheckins = JSON.parse(localStorage.getItem('cakehub_body')) || [];
+        let leaks = JSON.parse(localStorage.getItem('cakehub_leaks')) || [];
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -732,6 +725,7 @@
         function saveFinance() { localStorage.setItem('cakehub_finance', JSON.stringify(financeSnapshot)); }
         function saveTime() { localStorage.setItem('cakehub_time', JSON.stringify(timeAllocation)); }
         function saveBody() { localStorage.setItem('cakehub_body', JSON.stringify(bodyCheckins)); }
+        function saveLeaks() { localStorage.setItem('cakehub_leaks', JSON.stringify(leaks)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -1472,7 +1466,6 @@
                 timestamp: new Date().toISOString()
             };
             
-            // Remove existing entry for today
             energyLogs = energyLogs.filter(e => e.date !== getToday());
             energyLogs.unshift(entry);
             saveEnergy();
@@ -1489,7 +1482,6 @@
                 return;
             }
 
-            // Simple correlation calculation
             let withMovement = [];
             let withoutMovement = [];
             
@@ -1516,7 +1508,6 @@
                 }
             }
 
-            // Sleep correlation
             const goodSleep = energyLogs.filter(log => {
                 const body = bodyCheckins.find(b => b.date === log.date);
                 return body && body.sleep >= 7;
@@ -1541,6 +1532,56 @@
             }
 
             container.innerHTML = html;
+        }
+
+        // ==================== FOCUS LEAKS (DISTRACTION TRACKER) ====================
+        function renderLeaks() {
+            const container = document.getElementById('leaks-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (leaks.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No leaks logged yet.</div>`;
+                return;
+            }
+
+            leaks.forEach((leak, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
+                const note = leak.note ? `<div class="text-xs text-zinc-400">${leak.note}</div>` : '';
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <div class="text-sm"><span class="font-medium">${leak.type}</span></div>
+                        ${note}
+                        <div class="text-xs text-zinc-500">${new Date(leak.date).toLocaleDateString()}</div>
+                    </div>
+                    <button onclick="deleteLeak(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
+                        <i class="fa-solid fa-times text-sm"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function logLeak() {
+            const type = document.getElementById('leak-type').value;
+            const note = document.getElementById('leak-note').value.trim();
+            
+            leaks.unshift({
+                type: type,
+                note: note,
+                date: new Date().toISOString()
+            });
+            
+            document.getElementById('leak-note').value = '';
+            saveLeaks();
+            renderLeaks();
+        }
+
+        function deleteLeak(index) {
+            leaks.splice(index, 1);
+            saveLeaks();
+            renderLeaks();
         }
 
         // ==================== TODOS ====================
@@ -1724,8 +1765,10 @@
                 document.getElementById('session-count').innerHTML = `Sessions completed today: <span class="font-medium text-white">${sessionsToday}</span>`;
             }
             if (section === 'energy') {
-                // Show mood insights when entering energy section
                 updateMoodInsights();
+            }
+            if (section === 'leaks') {
+                renderLeaks();
             }
         }
 
