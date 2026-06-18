@@ -28,11 +28,6 @@
             border-color: #10b981;
             opacity: 0.75;
         }
-        .streak-badge {
-            background: linear-gradient(90deg, #10b981, #34d399);
-            color: black;
-            font-weight: 600;
-        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -45,7 +40,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.5 • Quick Flow</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.6 • Progress</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -107,6 +102,17 @@
                         </div>
                         <i class="fa-solid fa-arrow-right text-emerald-400"></i>
                     </div>
+                </div>
+            </div>
+
+            <!-- Daily Progress Summary -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-2 px-1">
+                    <div class="text-xs font-medium tracking-[1.5px] text-zinc-400">TODAY'S PROGRESS</div>
+                    <div id="daily-progress-text" class="text-xs text-emerald-400 font-medium">0/3 completed</div>
+                </div>
+                <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                    <div id="daily-progress-bar" class="h-2 bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
                 </div>
             </div>
 
@@ -548,7 +554,7 @@
 
         function getToday() { return new Date().toISOString().split('T')[0]; }
 
-        // ==================== DYNAMIC TIME-BASED FLOW + STREAK ====================
+        // ==================== DYNAMIC TIME-BASED FLOW + STREAK + PROGRESS ====================
         function updateTimeBasedFlow() {
             const hour = new Date().getHours();
             const timeLabel = document.getElementById('time-label');
@@ -587,6 +593,26 @@
             recommendedText.textContent = recommendation;
             updateRitualStatusIndicators();
             updateStreak();
+            updateDailyProgress();
+        }
+
+        function updateDailyProgress() {
+            const today = getToday();
+            const morningDone = ritualStatus[today]?.morning;
+            const eveningDone = ritualStatus[today]?.evening;
+            
+            let completed = 0;
+            if (morningDone) completed++;
+            if (eveningDone) completed++;
+            
+            // Count "Daily Execution" as 1 if user has any activity (simplified)
+            // For now we'll count it if they have tasks or inbox items
+            if (todos.length > 0 || inboxItems.length > 0) completed++;
+            
+            const progress = Math.round((completed / 3) * 100);
+            
+            document.getElementById('daily-progress-bar').style.width = progress + '%';
+            document.getElementById('daily-progress-text').textContent = `${completed}/3 completed`;
         }
 
         function updateRitualStatusIndicators() {
@@ -666,6 +692,7 @@
             saveRitualStatus();
             updateRitualStatusIndicators();
             updateStreak();
+            updateDailyProgress();
         }
 
         function quickCompleteEvening() {
@@ -675,6 +702,7 @@
             saveRitualStatus();
             updateRitualStatusIndicators();
             updateStreak();
+            updateDailyProgress();
         }
 
         // ==================== MIT ====================
@@ -740,6 +768,7 @@
             input.value = '';
             saveInbox();
             updateQuickCounts();
+            updateDailyProgress();
         }
 
         // ==================== HELPERS ====================
@@ -776,6 +805,7 @@
             
             updateRitualStatusIndicators();
             updateStreak();
+            updateDailyProgress();
         }
 
         function saveEveningRitual() {
@@ -790,6 +820,7 @@
             
             updateRitualStatusIndicators();
             updateStreak();
+            updateDailyProgress();
         }
 
         function saveWeeklyReview() {
