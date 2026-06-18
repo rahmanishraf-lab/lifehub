@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.5 • Contribution</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.6 • Goals</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -66,6 +66,9 @@
             </button>
             <button onclick="showSection('contribution')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-contribution">
                 <i class="fa-solid fa-hand-holding-heart w-4"></i><span>Give</span>
+            </button>
+            <button onclick="showSection('goals')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-goals">
+                <i class="fa-solid fa-bullseye w-4"></i><span>Goals</span>
             </button>
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
@@ -144,12 +147,12 @@
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('contribution')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-rose-400 transition-colors">
+                <div onclick="showSection('goals')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-emerald-400 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-hand-holding-heart text-rose-400 text-xl"></i>
+                        <i class="fa-solid fa-bullseye text-emerald-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Contribution</div>
-                            <div class="text-xs text-zinc-400"><span id="quick-contribution-count">0</span> acts</div>
+                            <div class="font-medium">Goals</div>
+                            <div class="text-xs text-zinc-400"><span id="quick-goals-count">0</span> active</div>
                         </div>
                     </div>
                 </div>
@@ -256,6 +259,25 @@
                 </div>
 
                 <div id="contribution-list" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- GOALS -->
+        <div id="goals" class="section">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Goals</h2>
+                    <p class="text-zinc-400 mt-2">Your big picture — stay focused on what matters</p>
+                </div>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
+                    <div class="flex gap-2">
+                        <input id="goal-input" type="text" placeholder="Add a new goal..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addGoal()">
+                        <button onclick="addGoal()" class="px-6 bg-emerald-600 hover:bg-emerald-500 rounded-3xl text-sm font-medium">Add</button>
+                    </div>
+                </div>
+
+                <div id="goals-list" class="space-y-3"></div>
             </div>
         </div>
 
@@ -458,6 +480,7 @@
         let weeklyReviews = JSON.parse(localStorage.getItem('cakehub_weekly')) || {};
         let identityStatements = JSON.parse(localStorage.getItem('cakehub_identity')) || [];
         let contributions = JSON.parse(localStorage.getItem('cakehub_contributions')) || [];
+        let goals = JSON.parse(localStorage.getItem('cakehub_goals')) || [];
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -471,6 +494,7 @@
         function saveWeekly() { localStorage.setItem('cakehub_weekly', JSON.stringify(weeklyReviews)); }
         function saveIdentity() { localStorage.setItem('cakehub_identity', JSON.stringify(identityStatements)); }
         function saveContributions() { localStorage.setItem('cakehub_contributions', JSON.stringify(contributions)); }
+        function saveGoals() { localStorage.setItem('cakehub_goals', JSON.stringify(goals)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -723,6 +747,72 @@
             contributions.splice(index, 1);
             saveContributions();
             renderContributions();
+            updateQuickCounts();
+        }
+
+        // ==================== GOALS ====================
+        function renderGoals() {
+            const container = document.getElementById('goals-list');
+            const quick = document.getElementById('quick-goals-count');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (goals.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No goals yet. Add your top priorities above.</div>`;
+                if (quick) quick.textContent = '0';
+                return;
+            }
+
+            goals.forEach((goal, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <div class="text-sm">${goal.text}</div>
+                        <div class="text-xs text-emerald-400">${goal.status || 'On Track'}</div>
+                    </div>
+                    <div class="flex items-center gap-x-2">
+                        <select onchange="updateGoalStatus(${index}, this.value)" class="bg-zinc-900 border border-zinc-700 text-xs rounded-xl px-2 py-1">
+                            <option value="On Track" ${goal.status === 'On Track' ? 'selected' : ''}>On Track</option>
+                            <option value="Behind" ${goal.status === 'Behind' ? 'selected' : ''}>Behind</option>
+                            <option value="Completed" ${goal.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                        </select>
+                        <button onclick="deleteGoal(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
+                            <i class="fa-solid fa-times text-sm"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            if (quick) quick.textContent = goals.length;
+        }
+
+        function addGoal() {
+            const input = document.getElementById('goal-input');
+            if (!input || !input.value.trim()) return;
+            
+            goals.unshift({
+                text: input.value.trim(),
+                status: 'On Track',
+                created: new Date().toISOString()
+            });
+            input.value = '';
+            saveGoals();
+            renderGoals();
+            updateQuickCounts();
+        }
+
+        function updateGoalStatus(index, status) {
+            goals[index].status = status;
+            saveGoals();
+            renderGoals();
+        }
+
+        function deleteGoal(index) {
+            goals.splice(index, 1);
+            saveGoals();
+            renderGoals();
             updateQuickCounts();
         }
 
@@ -1216,6 +1306,7 @@
             const blockerEl = document.getElementById('quick-blocker-count');
             const habitEl = document.getElementById('quick-habit-count');
             const contributionEl = document.getElementById('quick-contribution-count');
+            const goalsEl = document.getElementById('quick-goals-count');
 
             if (taskEl) taskEl.textContent = todos.filter(t => !t.completed).length;
             if (moneyEl) moneyEl.textContent = moneyMoves.length;
@@ -1223,6 +1314,7 @@
             if (blockerEl) blockerEl.textContent = blockers.filter(b => !b.resolved).length;
             if (habitEl) habitEl.textContent = habits.length;
             if (contributionEl) contributionEl.textContent = contributions.length;
+            if (goalsEl) goalsEl.textContent = goals.length;
         }
 
         function showSection(section) {
@@ -1243,6 +1335,7 @@
             if (section === 'weekly') loadWeeklyReview();
             if (section === 'identity') renderIdentityStatements();
             if (section === 'contribution') renderContributions();
+            if (section === 'goals') renderGoals();
         }
 
         // ==================== INIT ====================
@@ -1258,6 +1351,7 @@
             renderInbox();
             renderIdentityStatements();
             renderContributions();
+            renderGoals();
             updateTimerDisplay();
             updateQuickCounts();
 
