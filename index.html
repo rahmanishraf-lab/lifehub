@@ -40,7 +40,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.8 • Execution</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.9 • Focus</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -113,6 +113,29 @@
                 </div>
                 <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
                     <div id="daily-progress-bar" class="h-2 bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Today's Focus Summary -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <div>
+                        <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">TODAY'S FOCUS</span>
+                    </div>
+                </div>
+                
+                <div class="glass border border-zinc-800 rounded-3xl p-5">
+                    <!-- MIT -->
+                    <div class="mb-4">
+                        <div class="text-xs text-amber-400 mb-1">MOST IMPORTANT</div>
+                        <div id="focus-mit" class="text-lg font-medium"></div>
+                    </div>
+                    
+                    <!-- Top Tasks -->
+                    <div>
+                        <div class="text-xs text-indigo-400 mb-2">TOP TASKS</div>
+                        <div id="focus-tasks" class="space-y-1.5 text-sm"></div>
+                    </div>
                 </div>
             </div>
 
@@ -603,6 +626,7 @@
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
+            updateFocusSummary();
         }
 
         function updateDailyProgress() {
@@ -614,7 +638,6 @@
             if (morningDone) completed++;
             if (eveningDone) completed++;
             
-            // Daily Execution = at least one task completed today
             const hasCompletedTaskToday = todos.some(t => t.completed);
             if (hasCompletedTaskToday) completed++;
             
@@ -623,7 +646,6 @@
             document.getElementById('daily-progress-bar').style.width = progress + '%';
             document.getElementById('daily-progress-text').textContent = `${completed}/3 completed`;
             
-            // Update Daily Execution status text
             const dailyStatus = document.getElementById('daily-execution-status');
             if (dailyStatus) {
                 const completedCount = todos.filter(t => t.completed).length;
@@ -689,6 +711,50 @@
             }
         }
 
+        function updateFocusSummary() {
+            // MIT
+            const mitContainer = document.getElementById('focus-mit');
+            if (currentMIT && currentMIT.date === getToday()) {
+                mitContainer.innerHTML = `
+                    <div class="flex items-center gap-x-3">
+                        <div class="flex-1 ${currentMIT.completed ? 'line-through opacity-60' : ''}">${currentMIT.text}</div>
+                        ${!currentMIT.completed ? `<button onclick="quickCompleteMIT(); event.stopImmediatePropagation()" class="text-xs px-3 py-1 bg-amber-500/10 text-amber-400 rounded-xl">Done</button>` : ''}
+                    </div>
+                `;
+            } else {
+                mitContainer.innerHTML = `<div class="text-zinc-400 text-sm">No priority set yet</div>`;
+            }
+
+            // Top Tasks
+            const tasksContainer = document.getElementById('focus-tasks');
+            const activeTasks = todos.filter(t => !t.completed).slice(0, 3);
+            
+            if (activeTasks.length > 0) {
+                tasksContainer.innerHTML = activeTasks.map((task, index) => `
+                    <div class="flex items-center gap-x-2">
+                        <div class="flex-1">${task.text}</div>
+                        <button onclick="quickCompleteTask(${index}); event.stopImmediatePropagation()" class="text-xs px-2 py-0.5 bg-indigo-500/10 text-indigo-400 rounded-lg">Done</button>
+                    </div>
+                `).join('');
+            } else {
+                tasksContainer.innerHTML = `<div class="text-zinc-400 text-sm">No active tasks</div>`;
+            }
+        }
+
+        function quickCompleteTask(index) {
+            const activeTasks = todos.filter(t => !t.completed);
+            const taskToComplete = activeTasks[index];
+            const realIndex = todos.findIndex(t => t === taskToComplete);
+            
+            if (realIndex !== -1) {
+                todos[realIndex].completed = true;
+                saveTodos();
+                updateQuickCounts();
+                updateDailyProgress();
+                updateFocusSummary();
+            }
+        }
+
         function goToRecommendedAction() {
             const hour = new Date().getHours();
             if (hour >= 5 && hour < 12) {
@@ -709,6 +775,7 @@
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
+            updateFocusSummary();
         }
 
         function quickCompleteEvening() {
@@ -719,6 +786,7 @@
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
+            updateFocusSummary();
         }
 
         function quickCompleteMIT() {
@@ -727,6 +795,7 @@
             if (currentMIT.completed) currentMIT.streak = (currentMIT.streak || 0) + 1;
             saveMIT(currentMIT);
             renderMIT();
+            updateFocusSummary();
         }
 
         // ==================== MIT ====================
@@ -771,17 +840,21 @@
             if (!input || !input.value.trim()) return;
             const newMIT = { date: getToday(), text: input.value.trim(), completed: false, streak: 1 };
             saveMIT(newMIT);
+            updateFocusSummary();
         }
         function toggleMIT() {
             if (!currentMIT) return;
             currentMIT.completed = !currentMIT.completed;
             if (currentMIT.completed) currentMIT.streak = (currentMIT.streak || 0) + 1;
             saveMIT(currentMIT);
+            renderMIT();
+            updateFocusSummary();
         }
         function clearMIT() {
             currentMIT = null;
             localStorage.removeItem('cakehub_mit');
             renderMIT();
+            updateFocusSummary();
         }
 
         // ==================== QUICK CAPTURE ====================
@@ -793,6 +866,7 @@
             saveInbox();
             updateQuickCounts();
             updateDailyProgress();
+            updateFocusSummary();
         }
 
         // ==================== HELPERS ====================
@@ -830,6 +904,7 @@
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
+            updateFocusSummary();
         }
 
         function saveEveningRitual() {
@@ -845,6 +920,7 @@
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
+            updateFocusSummary();
         }
 
         function saveWeeklyReview() {
