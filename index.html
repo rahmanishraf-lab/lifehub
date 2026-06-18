@@ -6,22 +6,21 @@
     <title>CakeHub • Your Life OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
-        
         body { font-family: 'Inter', system_ui, sans-serif; }
         .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600; }
-
         .section { display: none; }
         .section.active { display: block; }
-
         .nav-active { background-color: #6366f1; color: white; border-radius: 9999px; }
         .glass { background: rgba(255,255,255, 0.06); backdrop-filter: blur(20px); }
         .todo-item, .reminder-item { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
         .task-complete { text-decoration: line-through; opacity: 0.55; }
-        .sync-status { font-size: 10px; }
+        .mit-card {
+            background: linear-gradient(135deg, #1e2937 0%, #0f172a 100%);
+            border: 1px solid #334155;
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -34,15 +33,13 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.2 • Synced</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.3 • MIT</span>
                 </div>
             </div>
-            
             <div class="flex items-center gap-x-3">
-                <div id="sync-status" 
-                     class="px-3 py-1 text-xs rounded-2xl bg-zinc-900 border border-zinc-700 flex items-center gap-x-2">
-                    <i class="fa-solid fa-sync fa-spin text-emerald-400"></i>
-                    <span class="text-emerald-400">Syncing...</span>
+                <div id="sync-status" class="px-3 py-1 text-xs rounded-2xl bg-zinc-900 border border-zinc-700 flex items-center gap-x-2">
+                    <i class="fa-solid fa-sync text-emerald-400"></i>
+                    <span class="text-emerald-400">Synced</span>
                 </div>
                 <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
             </div>
@@ -58,8 +55,6 @@
                     <h1 class="text-5xl font-display tracking-tighter font-semibold">Good morning, Ishraf.</h1>
                     <p class="text-xl text-zinc-400 mt-1">Your life OS is synced across devices.</p>
                 </div>
-                
-                <!-- Snapshot -->
                 <div class="flex gap-3">
                     <div class="glass px-4 py-3 rounded-3xl border border-zinc-800 text-center min-w-[92px]">
                         <div class="text-xs text-zinc-400">TASKS</div>
@@ -70,8 +65,8 @@
                         <div id="snapshot-reminders" class="text-3xl font-semibold tabular-nums mt-0.5">0</div>
                     </div>
                     <div class="glass px-4 py-3 rounded-3xl border border-zinc-800 text-center min-w-[92px]">
-                        <div class="text-xs text-zinc-400">STREAK</div>
-                        <div class="text-3xl font-semibold tabular-nums mt-0.5 text-amber-400">17</div>
+                        <div class="text-xs text-zinc-400">MIT STREAK</div>
+                        <div id="mit-streak" class="text-3xl font-semibold tabular-nums mt-0.5 text-amber-400">0</div>
                     </div>
                 </div>
             </div>
@@ -98,6 +93,26 @@
 
         <!-- DASHBOARD -->
         <div id="dashboard" class="section active">
+            
+            <!-- MOST IMPORTANT TASK (MIT) -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <div>
+                        <span class="text-xs font-medium tracking-[1.5px] text-amber-400">MOST IMPORTANT</span>
+                        <h2 class="text-2xl font-semibold tracking-tighter">Today’s #1 Priority</h2>
+                    </div>
+                    <div id="mit-streak-badge" class="hidden items-center gap-x-1.5 px-3 py-1 bg-amber-400/10 text-amber-400 rounded-2xl text-xs font-medium">
+                        <i class="fa-solid fa-fire"></i>
+                        <span id="mit-streak-text">0 day streak</span>
+                    </div>
+                </div>
+
+                <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700">
+                    <!-- MIT Content will be injected by JS -->
+                </div>
+            </div>
+
+            <!-- Rest of Dashboard -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div class="lg:col-span-7 glass border border-zinc-800 rounded-3xl p-6">
                     <div class="flex items-center justify-between mb-4">
@@ -121,12 +136,10 @@
                 <div class="lg:col-span-5 glass border border-zinc-800 rounded-3xl p-6">
                     <span class="text-xs tracking-[1px] font-medium text-indigo-400">QUICK ACTIONS</span>
                     <div class="grid grid-cols-2 gap-3 mt-4">
-                        <button onclick="showSection('tasks'); document.getElementById('todo-input').focus()" 
-                                class="flex items-center justify-center gap-x-2 px-4 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm transition-colors">
+                        <button onclick="showSection('tasks'); document.getElementById('todo-input').focus()" class="flex items-center justify-center gap-x-2 px-4 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm transition-colors">
                             <i class="fa-solid fa-plus"></i><span>New Task</span>
                         </button>
-                        <button onclick="showSection('reminders'); document.getElementById('reminder-input').focus()" 
-                                class="flex items-center justify-center gap-x-2 px-4 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm transition-colors">
+                        <button onclick="showSection('reminders'); document.getElementById('reminder-input').focus()" class="flex items-center justify-center gap-x-2 px-4 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm transition-colors">
                             <i class="fa-solid fa-bell"></i><span>Set Reminder</span>
                         </button>
                     </div>
@@ -145,17 +158,12 @@
                     <span id="task-count">0</span> active
                 </div>
             </div>
-
             <div class="glass border border-zinc-800 rounded-3xl p-2 flex mb-6">
-                <input id="todo-input" type="text" placeholder="What needs to be done today?" 
-                       class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none placeholder:text-zinc-500"
-                       onkeypress="if(event.key === 'Enter') addTodo()">
-                <button onclick="addTodo()" 
-                        class="px-6 bg-indigo-600 hover:bg-indigo-500 transition-colors rounded-3xl text-sm font-medium flex items-center gap-x-2">
+                <input id="todo-input" type="text" placeholder="What needs to be done today?" class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none placeholder:text-zinc-500" onkeypress="if(event.key === 'Enter') addTodo()">
+                <button onclick="addTodo()" class="px-6 bg-indigo-600 hover:bg-indigo-500 transition-colors rounded-3xl text-sm font-medium flex items-center gap-x-2">
                     <i class="fa-solid fa-plus"></i><span class="hidden md:inline">Add</span>
                 </button>
             </div>
-
             <div id="todo-list" class="space-y-2"></div>
         </div>
 
@@ -167,18 +175,13 @@
                     <h2 class="text-3xl font-semibold tracking-tighter">Reminders</h2>
                 </div>
             </div>
-
             <div class="glass border border-zinc-800 rounded-3xl p-2 flex mb-6">
-                <input id="reminder-input" type="text" placeholder="Don't forget to..." 
-                       class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none placeholder:text-zinc-500"
-                       onkeypress="if(event.key === 'Enter') addReminder()">
+                <input id="reminder-input" type="text" placeholder="Don't forget to..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none placeholder:text-zinc-500" onkeypress="if(event.key === 'Enter') addReminder()">
                 <input id="reminder-date" type="date" class="bg-zinc-900 border border-zinc-700 px-4 text-sm rounded-3xl mx-2">
-                <button onclick="addReminder()" 
-                        class="px-6 bg-violet-600 hover:bg-violet-500 transition-colors rounded-3xl text-sm font-medium flex items-center gap-x-2">
+                <button onclick="addReminder()" class="px-6 bg-violet-600 hover:bg-violet-500 transition-colors rounded-3xl text-sm font-medium flex items-center gap-x-2">
                     <i class="fa-solid fa-bell"></i>
                 </button>
             </div>
-
             <div id="reminder-list" class="space-y-2"></div>
         </div>
 
@@ -215,141 +218,187 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <script>
         // ==================== SUPABASE CONFIG ====================
-        // Replace these with your own Supabase project keys (see setup instructions below)
         const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
         const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
-        
         let supabase = null;
-        const USER_ID = 'ishraf'; // Personal identifier for sync
+        const USER_ID = 'ishraf';
 
         function initSupabase() {
             if (SUPABASE_URL.includes('YOUR_PROJECT_ID')) {
-                console.warn('%c[CakeHub] Supabase not configured yet. Using localStorage only.', 'color:#f59e0b');
-                document.getElementById('sync-status').innerHTML = `
-                    <i class="fa-solid fa-exclamation-triangle text-amber-400"></i>
-                    <span class="text-amber-400">Local only</span>
-                `;
+                document.getElementById('sync-status').innerHTML = `<i class="fa-solid fa-exclamation-triangle text-amber-400"></i><span class="text-amber-400">Local only</span>`;
                 return false;
             }
-            
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            document.getElementById('sync-status').innerHTML = `
-                <i class="fa-solid fa-sync text-emerald-400"></i>
-                <span class="text-emerald-400">Synced</span>
-            `;
+            document.getElementById('sync-status').innerHTML = `<i class="fa-solid fa-sync text-emerald-400"></i><span class="text-emerald-400">Synced</span>`;
             return true;
         }
 
-        // ==================== DATA LAYER ====================
+        // ==================== DATA ====================
         let todos = [];
         let reminders = [];
+        let currentMIT = null;
 
         async function loadData() {
             const useSupabase = !!supabase;
-
             if (useSupabase) {
                 try {
-                    // Load todos
-                    const { data: todoData } = await supabase
-                        .from('todos')
-                        .select('*')
-                        .eq('user_id', USER_ID)
-                        .order('created_at', { ascending: false });
-                    
+                    const { data: todoData } = await supabase.from('todos').select('*').eq('user_id', USER_ID).order('created_at', { ascending: false });
                     todos = todoData || [];
 
-                    // Load reminders
-                    const { data: reminderData } = await supabase
-                        .from('reminders')
-                        .select('*')
-                        .eq('user_id', USER_ID)
-                        .order('date', { ascending: true });
-                    
+                    const { data: reminderData } = await supabase.from('reminders').select('*').eq('user_id', USER_ID).order('date', { ascending: true });
                     reminders = reminderData || [];
 
-                    // Subscribe to realtime changes
+                    const { data: mitData } = await supabase.from('mits').select('*').eq('user_id', USER_ID).order('date', { ascending: false }).limit(1);
+                    currentMIT = mitData && mitData.length > 0 ? mitData[0] : null;
+
                     setupRealtime();
-                    
                 } catch (err) {
-                    console.error('Supabase load failed, falling back to localStorage', err);
                     loadFromLocalStorage();
                 }
             } else {
                 loadFromLocalStorage();
             }
-            
             renderTodos();
             renderReminders();
+            renderMIT();
             updateSnapshot();
         }
 
         function loadFromLocalStorage() {
             todos = JSON.parse(localStorage.getItem('cakehub_todos')) || [];
             reminders = JSON.parse(localStorage.getItem('cakehub_reminders')) || [];
+            const savedMIT = localStorage.getItem('cakehub_mit');
+            currentMIT = savedMIT ? JSON.parse(savedMIT) : null;
         }
 
-        async function saveTodo(todo) {
+        async function saveMIT(mit) {
             if (supabase) {
-                await supabase.from('todos').upsert({
-                    ...todo,
-                    user_id: USER_ID
-                });
+                await supabase.from('mits').upsert({ ...mit, user_id: USER_ID });
             } else {
-                localStorage.setItem('cakehub_todos', JSON.stringify(todos));
+                localStorage.setItem('cakehub_mit', JSON.stringify(mit));
             }
-        }
-
-        async function deleteTodoFromDB(id) {
-            if (supabase) {
-                await supabase.from('todos').delete().eq('id', id).eq('user_id', USER_ID);
-            } else {
-                localStorage.setItem('cakehub_todos', JSON.stringify(todos));
-            }
-        }
-
-        async function saveReminder(reminder) {
-            if (supabase) {
-                await supabase.from('reminders').upsert({
-                    ...reminder,
-                    user_id: USER_ID
-                });
-            } else {
-                localStorage.setItem('cakehub_reminders', JSON.stringify(reminders));
-            }
-        }
-
-        async function deleteReminderFromDB(id) {
-            if (supabase) {
-                await supabase.from('reminders').delete().eq('id', id).eq('user_id', USER_ID);
-            } else {
-                localStorage.setItem('cakehub_reminders', JSON.stringify(reminders));
-            }
+            currentMIT = mit;
+            renderMIT();
+            updateSnapshot();
         }
 
         function setupRealtime() {
             if (!supabase) return;
-
-            // Todos realtime
-            supabase.channel('todos-channel')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'todos', filter: `user_id=eq.${USER_ID}` }, () => {
-                    loadData();
-                })
-                .subscribe();
-
-            // Reminders realtime
-            supabase.channel('reminders-channel')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'reminders', filter: `user_id=eq.${USER_ID}` }, () => {
-                    loadData();
-                })
+            supabase.channel('mits-channel')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'mits', filter: `user_id=eq.${USER_ID}` }, () => loadData())
                 .subscribe();
         }
 
-        // ==================== UI FUNCTIONS ====================
+        // ==================== MIT FUNCTIONS ====================
+        function getTodayDate() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function calculateMITStreak() {
+            // Simple streak calculation (can be improved later)
+            if (!currentMIT || !currentMIT.completed) return 0;
+            return currentMIT.streak || 1;
+        }
+
+        function renderMIT() {
+            const container = document.getElementById('mit-card');
+            const today = getTodayDate();
+            const streak = calculateMITStreak();
+
+            // Update streak badge
+            const streakBadge = document.getElementById('mit-streak-badge');
+            const streakText = document.getElementById('mit-streak-text');
+            const streakNumber = document.getElementById('mit-streak');
+
+            if (streak > 0) {
+                streakBadge.classList.remove('hidden');
+                streakBadge.classList.add('flex');
+                streakText.textContent = `${streak} day streak`;
+                streakNumber.textContent = streak;
+            } else {
+                streakBadge.classList.add('hidden');
+                streakNumber.textContent = '0';
+            }
+
+            if (!currentMIT || currentMIT.date !== today) {
+                // No MIT set for today
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-4">
+                        <div class="text-center mb-4">
+                            <i class="fa-solid fa-bullseye text-3xl text-amber-400 mb-3"></i>
+                            <p class="text-zinc-400">What is the one thing that would make today a win?</p>
+                        </div>
+                        <div class="w-full max-w-md flex gap-2">
+                            <input id="mit-input" type="text" placeholder="My #1 priority today..." 
+                                   class="flex-1 bg-zinc-900 border border-zinc-700 px-4 py-3 rounded-2xl text-sm focus:outline-none"
+                                   onkeypress="if(event.key === 'Enter') setMIT()">
+                            <button onclick="setMIT()" 
+                                    class="px-6 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-2xl text-sm transition-colors">
+                                Set MIT
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // MIT exists for today
+                const isDone = currentMIT.completed;
+                container.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-x-4 flex-1">
+                            <div onclick="toggleMIT()" class="w-7 h-7 flex-shrink-0 rounded-2xl border ${isDone ? 'bg-emerald-500 border-emerald-500' : 'border-amber-400'} flex items-center justify-center cursor-pointer">
+                                ${isDone ? '<i class="fa-solid fa-check text-white text-sm"></i>' : ''}
+                            </div>
+                            <div class="${isDone ? 'line-through opacity-60' : ''} text-lg font-medium">${currentMIT.text}</div>
+                        </div>
+                        <button onclick="clearMIT()" class="text-xs px-3 py-1.5 text-zinc-400 hover:text-zinc-200 transition-colors">Change</button>
+                    </div>
+                `;
+            }
+        }
+
+        async function setMIT() {
+            const input = document.getElementById('mit-input');
+            if (!input || !input.value.trim()) return;
+
+            const newMIT = {
+                id: Date.now(),
+                date: getTodayDate(),
+                text: input.value.trim(),
+                completed: false,
+                created_at: new Date().toISOString(),
+                streak: 1
+            };
+            await saveMIT(newMIT);
+        }
+
+        async function toggleMIT() {
+            if (!currentMIT) return;
+            currentMIT.completed = !currentMIT.completed;
+            
+            // Simple streak logic
+            if (currentMIT.completed) {
+                currentMIT.streak = (currentMIT.streak || 0) + 1;
+            }
+            await saveMIT(currentMIT);
+        }
+
+        async function clearMIT() {
+            if (!currentMIT) return;
+            currentMIT = null;
+            if (supabase) {
+                await supabase.from('mits').delete().eq('user_id', USER_ID).eq('date', getTodayDate());
+            } else {
+                localStorage.removeItem('cakehub_mit');
+            }
+            renderMIT();
+            updateSnapshot();
+        }
+
+        // ==================== UI HELPERS ====================
         function updateDate() {
             const dateEl = document.getElementById('current-date');
             const now = new Date();
@@ -359,13 +408,9 @@
         function showSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('[id^="nav-"]').forEach(n => n.classList.remove('nav-active', 'bg-indigo-600'));
-            
             document.getElementById(section).classList.add('active');
             const navBtn = document.getElementById('nav-' + section);
             if (navBtn) navBtn.classList.add('nav-active', 'bg-indigo-600');
-            
-            if (section === 'spark' && !document.getElementById('fact-content').innerHTML) showRandomFact();
-            if (section === 'wisdom' && !document.getElementById('quote-content').innerHTML) showRandomQuote();
         }
 
         function updateSnapshot() {
@@ -380,16 +425,13 @@
         function renderTodos() {
             const container = document.getElementById('todo-list');
             container.innerHTML = '';
-            
             if (todos.length === 0) {
                 container.innerHTML = `<div class="text-center py-8 text-zinc-500 text-sm">No tasks yet.</div>`;
                 return;
             }
-
             todos.forEach((todo) => {
                 const div = document.createElement('div');
                 div.className = `todo-item flex items-center gap-x-3 glass border border-zinc-800 px-5 py-4 rounded-3xl ${todo.completed ? 'opacity-60' : ''}`;
-                
                 div.innerHTML = `
                     <div onclick="toggleTodo('${todo.id}')" class="w-5 h-5 flex-shrink-0 rounded-xl border ${todo.completed ? 'bg-indigo-600 border-indigo-600' : 'border-zinc-600'} flex items-center justify-center cursor-pointer">
                         ${todo.completed ? '<i class="fa-solid fa-check text-white text-xs"></i>' : ''}
@@ -408,19 +450,11 @@
         async function addTodo() {
             const input = document.getElementById('todo-input');
             if (!input.value.trim()) return;
-            
-            const newTodo = {
-                id: Date.now(),
-                text: input.value.trim(),
-                completed: false,
-                created_at: new Date().toISOString(),
-                user_id: USER_ID
-            };
-            
+            const newTodo = { id: Date.now(), text: input.value.trim(), completed: false, created_at: new Date().toISOString(), user_id: USER_ID };
             todos.unshift(newTodo);
             input.value = '';
-            
-            await saveTodo(newTodo);
+            if (supabase) await supabase.from('todos').insert(newTodo);
+            else localStorage.setItem('cakehub_todos', JSON.stringify(todos));
             renderTodos();
             updateSnapshot();
         }
@@ -428,16 +462,17 @@
         async function toggleTodo(id) {
             const todo = todos.find(t => t.id == id);
             if (!todo) return;
-            
             todo.completed = !todo.completed;
-            await saveTodo(todo);
+            if (supabase) await supabase.from('todos').update({ completed: todo.completed }).eq('id', id);
+            else localStorage.setItem('cakehub_todos', JSON.stringify(todos));
             renderTodos();
             updateSnapshot();
         }
 
         async function deleteTodo(id) {
             todos = todos.filter(t => t.id != id);
-            await deleteTodoFromDB(id);
+            if (supabase) await supabase.from('todos').delete().eq('id', id);
+            else localStorage.setItem('cakehub_todos', JSON.stringify(todos));
             renderTodos();
             updateSnapshot();
         }
@@ -446,25 +481,18 @@
         function renderReminders() {
             const container = document.getElementById('reminder-list');
             container.innerHTML = '';
-            
             if (reminders.length === 0) {
                 container.innerHTML = `<div class="text-center py-8 text-zinc-500 text-sm">No reminders set.</div>`;
                 return;
             }
-
             const sorted = [...reminders].sort((a, b) => new Date(a.date) - new Date(b.date));
-            
             sorted.forEach((reminder) => {
                 const isPast = new Date(reminder.date) < new Date();
                 const div = document.createElement('div');
                 div.className = `reminder-item flex items-center gap-x-4 glass border border-zinc-800 px-5 py-4 rounded-3xl ${isPast ? 'opacity-50' : ''}`;
-                
                 const dateStr = new Date(reminder.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                
                 div.innerHTML = `
-                    <div class="text-center w-12 flex-shrink-0">
-                        <div class="text-xs text-zinc-400">${dateStr}</div>
-                    </div>
+                    <div class="text-center w-12 flex-shrink-0"><div class="text-xs text-zinc-400">${dateStr}</div></div>
                     <div class="flex-1 text-sm">${reminder.text}</div>
                     <button onclick="deleteReminder(${reminder.id}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
                         <i class="fa-solid fa-times text-sm"></i>
@@ -478,29 +506,21 @@
             const input = document.getElementById('reminder-input');
             const dateInput = document.getElementById('reminder-date');
             if (!input.value.trim()) return;
-            
             const date = dateInput.value || new Date().toISOString().split('T')[0];
-            
-            const newReminder = {
-                id: Date.now(),
-                text: input.value.trim(),
-                date: date,
-                created_at: new Date().toISOString(),
-                user_id: USER_ID
-            };
-            
+            const newReminder = { id: Date.now(), text: input.value.trim(), date: date, created_at: new Date().toISOString(), user_id: USER_ID };
             reminders.unshift(newReminder);
             input.value = '';
             dateInput.value = '';
-            
-            await saveReminder(newReminder);
+            if (supabase) await supabase.from('reminders').insert(newReminder);
+            else localStorage.setItem('cakehub_reminders', JSON.stringify(reminders));
             renderReminders();
             updateSnapshot();
         }
 
         async function deleteReminder(id) {
             reminders = reminders.filter(r => r.id != id);
-            await deleteReminderFromDB(id);
+            if (supabase) await supabase.from('reminders').delete().eq('id', id);
+            else localStorage.setItem('cakehub_reminders', JSON.stringify(reminders));
             renderReminders();
             updateSnapshot();
         }
@@ -510,10 +530,7 @@
             { text: "The human brain generates enough electricity to power a small light bulb.", category: "Neuroscience" },
             { text: "Octopuses have three hearts and blue blood.", category: "Biology" },
             { text: "A single teaspoon of honey represents the lifetime work of 12 bees.", category: "Nature" },
-            { text: "The shortest war in history lasted only 38 minutes.", category: "History" },
-            { text: "Bananas are berries, but strawberries aren't.", category: "Botany" },
         ];
-
         function showRandomFact() {
             const random = facts[Math.floor(Math.random() * facts.length)];
             document.getElementById('fact-content').innerHTML = random.text;
@@ -523,48 +540,35 @@
         const quotes = [
             { text: "The best way to predict the future is to create it.", author: "Peter Drucker" },
             { text: "If you’re not embarrassed by the first version, you’ve launched too late.", author: "Reid Hoffman" },
-            { text: "Play long-term games with long-term people.", author: "Naval Ravikant" },
-            { text: "Obsess over customers, not competitors.", author: "Jeff Bezos" },
-            { text: "Build something people want, not something you want.", author: "Sam Altman" },
         ];
-
         function showRandomQuote() {
             const random = quotes[Math.floor(Math.random() * quotes.length)];
             document.getElementById('quote-content').innerHTML = `"${random.text}"`;
             document.getElementById('quote-author').innerHTML = `— ${random.author}`;
         }
 
-        // ==================== INITIALIZATION ====================
+        // ==================== INIT ====================
         async function initializeApp() {
             updateDate();
-            
             const isSupabaseReady = initSupabase();
-            
             await loadData();
-            
-            // Default nav
+
             document.getElementById('dashboard').classList.add('active');
             document.getElementById('nav-dashboard').classList.add('nav-active', 'bg-indigo-600');
-            
-            // Seed data if empty
-            if (todos.length === 0 && !isSupabaseReady) {
-                todos = [
-                    { id: 1, text: "Review and improve CakeHub v0.2", completed: false, created_at: new Date().toISOString(), user_id: USER_ID },
-                    { id: 2, text: "Write down 3 money-making ideas", completed: false, created_at: new Date().toISOString(), user_id: USER_ID },
-                ];
-                localStorage.setItem('cakehub_todos', JSON.stringify(todos));
-                renderTodos();
+
+            // Seed default MIT if none exists
+            if (!currentMIT) {
+                const today = getTodayDate();
+                const defaultMIT = {
+                    id: Date.now(),
+                    date: today,
+                    text: "Define my #1 priority for today",
+                    completed: false,
+                    created_at: new Date().toISOString(),
+                    streak: 0
+                };
+                await saveMIT(defaultMIT);
             }
-            
-            if (reminders.length === 0 && !isSupabaseReady) {
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                reminders = [{ id: 101, text: "Check Vercel deployment", date: tomorrow.toISOString().split('T')[0], created_at: new Date().toISOString(), user_id: USER_ID }];
-                localStorage.setItem('cakehub_reminders', JSON.stringify(reminders));
-                renderReminders();
-            }
-            
-            console.log('%c[CakeHub v0.2] Supabase sync ready. Data syncs across devices.', 'color:#666');
         }
 
         window.onload = initializeApp;
