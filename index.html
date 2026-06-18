@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.7 • Habits</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.8 • Energy</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -66,6 +66,9 @@
             </button>
             <button onclick="showSection('habits')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-habits">
                 <i class="fa-solid fa-chart-line w-4"></i><span>Habits</span>
+            </button>
+            <button onclick="showSection('energy')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-energy">
+                <i class="fa-solid fa-battery-full w-4"></i><span>Energy</span>
             </button>
             <button onclick="showSection('reminders')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-reminders">
                 <i class="fa-solid fa-bell w-4"></i><span>Reminders</span>
@@ -134,12 +137,12 @@
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('reminders')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
+                <div onclick="showSection('energy')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-bell text-violet-400 text-xl"></i>
+                        <i class="fa-solid fa-battery-full text-sky-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Reminders</div>
-                            <div class="text-xs text-zinc-400"><span id="quick-reminder-count">0</span> upcoming</div>
+                            <div class="font-medium">Energy</div>
+                            <div class="text-xs text-zinc-400">Track focus</div>
                         </div>
                     </div>
                 </div>
@@ -234,6 +237,34 @@
             <div id="habit-list" class="space-y-2"></div>
         </div>
 
+        <!-- ENERGY TRACKER -->
+        <div id="energy" class="section">
+            <div class="max-w-md mx-auto">
+                <h2 class="text-3xl font-semibold tracking-tighter mb-2 text-center">Energy Tracker</h2>
+                <p class="text-zinc-400 mb-6 text-center">Log your focus &amp; energy levels</p>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Energy Level</span>
+                            <span id="energy-value" class="font-medium">7</span>
+                        </div>
+                        <input type="range" id="energy-slider" min="1" max="10" value="7" step="1" 
+                               class="w-full accent-sky-500" oninput="document.getElementById('energy-value').textContent = this.value">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <input id="energy-note" type="text" placeholder="Optional note (e.g. After coffee)" 
+                               class="w-full bg-zinc-900 border border-zinc-700 px-4 py-3 rounded-2xl text-sm focus:outline-none">
+                    </div>
+
+                    <button onclick="logEnergy()" class="w-full py-3 bg-sky-600 hover:bg-sky-500 rounded-3xl font-medium">Log Energy</button>
+                </div>
+
+                <div id="energy-list" class="space-y-2"></div>
+            </div>
+        </div>
+
         <!-- REMINDERS -->
         <div id="reminders" class="section">
             <h2 class="text-3xl font-semibold tracking-tighter mb-4">Reminders</h2>
@@ -253,6 +284,7 @@
         let moneyMoves = JSON.parse(localStorage.getItem('cakehub_money')) || [];
         let blockers = JSON.parse(localStorage.getItem('cakehub_blockers')) || [];
         let habits = JSON.parse(localStorage.getItem('cakehub_habits')) || [];
+        let energyLogs = JSON.parse(localStorage.getItem('cakehub_energy')) || [];
         let currentMIT = JSON.parse(localStorage.getItem('cakehub_mit')) || null;
         let sessionsToday = parseInt(localStorage.getItem('cakehub_sessions') || '0');
 
@@ -261,6 +293,7 @@
         function saveMoney() { localStorage.setItem('cakehub_money', JSON.stringify(moneyMoves)); }
         function saveBlockers() { localStorage.setItem('cakehub_blockers', JSON.stringify(blockers)); }
         function saveHabits() { localStorage.setItem('cakehub_habits', JSON.stringify(habits)); }
+        function saveEnergy() { localStorage.setItem('cakehub_energy', JSON.stringify(energyLogs)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -528,6 +561,63 @@
             renderHabits();
         }
 
+        // ==================== ENERGY TRACKER ====================
+        function renderEnergyLogs() {
+            const container = document.getElementById('energy-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (energyLogs.length === 0) {
+                container.innerHTML = `<div class="text-center py-4 text-zinc-500 text-sm">No energy logs yet.</div>`;
+                return;
+            }
+
+            energyLogs.slice(0, 8).forEach((log, index) => {
+                const time = new Date(log.timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-3 rounded-3xl`;
+                div.innerHTML = `
+                    <div class="flex items-center gap-x-4">
+                        <div class="text-2xl font-semibold text-sky-400 w-8">${log.level}</div>
+                        <div>
+                            <div class="text-sm">${log.note || 'No note'}</div>
+                            <div class="text-xs text-zinc-500">${time}</div>
+                        </div>
+                    </div>
+                    <button onclick="deleteEnergyLog(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
+                        <i class="fa-solid fa-times text-sm"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function logEnergy() {
+            const slider = document.getElementById('energy-slider');
+            const note = document.getElementById('energy-note');
+            
+            const entry = {
+                level: parseInt(slider.value),
+                note: note.value.trim(),
+                timestamp: new Date().toISOString()
+            };
+            
+            energyLogs.unshift(entry);
+            saveEnergy();
+            renderEnergyLogs();
+            
+            // Reset form
+            note.value = '';
+            slider.value = 7;
+            document.getElementById('energy-value').textContent = '7';
+        }
+
+        function deleteEnergyLog(index) {
+            energyLogs.splice(index, 1);
+            saveEnergy();
+            renderEnergyLogs();
+        }
+
         // ==================== TODOS ====================
         function renderTodos() {
             const container = document.getElementById('todo-list');
@@ -688,6 +778,9 @@
                 updateTimerDisplay();
                 document.getElementById('session-count').innerHTML = `Sessions completed today: <span class="font-medium text-white">${sessionsToday}</span>`;
             }
+            if (section === 'energy') {
+                renderEnergyLogs();
+            }
         }
 
         // ==================== INIT ====================
@@ -699,6 +792,7 @@
             renderMoneyMoves();
             renderBlockers();
             renderHabits();
+            renderEnergyLogs();
             updateTimerDisplay();
 
             document.getElementById('dashboard').classList.add('active');
