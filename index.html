@@ -24,6 +24,10 @@
             border-color: #6366f1;
             background: rgba(99, 102, 241, 0.08);
         }
+        .flow-done {
+            border-color: #10b981;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -36,7 +40,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.2 • Refined Flow</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.3 • Refined</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -76,7 +80,7 @@
             </button>
         </div>
 
-        <!-- HOME - REFINED FLOW -->
+        <!-- HOME - HIGHLY REFINED FLOW -->
         <div id="home" class="section active">
             
             <!-- Dynamic Greeting + Recommended Action -->
@@ -101,7 +105,7 @@
                 </div>
             </div>
 
-            <!-- Today's Flow -->
+            <!-- Today's Flow with Completion Indicators -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
@@ -115,7 +119,10 @@
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-sun text-yellow-400 text-2xl w-8"></i>
                             <div class="flex-1">
-                                <div class="font-medium">Morning Ritual</div>
+                                <div class="font-medium flex items-center justify-between">
+                                    <span>Morning Ritual</span>
+                                    <span id="morning-status" class="text-xs text-emerald-400 hidden">Done</span>
+                                </div>
                                 <div class="text-xs text-zinc-400">Power questions + energy</div>
                             </div>
                         </div>
@@ -137,7 +144,10 @@
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-moon text-purple-400 text-2xl w-8"></i>
                             <div class="flex-1">
-                                <div class="font-medium">Evening Ritual</div>
+                                <div class="font-medium flex items-center justify-between">
+                                    <span>Evening Ritual</span>
+                                    <span id="evening-status" class="text-xs text-emerald-400 hidden">Done</span>
+                                </div>
                                 <div class="text-xs text-zinc-400">Review &amp; gratitude</div>
                             </div>
                         </div>
@@ -512,10 +522,12 @@
         let todos = JSON.parse(localStorage.getItem('cakehub_todos')) || [];
         let inboxItems = JSON.parse(localStorage.getItem('cakehub_inbox')) || [];
         let currentMIT = JSON.parse(localStorage.getItem('cakehub_mit')) || null;
+        let ritualStatus = JSON.parse(localStorage.getItem('cakehub_ritual_status')) || {};
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveInbox() { localStorage.setItem('cakehub_inbox', JSON.stringify(inboxItems)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
+        function saveRitualStatus() { localStorage.setItem('cakehub_ritual_status', JSON.stringify(ritualStatus)); }
 
         function getToday() { return new Date().toISOString().split('T')[0]; }
 
@@ -535,7 +547,6 @@
             let recommendation = '';
 
             if (hour >= 5 && hour < 12) {
-                // Morning
                 timeLabel.textContent = 'GOOD MORNING';
                 timeSuggestion.textContent = 'Start your day with intention';
                 recommendation = 'Morning Ritual';
@@ -543,7 +554,6 @@
                 document.getElementById('flow-morning').classList.add('flow-active', 'border-yellow-400');
             } 
             else if (hour >= 12 && hour < 18) {
-                // Afternoon
                 timeLabel.textContent = 'AFTERNOON';
                 timeSuggestion.textContent = 'Stay focused and execute';
                 recommendation = 'Daily Execution';
@@ -551,7 +561,6 @@
                 document.getElementById('flow-daily').classList.add('flow-active', 'border-indigo-400');
             } 
             else {
-                // Evening
                 timeLabel.textContent = 'EVENING';
                 timeSuggestion.textContent = 'Close the day with reflection';
                 recommendation = 'Evening Ritual';
@@ -560,6 +569,36 @@
             }
 
             recommendedText.textContent = recommendation;
+            updateRitualStatusIndicators();
+        }
+
+        function updateRitualStatusIndicators() {
+            const today = getToday();
+            const morningDone = ritualStatus[today]?.morning;
+            const eveningDone = ritualStatus[today]?.evening;
+
+            const morningStatus = document.getElementById('morning-status');
+            const eveningStatus = document.getElementById('evening-status');
+
+            if (morningStatus) {
+                if (morningDone) {
+                    morningStatus.classList.remove('hidden');
+                    document.getElementById('flow-morning').classList.add('flow-done');
+                } else {
+                    morningStatus.classList.add('hidden');
+                    document.getElementById('flow-morning').classList.remove('flow-done');
+                }
+            }
+
+            if (eveningStatus) {
+                if (eveningDone) {
+                    eveningStatus.classList.remove('hidden');
+                    document.getElementById('flow-evening').classList.add('flow-done');
+                } else {
+                    eveningStatus.classList.add('hidden');
+                    document.getElementById('flow-evening').classList.remove('flow-done');
+                }
+            }
         }
 
         function goToRecommendedAction() {
@@ -661,15 +700,29 @@
         }
 
         function saveMorningRitual() {
+            const today = getToday();
+            if (!ritualStatus[today]) ritualStatus[today] = {};
+            ritualStatus[today].morning = true;
+            saveRitualStatus();
+            
             const savedMsg = document.getElementById('morning-saved');
             savedMsg.classList.remove('hidden');
             setTimeout(() => savedMsg.classList.add('hidden'), 2000);
+            
+            updateRitualStatusIndicators();
         }
 
         function saveEveningRitual() {
+            const today = getToday();
+            if (!ritualStatus[today]) ritualStatus[today] = {};
+            ritualStatus[today].evening = true;
+            saveRitualStatus();
+            
             const savedMsg = document.getElementById('evening-saved');
             savedMsg.classList.remove('hidden');
             setTimeout(() => savedMsg.classList.add('hidden'), 2000);
+            
+            updateRitualStatusIndicators();
         }
 
         function saveWeeklyReview() {
@@ -718,7 +771,6 @@
                 saveMIT(defaultMIT);
             }
 
-            // Update flow every minute
             setInterval(updateTimeBasedFlow, 60000);
         }
 
