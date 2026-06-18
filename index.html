@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.8 • Relationships</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.9 • Finance</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -75,6 +75,9 @@
             </button>
             <button onclick="showSection('gratitude')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-gratitude">
                 <i class="fa-solid fa-heart w-4"></i><span>Gratitude</span>
+            </button>
+            <button onclick="showSection('finance')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-finance">
+                <i class="fa-solid fa-chart-line w-4"></i><span>Finance</span>
             </button>
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
@@ -153,12 +156,12 @@
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('relationships')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-purple-400 transition-colors">
+                <div onclick="showSection('finance')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-emerald-400 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-users text-purple-400 text-xl"></i>
+                        <i class="fa-solid fa-chart-line text-emerald-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Relationships</div>
-                            <div class="text-xs text-zinc-400"><span id="quick-relationships-count">0</span> tracked</div>
+                            <div class="font-medium">Finance</div>
+                            <div class="text-xs text-zinc-400">Money snapshot</div>
                         </div>
                     </div>
                 </div>
@@ -322,6 +325,46 @@
                 </div>
 
                 <div id="gratitude-list" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- FINANCE SNAPSHOT -->
+        <div id="finance" class="section">
+            <div class="max-w-md mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Financial Snapshot</h2>
+                    <p class="text-zinc-400 mt-2">Monthly money overview</p>
+                </div>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6 space-y-5">
+                    <div>
+                        <div class="text-sm text-zinc-400 mb-1">Income this month</div>
+                        <div class="flex items-center">
+                            <span class="text-xl mr-2">$</span>
+                            <input id="finance-income" type="number" placeholder="0" class="flex-1 bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-zinc-400 mb-1">Expenses this month</div>
+                        <div class="flex items-center">
+                            <span class="text-xl mr-2">$</span>
+                            <input id="finance-expenses" type="number" placeholder="0" class="flex-1 bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-zinc-700">
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-zinc-400">Net</div>
+                            <div id="finance-net" class="text-2xl font-semibold text-emerald-400">$0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="saveFinanceSnapshot()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 rounded-3xl font-medium">Save Snapshot</button>
+
+                <div class="mt-6 text-center">
+                    <div class="text-xs text-zinc-400">Money Moves logged this month</div>
+                    <div class="text-3xl font-semibold text-emerald-400 mt-1"><span id="finance-moves-count">0</span></div>
+                </div>
             </div>
         </div>
 
@@ -527,6 +570,7 @@
         let goals = JSON.parse(localStorage.getItem('cakehub_goals')) || [];
         let gratitudes = JSON.parse(localStorage.getItem('cakehub_gratitudes')) || [];
         let relationships = JSON.parse(localStorage.getItem('cakehub_relationships')) || [];
+        let financeSnapshot = JSON.parse(localStorage.getItem('cakehub_finance')) || {};
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -543,6 +587,7 @@
         function saveGoals() { localStorage.setItem('cakehub_goals', JSON.stringify(goals)); }
         function saveGratitudes() { localStorage.setItem('cakehub_gratitudes', JSON.stringify(gratitudes)); }
         function saveRelationships() { localStorage.setItem('cakehub_relationships', JSON.stringify(relationships)); }
+        function saveFinance() { localStorage.setItem('cakehub_finance', JSON.stringify(financeSnapshot)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -1469,6 +1514,39 @@
             document.getElementById('start-btn').innerHTML = `<i class="fa-solid fa-play"></i><span> Start</span>`;
         }
 
+        // ==================== FINANCE SNAPSHOT ====================
+        function saveFinanceSnapshot() {
+            const income = parseFloat(document.getElementById('finance-income').value) || 0;
+            const expenses = parseFloat(document.getElementById('finance-expenses').value) || 0;
+            const net = income - expenses;
+
+            financeSnapshot = {
+                month: new Date().toISOString().slice(0, 7),
+                income: income,
+                expenses: expenses,
+                net: net,
+                savedAt: new Date().toISOString()
+            };
+            saveFinance();
+            
+            document.getElementById('finance-net').textContent = '$' + net;
+            document.getElementById('finance-net').className = net >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
+        }
+
+        function loadFinanceSnapshot() {
+            const currentMonth = new Date().toISOString().slice(0, 7);
+            if (financeSnapshot.month === currentMonth) {
+                document.getElementById('finance-income').value = financeSnapshot.income || '';
+                document.getElementById('finance-expenses').value = financeSnapshot.expenses || '';
+                document.getElementById('finance-net').textContent = '$' + (financeSnapshot.net || 0);
+                document.getElementById('finance-net').className = (financeSnapshot.net || 0) >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
+            }
+            
+            // Update money moves count
+            const currentMonthMoves = moneyMoves.filter(m => m.date && m.date.slice(0, 7) === currentMonth).length;
+            document.getElementById('finance-moves-count').textContent = currentMonthMoves;
+        }
+
         // ==================== HELPERS ====================
         function updateDate() {
             const dateEl = document.getElementById('current-date');
@@ -1517,6 +1595,7 @@
             if (section === 'goals') renderGoals();
             if (section === 'relationships') renderRelationships();
             if (section === 'gratitude') renderGratitudes();
+            if (section === 'finance') loadFinanceSnapshot();
         }
 
         // ==================== INIT ====================
