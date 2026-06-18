@@ -28,6 +28,13 @@
             border-color: #10b981;
             opacity: 0.75;
         }
+        .toast {
+            animation: slideUp 0.3s ease-out forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -40,7 +47,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.9 • Focus</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v3.0 • Refined</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -80,10 +87,10 @@
             </button>
         </div>
 
-        <!-- HOME - REFINED FLOW -->
+        <!-- HOME -->
         <div id="home" class="section active">
             
-            <!-- Dynamic Greeting + Recommended Action -->
+            <!-- Dynamic Greeting -->
             <div class="mb-8">
                 <div id="dynamic-greeting" class="mb-4 px-1">
                     <span class="text-xs font-medium tracking-[1.5px] text-emerald-400" id="time-label">TODAY'S FLOW</span>
@@ -105,7 +112,7 @@
                 </div>
             </div>
 
-            <!-- Daily Progress Summary -->
+            <!-- Daily Progress -->
             <div class="mb-6">
                 <div class="flex items-center justify-between mb-2 px-1">
                     <div class="text-xs font-medium tracking-[1.5px] text-zinc-400">TODAY'S PROGRESS</div>
@@ -125,13 +132,11 @@
                 </div>
                 
                 <div class="glass border border-zinc-800 rounded-3xl p-5">
-                    <!-- MIT -->
                     <div class="mb-4">
                         <div class="text-xs text-amber-400 mb-1">MOST IMPORTANT</div>
                         <div id="focus-mit" class="text-lg font-medium"></div>
                     </div>
                     
-                    <!-- Top Tasks -->
                     <div>
                         <div class="text-xs text-indigo-400 mb-2">TOP TASKS</div>
                         <div id="focus-tasks" class="space-y-1.5 text-sm"></div>
@@ -139,7 +144,15 @@
                 </div>
             </div>
 
-            <!-- Today's Flow with Quick Complete -->
+            <!-- Weekly Consistency -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-2 px-1">
+                    <div class="text-xs font-medium tracking-[1.5px] text-zinc-400">THIS WEEK</div>
+                </div>
+                <div id="weekly-consistency" class="flex gap-1.5"></div>
+            </div>
+
+            <!-- Daily Rhythm -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
@@ -201,7 +214,7 @@
                 </div>
             </div>
 
-            <!-- Most Important Thing -->
+            <!-- MIT -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
@@ -214,11 +227,8 @@
                     </div>
                 </div>
                 
-                <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700">
-                    <!-- MIT content is rendered via JS -->
-                </div>
+                <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700"></div>
                 
-                <!-- Quick MIT Actions -->
                 <div class="flex gap-2 mt-3">
                     <button onclick="quickCompleteMIT()" class="flex-1 text-sm py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 rounded-2xl">Mark Done</button>
                     <button onclick="showSection('daily')" class="flex-1 text-sm py-2 bg-zinc-800 hover:bg-zinc-700 rounded-2xl">Focus on this today</button>
@@ -572,6 +582,9 @@
 
     </div>
 
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50"></div>
+
     <script>
         // ==================== DATA ====================
         let todos = JSON.parse(localStorage.getItem('cakehub_todos')) || [];
@@ -586,7 +599,35 @@
 
         function getToday() { return new Date().toISOString().split('T')[0]; }
 
-        // ==================== DYNAMIC TIME-BASED FLOW + STREAK + PROGRESS ====================
+        // ==================== TOAST SYSTEM ====================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-emerald-600',
+                info: 'bg-sky-600',
+                warning: 'bg-amber-600'
+            };
+            
+            toast.className = `toast flex items-center gap-x-3 px-5 py-3 rounded-2xl text-white shadow-lg ${colors[type] || colors.success}`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-x-3">
+                    <i class="fa-solid ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2400);
+        }
+
+        // ==================== DYNAMIC FLOW ====================
         function updateTimeBasedFlow() {
             const hour = new Date().getHours();
             const timeLabel = document.getElementById('time-label');
@@ -627,6 +668,7 @@
             updateStreak();
             updateDailyProgress();
             updateFocusSummary();
+            updateWeeklyConsistency();
         }
 
         function updateDailyProgress() {
@@ -712,7 +754,6 @@
         }
 
         function updateFocusSummary() {
-            // MIT
             const mitContainer = document.getElementById('focus-mit');
             if (currentMIT && currentMIT.date === getToday()) {
                 mitContainer.innerHTML = `
@@ -725,7 +766,6 @@
                 mitContainer.innerHTML = `<div class="text-zinc-400 text-sm">No priority set yet</div>`;
             }
 
-            // Top Tasks
             const tasksContainer = document.getElementById('focus-tasks');
             const activeTasks = todos.filter(t => !t.completed).slice(0, 3);
             
@@ -741,6 +781,27 @@
             }
         }
 
+        function updateWeeklyConsistency() {
+            const container = document.getElementById('weekly-consistency');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            const today = new Date();
+            
+            for (let i = 6; i >= 0; i--) {
+                const checkDate = new Date(today);
+                checkDate.setDate(today.getDate() - i);
+                const dateStr = checkDate.toISOString().split('T')[0];
+                
+                const completed = ritualStatus[dateStr]?.morning && ritualStatus[dateStr]?.evening;
+                
+                const day = document.createElement('div');
+                day.className = `w-8 h-8 rounded-xl flex items-center justify-center text-xs font-medium ${completed ? 'bg-emerald-500 text-white' : 'bg-zinc-800 text-zinc-400'}`;
+                day.textContent = checkDate.toLocaleDateString('en-US', { weekday: 'narrow' });
+                container.appendChild(day);
+            }
+        }
+
         function quickCompleteTask(index) {
             const activeTasks = todos.filter(t => !t.completed);
             const taskToComplete = activeTasks[index];
@@ -752,6 +813,7 @@
                 updateQuickCounts();
                 updateDailyProgress();
                 updateFocusSummary();
+                showToast('Task completed');
             }
         }
 
@@ -766,16 +828,17 @@
             }
         }
 
-        // ==================== QUICK COMPLETE FROM DASHBOARD ====================
         function quickCompleteMorning() {
             const today = getToday();
             if (!ritualStatus[today]) ritualStatus[today] = {};
             ritualStatus[today].morning = true;
             saveRitualStatus();
+            
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
             updateFocusSummary();
+            showToast('Morning Ritual completed');
         }
 
         function quickCompleteEvening() {
@@ -783,10 +846,12 @@
             if (!ritualStatus[today]) ritualStatus[today] = {};
             ritualStatus[today].evening = true;
             saveRitualStatus();
+            
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
             updateFocusSummary();
+            showToast('Evening Ritual completed');
         }
 
         function quickCompleteMIT() {
@@ -796,9 +861,9 @@
             saveMIT(currentMIT);
             renderMIT();
             updateFocusSummary();
+            showToast('Priority completed');
         }
 
-        // ==================== MIT ====================
         function renderMIT() {
             const container = document.getElementById('mit-card');
             if (!container) return;
@@ -841,6 +906,7 @@
             const newMIT = { date: getToday(), text: input.value.trim(), completed: false, streak: 1 };
             saveMIT(newMIT);
             updateFocusSummary();
+            showToast('Priority set');
         }
         function toggleMIT() {
             if (!currentMIT) return;
@@ -857,7 +923,6 @@
             updateFocusSummary();
         }
 
-        // ==================== QUICK CAPTURE ====================
         function quickCapture() {
             const input = document.getElementById('quick-capture');
             if (!input || !input.value.trim()) return;
@@ -869,7 +934,6 @@
             updateFocusSummary();
         }
 
-        // ==================== HELPERS ====================
         function updateDate() {
             const dateEl = document.getElementById('current-date');
             const now = new Date();
@@ -897,14 +961,11 @@
             ritualStatus[today].morning = true;
             saveRitualStatus();
             
-            const savedMsg = document.getElementById('morning-saved');
-            savedMsg.classList.remove('hidden');
-            setTimeout(() => savedMsg.classList.add('hidden'), 2000);
-            
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
             updateFocusSummary();
+            showToast('Morning Ritual completed');
         }
 
         function saveEveningRitual() {
@@ -913,20 +974,15 @@
             ritualStatus[today].evening = true;
             saveRitualStatus();
             
-            const savedMsg = document.getElementById('evening-saved');
-            savedMsg.classList.remove('hidden');
-            setTimeout(() => savedMsg.classList.add('hidden'), 2000);
-            
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
             updateFocusSummary();
+            showToast('Evening Ritual completed');
         }
 
         function saveWeeklyReview() {
-            const savedMsg = document.getElementById('weekly-saved');
-            savedMsg.classList.remove('hidden');
-            setTimeout(() => savedMsg.classList.add('hidden'), 2000);
+            showToast('Weekly Review saved');
         }
 
         function saveFinanceSnapshot() {
@@ -935,6 +991,7 @@
             const net = income - expenses;
             document.getElementById('finance-net').textContent = '$' + net;
             document.getElementById('finance-net').className = net >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
+            showToast('Finance snapshot saved');
         }
 
         function changeState(type) {
@@ -943,7 +1000,7 @@
                 'breathe': 'Inhale 4s, hold 4s, exhale 6s. Repeat 6 times.',
                 'pose': 'Stand tall, hands on hips, chin up. Hold 2 minutes.'
             };
-            alert(messages[type] || 'State changed!');
+            showToast(messages[type] || 'State changed', 'info');
         }
 
         function setTimer(minutes) {}
@@ -954,7 +1011,6 @@
         function addTodo() {}
         function addToInbox() {}
 
-        // ==================== INIT ====================
         function initializeApp() {
             updateDate();
             updateTimeBasedFlow();
