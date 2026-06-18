@@ -40,7 +40,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.6 • Progress</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.7 • MIT Flow</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -178,7 +178,7 @@
                 </div>
             </div>
 
-            <!-- Most Important Thing -->
+            <!-- Most Important Thing - Integrated -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
@@ -190,7 +190,16 @@
                         <span id="mit-streak-text">0 day streak</span>
                     </div>
                 </div>
-                <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700"></div>
+                
+                <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700">
+                    <!-- MIT content is rendered via JS -->
+                </div>
+                
+                <!-- Quick MIT Actions -->
+                <div class="flex gap-2 mt-3">
+                    <button onclick="quickCompleteMIT()" class="flex-1 text-sm py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 rounded-2xl">Mark Done</button>
+                    <button onclick="showSection('daily')" class="flex-1 text-sm py-2 bg-zinc-800 hover:bg-zinc-700 rounded-2xl">Focus on this today</button>
+                </div>
             </div>
 
             <!-- Quick Capture -->
@@ -605,8 +614,6 @@
             if (morningDone) completed++;
             if (eveningDone) completed++;
             
-            // Count "Daily Execution" as 1 if user has any activity (simplified)
-            // For now we'll count it if they have tasks or inbox items
             if (todos.length > 0 || inboxItems.length > 0) completed++;
             
             const progress = Math.round((completed / 3) * 100);
@@ -703,6 +710,14 @@
             updateRitualStatusIndicators();
             updateStreak();
             updateDailyProgress();
+        }
+
+        function quickCompleteMIT() {
+            if (!currentMIT) return;
+            currentMIT.completed = true;
+            if (currentMIT.completed) currentMIT.streak = (currentMIT.streak || 0) + 1;
+            saveMIT(currentMIT);
+            renderMIT();
         }
 
         // ==================== MIT ====================
