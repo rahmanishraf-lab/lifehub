@@ -1,40 +1,72 @@
-# CakeHub
+# CakeHub v0.2 — Synced
 
-Your personal Life OS. Built for Ishraf.
+Your personal Life OS with **real-time cross-device sync** (phone ↔ laptop).
 
-## What it is
+## Features
+- Tasks + Reminders that sync instantly across all your devices
+- Spark (random facts) + Wisdom (business quotes)
+- Beautiful, fast, mobile-first UI
+- Works offline (falls back to localStorage)
 
-A single-file, zero-dependency web app that acts as your daily command center:
-- **Tasks** – Fast to-do list with local persistence
-- **Reminders** – Date-aware memory layer
-- **Spark** – Random interesting facts (knowledge injection)
-- **Wisdom** – Business & operator quotes
-- **Dashboard** – At-a-glance life snapshot + productivity metrics
+## Setup (One-time, ~3 minutes)
 
-## Philosophy
+### 1. Create a free Supabase project
 
-- Extremely fast to use
-- Works offline
-- Mobile-first
-- No accounts, no backend, no cost
-- Designed to remove friction, not add it
+1. Go to [supabase.com](https://supabase.com) → **Sign up** (free)
+2. Click **New Project**
+3. Give it a name (e.g. `cakehub`)
+4. Choose a password and region
+5. Wait ~1 minute for it to be ready
 
-## Deploy (Free)
+### 2. Create the tables
 
-1. Push this repo to GitHub
-2. Import the repo on [Vercel](https://vercel.com)
-3. Done. Instant global CDN + automatic deploys on every push.
+In Supabase, go to **SQL Editor** and run this:
 
-## Future Ideas (tracked daily)
+```sql
+-- Todos table
+create table todos (
+  id bigint primary key,
+  user_id text not null,
+  text text not null,
+  completed boolean default false,
+  created_at timestamptz default now()
+);
 
-- PWA installable on phone
-- Sync across devices (via GitHub or Supabase free tier)
-- Daily AI-generated personalized sparks
-- Money moves / revenue tracker
-- Blocker log + resolution history
-- Habit streaks
-- Quick capture from mobile widget
+-- Reminders table
+create table reminders (
+  id bigint primary key,
+  user_id text not null,
+  text text not null,
+  date date not null,
+  created_at timestamptz default now()
+);
+
+-- Enable realtime (optional but nice)
+alter publication supabase_realtime add table todos;
+alter publication supabase_realtime add table reminders;
+```
+
+### 3. Get your keys
+
+Go to **Project Settings → API** and copy:
+- `Project URL`
+- `anon public` key
+
+### 4. Update the app
+
+Open `index.html` and replace these two lines at the top of the `<script>`:
+
+```js
+const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
+```
+
+### 5. Deploy
+
+Push to GitHub → Import on Vercel (free).
+
+Now open the app on your phone and laptop — changes sync automatically.
 
 ---
 
-Built by Cake • Obsessed with your momentum.
+**Made by Cake** — obsessed with removing every blocker between you and momentum.
