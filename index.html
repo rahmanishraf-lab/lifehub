@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.5 • Focus</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.6 • Blockers</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -61,6 +61,9 @@
             <button onclick="showSection('focus')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-focus">
                 <i class="fa-solid fa-clock w-4"></i><span>Focus</span>
             </button>
+            <button onclick="showSection('blockers')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-blockers">
+                <i class="fa-solid fa-exclamation-triangle w-4"></i><span>Blockers</span>
+            </button>
             <button onclick="showSection('reminders')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-reminders">
                 <i class="fa-solid fa-bell w-4"></i><span>Reminders</span>
             </button>
@@ -82,7 +85,7 @@
                 <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700"></div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div onclick="showSection('tasks')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
                     <div class="flex items-center gap-x-3">
                         <i class="fa-solid fa-check-circle text-indigo-400 text-xl"></i>
@@ -107,6 +110,15 @@
                         <div>
                             <div class="font-medium">Focus Timer</div>
                             <div class="text-xs text-zinc-400">Deep work</div>
+                        </div>
+                    </div>
+                </div>
+                <div onclick="showSection('blockers')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
+                    <div class="flex items-center gap-x-3">
+                        <i class="fa-solid fa-exclamation-triangle text-orange-400 text-xl"></i>
+                        <div>
+                            <div class="font-medium">Blockers</div>
+                            <div class="text-xs text-zinc-400"><span id="quick-blocker-count">0</span> open</div>
                         </div>
                     </div>
                 </div>
@@ -176,6 +188,23 @@
             </div>
         </div>
 
+        <!-- BLOCKERS -->
+        <div id="blockers" class="section">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-3xl font-semibold tracking-tighter">Blockers</h2>
+                <div class="text-xs px-3 py-1 bg-orange-400/10 text-orange-400 rounded-full"><span id="blocker-count">0</span> open</div>
+            </div>
+
+            <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
+                <div class="flex gap-2">
+                    <input id="blocker-input" type="text" placeholder="What's blocking you right now?" class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addBlocker()">
+                    <button onclick="addBlocker()" class="px-6 bg-orange-600 hover:bg-orange-500 rounded-3xl text-sm font-medium">Log</button>
+                </div>
+            </div>
+
+            <div id="blocker-list" class="space-y-2"></div>
+        </div>
+
         <!-- REMINDERS -->
         <div id="reminders" class="section">
             <h2 class="text-3xl font-semibold tracking-tighter mb-4">Reminders</h2>
@@ -193,12 +222,14 @@
         let todos = JSON.parse(localStorage.getItem('cakehub_todos')) || [];
         let reminders = JSON.parse(localStorage.getItem('cakehub_reminders')) || [];
         let moneyMoves = JSON.parse(localStorage.getItem('cakehub_money')) || [];
+        let blockers = JSON.parse(localStorage.getItem('cakehub_blockers')) || [];
         let currentMIT = JSON.parse(localStorage.getItem('cakehub_mit')) || null;
         let sessionsToday = parseInt(localStorage.getItem('cakehub_sessions') || '0');
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
         function saveMoney() { localStorage.setItem('cakehub_money', JSON.stringify(moneyMoves)); }
+        function saveBlockers() { localStorage.setItem('cakehub_blockers', JSON.stringify(blockers)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -307,6 +338,76 @@
             moneyMoves.splice(index, 1);
             saveMoney();
             renderMoneyMoves();
+        }
+
+        // ==================== BLOCKERS ====================
+        function renderBlockers() {
+            const container = document.getElementById('blocker-list');
+            const countEl = document.getElementById('blocker-count');
+            const quick = document.getElementById('quick-blocker-count');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const openBlockers = blockers.filter(b => !b.resolved);
+
+            if (blockers.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No blockers logged.</div>`;
+                if (countEl) countEl.textContent = '0';
+                if (quick) quick.textContent = '0';
+                return;
+            }
+
+            blockers.forEach((blocker, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl ${blocker.resolved ? 'opacity-60' : ''}`;
+                
+                let html = `
+                    <div class="flex-1">
+                        <div class="text-sm">${blocker.text}</div>
+                        <div class="text-xs text-zinc-500">${new Date(blocker.date).toLocaleDateString()}</div>
+                    </div>
+                `;
+
+                if (!blocker.resolved) {
+                    html += `
+                        <button onclick="resolveBlocker(${index}); event.stopImmediatePropagation()" class="text-xs px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-xl mr-2">Resolve</button>
+                        <button onclick="deleteBlocker(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
+                            <i class="fa-solid fa-times text-sm"></i>
+                        </button>
+                    `;
+                } else {
+                    html += `<div class="text-xs text-emerald-400 px-3">Resolved</div>`;
+                }
+
+                div.innerHTML = html;
+                container.appendChild(div);
+            });
+
+            if (countEl) countEl.textContent = openBlockers.length;
+            if (quick) quick.textContent = openBlockers.length;
+        }
+
+        function addBlocker() {
+            const input = document.getElementById('blocker-input');
+            if (!input || !input.value.trim()) return;
+            const blocker = { text: input.value.trim(), date: new Date().toISOString(), resolved: false };
+            blockers.unshift(blocker);
+            input.value = '';
+            saveBlockers();
+            renderBlockers();
+        }
+
+        function resolveBlocker(index) {
+            blockers[index].resolved = true;
+            blockers[index].resolvedAt = new Date().toISOString();
+            saveBlockers();
+            renderBlockers();
+        }
+
+        function deleteBlocker(index) {
+            blockers.splice(index, 1);
+            saveBlockers();
+            renderBlockers();
         }
 
         // ==================== TODOS ====================
@@ -425,7 +526,6 @@
             timerInterval = setInterval(() => {
                 timeLeft--;
                 updateTimerDisplay();
-
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     isRunning = false;
@@ -466,7 +566,6 @@
             const nav = document.getElementById('nav-' + section);
             if (nav) nav.classList.add('nav-active', 'bg-indigo-600');
 
-            // Initialize timer display when entering focus section
             if (section === 'focus') {
                 updateTimerDisplay();
                 document.getElementById('session-count').innerHTML = `Sessions completed today: <span class="font-medium text-white">${sessionsToday}</span>`;
@@ -480,6 +579,7 @@
             renderTodos();
             renderReminders();
             renderMoneyMoves();
+            renderBlockers();
             updateTimerDisplay();
 
             document.getElementById('dashboard').classList.add('active');
