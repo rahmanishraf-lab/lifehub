@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CakeHub • Your Life OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body { font-family: 'Inter', system_ui, sans-serif; }
@@ -36,11 +37,8 @@
             to { transform: translateY(0); opacity: 1; }
         }
         
-        /* Mobile Responsive */
         @media (max-width: 640px) {
-            .nav-item span {
-                display: none;
-            }
+            .nav-item span { display: none; }
         }
         
         .bottom-nav {
@@ -92,9 +90,29 @@
                             <div class="text-2xl font-semibold text-zinc-400">100</div>
                         </div>
                     </div>
-                    <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                    <div class="h-2 bg-zinc-800 rounded-full overflow-hidden mb-3">
                         <div id="daily-score-bar" class="h-2 bg-emerald-500 transition-all" style="width: 72%"></div>
                     </div>
+                    
+                    <!-- Score Breakdown -->
+                    <div class="text-xs text-zinc-400 grid grid-cols-2 gap-x-4 gap-y-1">
+                        <div class="flex justify-between"><span>Morning Ritual</span> <span class="text-emerald-400">+25</span></div>
+                        <div class="flex justify-between"><span>MIT Completed</span> <span class="text-emerald-400">+30</span></div>
+                        <div class="flex justify-between"><span>Tasks Done</span> <span class="text-emerald-400">+25</span></div>
+                        <div class="flex justify-between"><span>Evening Ritual</span> <span class="text-emerald-400">+20</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Life Balance Radar Chart -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <div>
+                        <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">LIFE BALANCE</span>
+                    </div>
+                </div>
+                <div class="glass border border-zinc-800 rounded-3xl p-5">
+                    <canvas id="life-balance-chart" width="300" height="300"></canvas>
                 </div>
             </div>
 
@@ -217,9 +235,6 @@
             </div>
         </div>
 
-        <!-- Other sections remain the same (Morning, Daily, Evening, etc.) -->
-        <!-- ... (keeping them for brevity in this response) ... -->
-
     </div>
 
     <!-- Floating Action Button -->
@@ -304,6 +319,48 @@
             const score = calculateDailyScore();
             document.getElementById('daily-score').textContent = score;
             document.getElementById('daily-score-bar').style.width = score + '%';
+        }
+
+        // ==================== LIFE BALANCE RADAR CHART ====================
+        let lifeBalanceChart;
+
+        function initLifeBalanceChart() {
+            const ctx = document.getElementById('life-balance-chart');
+            if (!ctx) return;
+
+            if (lifeBalanceChart) {
+                lifeBalanceChart.destroy();
+            }
+
+            lifeBalanceChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Physical', 'Mental', 'Financial', 'Relationships', 'Productivity', 'Growth'],
+                    datasets: [{
+                        label: 'Current',
+                        data: [75, 82, 60, 70, 85, 78],
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                        borderColor: '#6366f1',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#6366f1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { display: false },
+                            grid: { color: '#27251f' },
+                            angleLines: { color: '#27251f' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
         }
 
         // ==================== TOAST SYSTEM ====================
@@ -651,6 +708,7 @@
             updateTimeBasedFlow();
             renderMIT();
             updateDailyScore();
+            initLifeBalanceChart();
 
             document.getElementById('home').classList.add('active');
             document.getElementById('nav-home').classList.add('nav-active', 'bg-indigo-600');
