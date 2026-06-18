@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.1 • Body</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.2 • Correlation</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -490,6 +490,44 @@
             </div>
         </div>
 
+        <!-- MOOD + ENERGY CORRELATION -->
+        <div id="energy" class="section">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Mood &amp; Energy Insights</h2>
+                    <p class="text-zinc-400 mt-2">See what actually moves the needle</p>
+                </div>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
+                    <div class="font-medium mb-4">Log today’s mood &amp; energy</div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Energy</span>
+                                <span id="mood-energy-value">7</span>
+                            </div>
+                            <input type="range" id="mood-energy" min="1" max="10" value="7" class="w-full accent-sky-500" oninput="document.getElementById('mood-energy-value').textContent = this.value">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Mood</span>
+                                <span id="mood-mood-value">7</span>
+                            </div>
+                            <input type="range" id="mood-mood" min="1" max="10" value="7" class="w-full accent-purple-500" oninput="document.getElementById('mood-mood-value').textContent = this.value">
+                        </div>
+                    </div>
+                    <button onclick="logMoodEnergy()" class="mt-6 w-full py-3 bg-purple-600 hover:bg-purple-500 rounded-3xl font-medium">Log Today</button>
+                </div>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-6">
+                    <div class="font-medium mb-4">Key Insights</div>
+                    <div id="mood-insights" class="space-y-3 text-sm">
+                        <div class="text-zinc-400">Log a few days to see patterns...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- TASKS -->
         <div id="tasks" class="section">
             <h2 class="text-3xl font-semibold tracking-tighter mb-4">Tasks</h2>
@@ -622,26 +660,6 @@
             </div>
 
             <div id="habit-list" class="space-y-2"></div>
-        </div>
-
-        <!-- ENERGY TRACKER -->
-        <div id="energy" class="section">
-            <div class="max-w-md mx-auto">
-                <h2 class="text-3xl font-semibold tracking-tighter mb-2 text-center">Energy Tracker</h2>
-                <p class="text-zinc-400 mb-6 text-center">Log your focus &amp; energy levels</p>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
-                    <div class="mb-4">
-                        <div class="flex justify-between text-sm mb-2"><span>Energy Level</span><span id="energy-value" class="font-medium">7</span></div>
-                        <input type="range" id="energy-slider" min="1" max="10" value="7" step="1" class="w-full accent-sky-500" oninput="document.getElementById('energy-value').textContent = this.value">
-                    </div>
-                    <div class="mb-4">
-                        <input id="energy-note" type="text" placeholder="Optional note (e.g. After coffee)" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-3 rounded-2xl text-sm focus:outline-none">
-                    </div>
-                    <button onclick="logEnergy()" class="w-full py-3 bg-sky-600 hover:bg-sky-500 rounded-3xl font-medium">Log Energy</button>
-                </div>
-                <div id="energy-list" class="space-y-2"></div>
-            </div>
         </div>
 
         <!-- INBOX -->
@@ -1442,60 +1460,87 @@
             renderHabits();
         }
 
-        // ==================== ENERGY TRACKER ====================
-        function renderEnergyLogs() {
-            const container = document.getElementById('energy-list');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (energyLogs.length === 0) {
-                container.innerHTML = `<div class="text-center py-4 text-zinc-500 text-sm">No energy logs yet.</div>`;
-                return;
-            }
-
-            energyLogs.slice(0, 8).forEach((log, index) => {
-                const time = new Date(log.timestamp).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-3 rounded-3xl`;
-                div.innerHTML = `
-                    <div class="flex items-center gap-x-4">
-                        <div class="text-2xl font-semibold text-sky-400 w-8">${log.level}</div>
-                        <div>
-                            <div class="text-sm">${log.note || 'No note'}</div>
-                            <div class="text-xs text-zinc-500">${time}</div>
-                        </div>
-                    </div>
-                    <button onclick="deleteEnergyLog(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-times text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function logEnergy() {
-            const slider = document.getElementById('energy-slider');
-            const note = document.getElementById('energy-note');
+        // ==================== MOOD + ENERGY CORRELATION ====================
+        function logMoodEnergy() {
+            const energy = parseInt(document.getElementById('mood-energy').value);
+            const mood = parseInt(document.getElementById('mood-mood').value);
             
             const entry = {
-                level: parseInt(slider.value),
-                note: note.value.trim(),
+                date: getToday(),
+                energy: energy,
+                mood: mood,
                 timestamp: new Date().toISOString()
             };
             
+            // Remove existing entry for today
+            energyLogs = energyLogs.filter(e => e.date !== getToday());
             energyLogs.unshift(entry);
             saveEnergy();
-            renderEnergyLogs();
             
-            note.value = '';
-            slider.value = 7;
-            document.getElementById('energy-value').textContent = '7';
+            updateMoodInsights();
         }
 
-        function deleteEnergyLog(index) {
-            energyLogs.splice(index, 1);
-            saveEnergy();
-            renderEnergyLogs();
+        function updateMoodInsights() {
+            const container = document.getElementById('mood-insights');
+            if (!container) return;
+            
+            if (energyLogs.length < 3) {
+                container.innerHTML = `<div class="text-zinc-400">Log a few days to see patterns...</div>`;
+                return;
+            }
+
+            // Simple correlation calculation
+            let withMovement = [];
+            let withoutMovement = [];
+            
+            energyLogs.forEach(log => {
+                const bodyCheck = bodyCheckins.find(b => b.date === log.date);
+                if (bodyCheck) {
+                    if (bodyCheck.movement) {
+                        withMovement.push(log);
+                    } else {
+                        withoutMovement.push(log);
+                    }
+                }
+            });
+
+            let html = '';
+            
+            if (withMovement.length > 0 && withoutMovement.length > 0) {
+                const avgEnergyWith = withMovement.reduce((sum, log) => sum + log.energy, 0) / withMovement.length;
+                const avgEnergyWithout = withoutMovement.reduce((sum, log) => sum + log.energy, 0) / withoutMovement.length;
+                const diff = Math.round(((avgEnergyWith - avgEnergyWithout) / avgEnergyWithout) * 100);
+                
+                if (diff > 0) {
+                    html += `<div class="text-emerald-400">✓ Days you move = <strong>+${diff}%</strong> higher energy</div>`;
+                }
+            }
+
+            // Sleep correlation
+            const goodSleep = energyLogs.filter(log => {
+                const body = bodyCheckins.find(b => b.date === log.date);
+                return body && body.sleep >= 7;
+            });
+            const badSleep = energyLogs.filter(log => {
+                const body = bodyCheckins.find(b => b.date === log.date);
+                return body && body.sleep < 7;
+            });
+
+            if (goodSleep.length > 0 && badSleep.length > 0) {
+                const avgMoodGood = goodSleep.reduce((sum, log) => sum + log.mood, 0) / goodSleep.length;
+                const avgMoodBad = badSleep.reduce((sum, log) => sum + log.mood, 0) / badSleep.length;
+                const diff = Math.round(((avgMoodGood - avgMoodBad) / avgMoodBad) * 100);
+                
+                if (diff > 0) {
+                    html += `<div class="text-emerald-400">✓ Good sleep = <strong>+${diff}%</strong> better mood</div>`;
+                }
+            }
+
+            if (!html) {
+                html = `<div class="text-zinc-400">Keep logging to discover your patterns</div>`;
+            }
+
+            container.innerHTML = html;
         }
 
         // ==================== TODOS ====================
@@ -1640,132 +1685,6 @@
             document.getElementById('start-btn').innerHTML = `<i class="fa-solid fa-play"></i><span> Start</span>`;
         }
 
-        // ==================== DAILY BODY CHECK-IN ====================
-        function saveBodyCheckin() {
-            const today = getToday();
-            const checkin = {
-                date: today,
-                energy: parseInt(document.getElementById('body-energy').value),
-                sleep: parseInt(document.getElementById('body-sleep').value),
-                movement: document.querySelector('input[name="body-movement"]:checked').value === 'yes',
-                water: parseInt(document.getElementById('body-water').value),
-                savedAt: new Date().toISOString()
-            };
-            
-            // Remove existing entry for today if exists
-            bodyCheckins = bodyCheckins.filter(c => c.date !== today);
-            bodyCheckins.unshift(checkin);
-            saveBody();
-            
-            const savedMsg = document.getElementById('body-saved');
-            savedMsg.classList.remove('hidden');
-            setTimeout(() => savedMsg.classList.add('hidden'), 2500);
-        }
-
-        function loadBodyCheckin() {
-            const today = getToday();
-            const todayCheckin = bodyCheckins.find(c => c.date === today);
-            
-            if (todayCheckin) {
-                document.getElementById('body-energy').value = todayCheckin.energy;
-                document.getElementById('body-energy-value').textContent = todayCheckin.energy;
-                document.getElementById('body-sleep').value = todayCheckin.sleep;
-                document.getElementById('body-sleep-value').textContent = todayCheckin.sleep;
-                document.getElementById('body-water').value = todayCheckin.water;
-                document.getElementById('body-water-value').textContent = todayCheckin.water;
-                
-                const movementRadios = document.querySelectorAll('input[name="body-movement"]');
-                movementRadios.forEach(radio => {
-                    radio.checked = (radio.value === 'yes' && todayCheckin.movement) || (radio.value === 'no' && !todayCheckin.movement);
-                });
-            }
-        }
-
-        // ==================== FINANCE SNAPSHOT ====================
-        function saveFinanceSnapshot() {
-            const income = parseFloat(document.getElementById('finance-income').value) || 0;
-            const expenses = parseFloat(document.getElementById('finance-expenses').value) || 0;
-            const net = income - expenses;
-
-            financeSnapshot = {
-                month: new Date().toISOString().slice(0, 7),
-                income: income,
-                expenses: expenses,
-                net: net,
-                savedAt: new Date().toISOString()
-            };
-            saveFinance();
-            
-            document.getElementById('finance-net').textContent = '$' + net;
-            document.getElementById('finance-net').className = net >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
-        }
-
-        function loadFinanceSnapshot() {
-            const currentMonth = new Date().toISOString().slice(0, 7);
-            if (financeSnapshot.month === currentMonth) {
-                document.getElementById('finance-income').value = financeSnapshot.income || '';
-                document.getElementById('finance-expenses').value = financeSnapshot.expenses || '';
-                document.getElementById('finance-net').textContent = '$' + (financeSnapshot.net || 0);
-                document.getElementById('finance-net').className = (financeSnapshot.net || 0) >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
-            }
-            
-            const currentMonthMoves = moneyMoves.filter(m => m.date && m.date.slice(0, 7) === currentMonth).length;
-            document.getElementById('finance-moves-count').textContent = currentMonthMoves;
-        }
-
-        // ==================== WEEKLY TIME ALLOCATION ====================
-        function updateTimeTotal() {
-            const deep = parseInt(document.getElementById('time-deepwork').value) || 0;
-            const money = parseInt(document.getElementById('time-money').value) || 0;
-            const health = parseInt(document.getElementById('time-health').value) || 0;
-            const rel = parseInt(document.getElementById('time-relationships').value) || 0;
-            const low = parseInt(document.getElementById('time-lowvalue').value) || 0;
-
-            const total = deep + money + health + rel + low;
-            document.getElementById('time-total').textContent = total + '%';
-            
-            document.getElementById('time-deepwork-value').textContent = deep;
-            document.getElementById('time-money-value').textContent = money;
-            document.getElementById('time-health-value').textContent = health;
-            document.getElementById('time-relationships-value').textContent = rel;
-            document.getElementById('time-lowvalue-value').textContent = low;
-        }
-
-        function saveTimeAllocation() {
-            timeAllocation = {
-                week: getWeekNumber(new Date()),
-                deepWork: parseInt(document.getElementById('time-deepwork').value) || 0,
-                money: parseInt(document.getElementById('time-money').value) || 0,
-                health: parseInt(document.getElementById('time-health').value) || 0,
-                relationships: parseInt(document.getElementById('time-relationships').value) || 0,
-                lowValue: parseInt(document.getElementById('time-lowvalue').value) || 0,
-                rating: parseInt(document.getElementById('time-rating').value) || 7,
-                savedAt: new Date().toISOString()
-            };
-            saveTime();
-            
-            const savedMsg = document.getElementById('time-saved');
-            savedMsg.classList.remove('hidden');
-            setTimeout(() => savedMsg.classList.add('hidden'), 2500);
-        }
-
-        function loadTimeAllocation() {
-            const week = getWeekNumber(new Date());
-            if (timeAllocation.week === week) {
-                document.getElementById('time-deepwork').value = timeAllocation.deepWork || 25;
-                document.getElementById('time-money').value = timeAllocation.money || 20;
-                document.getElementById('time-health').value = timeAllocation.health || 15;
-                document.getElementById('time-relationships').value = timeAllocation.relationships || 15;
-                document.getElementById('time-lowvalue').value = timeAllocation.lowValue || 25;
-                document.getElementById('time-rating').value = timeAllocation.rating || 7;
-                
-                updateTimeTotal();
-                document.getElementById('time-rating-value').textContent = timeAllocation.rating || 7;
-            } else {
-                updateTimeTotal();
-            }
-        }
-
         // ==================== HELPERS ====================
         function updateDate() {
             const dateEl = document.getElementById('current-date');
@@ -1804,19 +1723,10 @@
                 updateTimerDisplay();
                 document.getElementById('session-count').innerHTML = `Sessions completed today: <span class="font-medium text-white">${sessionsToday}</span>`;
             }
-            if (section === 'energy') renderEnergyLogs();
-            if (section === 'inbox') renderInbox();
-            if (section === 'power') loadPowerQuestions();
-            if (section === 'review') loadEveningReview();
-            if (section === 'weekly') loadWeeklyReview();
-            if (section === 'identity') renderIdentityStatements();
-            if (section === 'contribution') renderContributions();
-            if (section === 'goals') renderGoals();
-            if (section === 'relationships') renderRelationships();
-            if (section === 'gratitude') renderGratitudes();
-            if (section === 'finance') loadFinanceSnapshot();
-            if (section === 'time') loadTimeAllocation();
-            if (section === 'body') loadBodyCheckin();
+            if (section === 'energy') {
+                // Show mood insights when entering energy section
+                updateMoodInsights();
+            }
         }
 
         // ==================== INIT ====================
@@ -1828,12 +1738,6 @@
             renderMoneyMoves();
             renderBlockers();
             renderHabits();
-            renderEnergyLogs();
-            renderInbox();
-            renderIdentityStatements();
-            renderContributions();
-            renderGoals();
-            renderGratitudes();
             updateTimerDisplay();
             updateQuickCounts();
 
