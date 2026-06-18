@@ -20,6 +20,12 @@
             font-variant-numeric: tabular-nums;
             letter-spacing: -4px;
         }
+        .state-btn {
+            transition: all 0.2s ease;
+        }
+        .state-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -32,7 +38,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v0.9 • Inbox</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.0 • State</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -60,6 +66,9 @@
             </button>
             <button onclick="showSection('focus')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-focus">
                 <i class="fa-solid fa-clock w-4"></i><span>Focus</span>
+            </button>
+            <button onclick="showSection('state')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-state">
+                <i class="fa-solid fa-bolt w-4"></i><span>State</span>
             </button>
             <button onclick="showSection('blockers')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-blockers">
                 <i class="fa-solid fa-exclamation-triangle w-4"></i><span>Blockers</span>
@@ -112,12 +121,12 @@
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('money')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
+                <div onclick="showSection('state')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-dollar-sign text-emerald-400 text-xl"></i>
+                        <i class="fa-solid fa-bolt text-yellow-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Money Moves</div>
-                            <div class="text-xs text-zinc-400"><span id="quick-money-count">0</span> logged</div>
+                            <div class="font-medium">State Changers</div>
+                            <div class="text-xs text-zinc-400">Change state fast</div>
                         </div>
                     </div>
                 </div>
@@ -193,6 +202,75 @@
                 </div>
 
                 <div id="session-count" class="mt-6 text-xs text-zinc-400">Sessions completed today: <span class="font-medium text-white">0</span></div>
+            </div>
+        </div>
+
+        <!-- STATE CHANGERS -->
+        <div id="state" class="section">
+            <div class="max-w-md mx-auto text-center">
+                <h2 class="text-3xl font-semibold tracking-tighter mb-2">State Changers</h2>
+                <p class="text-zinc-400 mb-8">Change your emotional state in 60–120 seconds</p>
+
+                <div class="grid grid-cols-1 gap-3">
+                    <button onclick="changeState('move')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-yellow-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-walking text-2xl text-yellow-400"></i>
+                            <div class="text-left">
+                                <div class="font-medium">Stand Up &amp; Move</div>
+                                <div class="text-xs text-zinc-400">2 minutes of movement</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-zinc-400"></i>
+                    </button>
+
+                    <button onclick="changeState('breathe')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-sky-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-wind text-2xl text-sky-400"></i>
+                            <div class="text-left">
+                                <div class="font-medium">Power Breathing</div>
+                                <div class="text-xs text-zinc-400">60 seconds of deep breaths</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-zinc-400"></i>
+                    </button>
+
+                    <button onclick="changeState('pose')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-purple-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-user text-2xl text-purple-400"></i>
+                            <div class="text-left">
+                                <div class="font-medium">Power Pose</div>
+                                <div class="text-xs text-zinc-400">2 minutes of confident posture</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-zinc-400"></i>
+                    </button>
+
+                    <button onclick="changeState('cold')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-cyan-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-tint text-2xl text-cyan-400"></i>
+                            <div class="text-left">
+                                <div class="font-medium">Cold Water on Face</div>
+                                <div class="text-xs text-zinc-400">Instant reset</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-zinc-400"></i>
+                    </button>
+
+                    <button onclick="changeState('music')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-pink-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-music text-2xl text-pink-400"></i>
+                            <div class="text-left">
+                                <div class="font-medium">Play a Power Song</div>
+                                <div class="text-xs text-zinc-400">Change your emotional state</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-zinc-400"></i>
+                    </button>
+                </div>
+
+                <div class="mt-8 text-xs text-zinc-400">
+                    Tony Robbins principle: <span class="text-white">Motion creates emotion.</span>
+                </div>
             </div>
         </div>
 
@@ -429,6 +507,26 @@
             saveInbox();
             renderInbox();
             updateQuickCounts();
+        }
+
+        // ==================== STATE CHANGERS ====================
+        function changeState(type) {
+            const messages = {
+                'move': 'Great! Stand up, move your body for 2 minutes. Shake it out.',
+                'breathe': 'Close your eyes. Inhale for 4 seconds, hold for 4, exhale for 6. Repeat 6 times.',
+                'pose': 'Stand tall. Feet shoulder-width. Hands on hips. Chin up. Hold for 2 minutes.',
+                'cold': 'Go to the sink and splash cold water on your face 10 times. Feel the reset.',
+                'music': 'Put on a song that makes you feel powerful. Dance or sing along.'
+            };
+
+            alert(messages[type] || 'State changed!');
+            
+            // Log the state change
+            const log = {
+                type: type,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('cakehub_last_state', JSON.stringify(log));
         }
 
         // ==================== MONEY MOVES ====================
