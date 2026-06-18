@@ -168,7 +168,7 @@
                 </div>
             </div>
 
-            <!-- Dynamic Greeting + Motivational Message -->
+            <!-- Dynamic Greeting -->
             <div class="mb-6">
                 <div id="dynamic-greeting" class="mb-4 px-1">
                     <span class="text-xs font-medium tracking-[1.5px] text-emerald-400" id="time-label">TODAY'S FLOW</span>
@@ -316,22 +316,26 @@
         </button>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation - Option A -->
     <div class="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 z-50 md:hidden">
         <div class="flex items-center justify-around py-2">
-            <button onclick="showSection('home')" class="flex flex-col items-center px-4 py-1 text-xs">
+            <button onclick="showSection('home')" class="flex flex-col items-center px-3 py-1 text-xs">
                 <i class="fa-solid fa-home text-lg"></i>
                 <span class="mt-0.5">Home</span>
             </button>
-            <button onclick="showSection('daily')" class="flex flex-col items-center px-4 py-1 text-xs">
+            <button onclick="showSection('morning')" class="flex flex-col items-center px-3 py-1 text-xs">
+                <i class="fa-solid fa-sun text-lg"></i>
+                <span class="mt-0.5">Morning</span>
+            </button>
+            <button onclick="showSection('daily')" class="flex flex-col items-center px-3 py-1 text-xs">
                 <i class="fa-solid fa-tasks text-lg"></i>
                 <span class="mt-0.5">Daily</span>
             </button>
-            <button onclick="showSection('focus')" class="flex flex-col items-center px-4 py-1 text-xs">
-                <i class="fa-solid fa-clock text-lg"></i>
-                <span class="mt-0.5">Focus</span>
+            <button onclick="showSection('evening')" class="flex flex-col items-center px-3 py-1 text-xs">
+                <i class="fa-solid fa-moon text-lg"></i>
+                <span class="mt-0.5">Evening</span>
             </button>
-            <button onclick="showSection('growth')" class="flex flex-col items-center px-4 py-1 text-xs">
+            <button onclick="showSection('growth')" class="flex flex-col items-center px-3 py-1 text-xs">
                 <i class="fa-solid fa-seedling text-lg"></i>
                 <span class="mt-0.5">Growth</span>
             </button>
