@@ -26,7 +26,12 @@
         }
         .flow-done {
             border-color: #10b981;
-            opacity: 0.7;
+            opacity: 0.75;
+        }
+        .streak-badge {
+            background: linear-gradient(90deg, #10b981, #34d399);
+            color: black;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -40,7 +45,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.3 • Refined</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.4 • Flow</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -80,7 +85,7 @@
             </button>
         </div>
 
-        <!-- HOME - HIGHLY REFINED FLOW -->
+        <!-- HOME - REFINED FLOW -->
         <div id="home" class="section active">
             
             <!-- Dynamic Greeting + Recommended Action -->
@@ -105,11 +110,15 @@
                 </div>
             </div>
 
-            <!-- Today's Flow with Completion Indicators -->
+            <!-- Today's Flow with Completion + Streak -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
                         <span class="text-xs font-medium tracking-[1.5px] text-zinc-400">YOUR DAILY RHYTHM</span>
+                    </div>
+                    <div id="daily-streak" class="hidden items-center gap-x-1 px-3 py-1 bg-emerald-400/10 text-emerald-400 rounded-2xl text-xs font-medium">
+                        <i class="fa-solid fa-fire"></i>
+                        <span id="streak-count">0</span> day streak
                     </div>
                 </div>
                 
@@ -531,7 +540,7 @@
 
         function getToday() { return new Date().toISOString().split('T')[0]; }
 
-        // ==================== DYNAMIC TIME-BASED FLOW ====================
+        // ==================== DYNAMIC TIME-BASED FLOW + STREAK ====================
         function updateTimeBasedFlow() {
             const hour = new Date().getHours();
             const timeLabel = document.getElementById('time-label');
@@ -539,7 +548,6 @@
             const recommendedText = document.getElementById('recommended-text');
             const recommendedIcon = document.getElementById('recommended-icon');
 
-            // Remove previous highlights
             document.getElementById('flow-morning').classList.remove('flow-active', 'border-yellow-400');
             document.getElementById('flow-daily').classList.remove('flow-active', 'border-indigo-400');
             document.getElementById('flow-evening').classList.remove('flow-active', 'border-purple-400');
@@ -570,6 +578,7 @@
 
             recommendedText.textContent = recommendation;
             updateRitualStatusIndicators();
+            updateStreak();
         }
 
         function updateRitualStatusIndicators() {
@@ -598,6 +607,35 @@
                     eveningStatus.classList.add('hidden');
                     document.getElementById('flow-evening').classList.remove('flow-done');
                 }
+            }
+        }
+
+        function updateStreak() {
+            const streakEl = document.getElementById('daily-streak');
+            const streakCount = document.getElementById('streak-count');
+            
+            let streak = 0;
+            const today = new Date();
+            
+            for (let i = 0; i < 30; i++) {
+                const checkDate = new Date(today);
+                checkDate.setDate(today.getDate() - i);
+                const dateStr = checkDate.toISOString().split('T')[0];
+                
+                if (ritualStatus[dateStr]?.morning && ritualStatus[dateStr]?.evening) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            
+            if (streak > 0) {
+                streakEl.classList.remove('hidden');
+                streakEl.classList.add('flex');
+                streakCount.textContent = streak;
+            } else {
+                streakEl.classList.add('hidden');
+                streakEl.classList.remove('flex');
             }
         }
 
@@ -710,6 +748,7 @@
             setTimeout(() => savedMsg.classList.add('hidden'), 2000);
             
             updateRitualStatusIndicators();
+            updateStreak();
         }
 
         function saveEveningRitual() {
@@ -723,6 +762,7 @@
             setTimeout(() => savedMsg.classList.add('hidden'), 2000);
             
             updateRitualStatusIndicators();
+            updateStreak();
         }
 
         function saveWeeklyReview() {
