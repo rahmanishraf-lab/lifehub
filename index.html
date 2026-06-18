@@ -168,11 +168,12 @@
                 </div>
             </div>
 
-            <!-- Dynamic Greeting -->
+            <!-- Dynamic Greeting + Motivational Message -->
             <div class="mb-6">
                 <div id="dynamic-greeting" class="mb-4 px-1">
                     <span class="text-xs font-medium tracking-[1.5px] text-emerald-400" id="time-label">TODAY'S FLOW</span>
                     <h2 class="text-2xl font-semibold tracking-tighter" id="time-suggestion">Start your day strong</h2>
+                    <div id="motivational-message" class="text-sm text-emerald-400 mt-1"></div>
                 </div>
                 
                 <div onclick="goToRecommendedAction()" class="flow-card glass border border-emerald-400/60 rounded-3xl p-5 cursor-pointer hover:border-emerald-400">
@@ -371,6 +372,15 @@
             const score = calculateDailyScore();
             document.getElementById('daily-score').textContent = score;
             document.getElementById('daily-score-bar').style.width = score + '%';
+            
+            // Motivational message based on score
+            const msg = document.getElementById('motivational-message');
+            if (msg) {
+                if (score >= 90) msg.textContent = "Excellent work today!";
+                else if (score >= 70) msg.textContent = "Solid progress — keep going!";
+                else if (score >= 50) msg.textContent = "Good start. Let's build momentum.";
+                else msg.textContent = "Every small win counts. You've got this.";
+            }
         }
 
         // ==================== LIFE BALANCE RADAR CHART ====================
