@@ -26,6 +26,9 @@
         .state-btn:active {
             transform: scale(0.95);
         }
+        .power-question {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -38,7 +41,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.0 • State</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.1 • Power</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -58,17 +61,20 @@
             <button onclick="showSection('dashboard')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 nav-active" id="nav-dashboard">
                 <i class="fa-solid fa-home w-4"></i><span>Dashboard</span>
             </button>
+            <button onclick="showSection('power')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-power">
+                <i class="fa-solid fa-sun w-4"></i><span>Power</span>
+            </button>
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
             </button>
             <button onclick="showSection('money')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-money">
                 <i class="fa-solid fa-dollar-sign w-4"></i><span>Money</span>
             </button>
-            <button onclick="showSection('focus')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-focus">
-                <i class="fa-solid fa-clock w-4"></i><span>Focus</span>
-            </button>
             <button onclick="showSection('state')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-state">
                 <i class="fa-solid fa-bolt w-4"></i><span>State</span>
+            </button>
+            <button onclick="showSection('focus')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-focus">
+                <i class="fa-solid fa-clock w-4"></i><span>Focus</span>
             </button>
             <button onclick="showSection('blockers')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-blockers">
                 <i class="fa-solid fa-exclamation-triangle w-4"></i><span>Blockers</span>
@@ -112,16 +118,16 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div onclick="showSection('tasks')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
+                <div onclick="showSection('power')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-check-circle text-indigo-400 text-xl"></i>
+                        <i class="fa-solid fa-sun text-yellow-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Tasks</div>
-                            <div class="text-xs text-zinc-400"><span id="quick-task-count">0</span> active</div>
+                            <div class="font-medium">Power Questions</div>
+                            <div class="text-xs text-zinc-400">Start strong</div>
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('state')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
+                <div onclick="showSection('state')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400 transition-colors">
                     <div class="flex items-center gap-x-3">
                         <i class="fa-solid fa-bolt text-yellow-400 text-xl"></i>
                         <div>
@@ -151,6 +157,56 @@
             </div>
         </div>
 
+        <!-- POWER QUESTIONS -->
+        <div id="power" class="section">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Morning Power Questions</h2>
+                    <p class="text-zinc-400 mt-2">Tony Robbins’ daily ritual for an extraordinary life</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-yellow-400">1. What am I happy about?</div>
+                        <textarea id="q1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                    </div>
+
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-yellow-400">2. What am I excited about?</div>
+                        <textarea id="q2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                    </div>
+
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-yellow-400">3. What am I grateful for?</div>
+                        <textarea id="q3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                    </div>
+
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-yellow-400">4. What am I proud of?</div>
+                        <textarea id="q4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                    </div>
+
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-yellow-400">5. What am I committed to?</div>
+                        <textarea id="q5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                    </div>
+
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-yellow-400">6. What am I learning?</div>
+                        <textarea id="q6" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                    </div>
+                </div>
+
+                <button onclick="savePowerQuestions()" class="mt-8 w-full py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold rounded-3xl text-lg transition-colors">
+                    Save Today’s Answers
+                </button>
+
+                <div id="power-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">
+                    ✓ Saved. Your answers are stored.
+                </div>
+            </div>
+        </div>
+
         <!-- TASKS -->
         <div id="tasks" class="section">
             <h2 class="text-3xl font-semibold tracking-tighter mb-4">Tasks</h2>
@@ -175,34 +231,6 @@
                 </div>
             </div>
             <div id="money-list" class="space-y-2"></div>
-        </div>
-
-        <!-- FOCUS TIMER -->
-        <div id="focus" class="section">
-            <div class="max-w-md mx-auto text-center">
-                <h2 class="text-3xl font-semibold tracking-tighter mb-2">Focus Timer</h2>
-                <p class="text-zinc-400 mb-8">Deep work sessions</p>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-10 mb-8">
-                    <div id="timer-display" class="timer-display text-white tabular-nums">25:00</div>
-                </div>
-
-                <div class="flex justify-center gap-3 mb-8">
-                    <button onclick="setTimer(25)" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">25 min</button>
-                    <button onclick="setTimer(50)" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">50 min</button>
-                </div>
-
-                <div class="flex justify-center gap-4">
-                    <button onclick="startTimer()" id="start-btn" class="px-8 py-3 bg-sky-600 hover:bg-sky-500 rounded-3xl font-medium flex items-center gap-x-2">
-                        <i class="fa-solid fa-play"></i>
-                        <span>Start</span>
-                    </button>
-                    <button onclick="pauseTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Pause</button>
-                    <button onclick="resetTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Reset</button>
-                </div>
-
-                <div id="session-count" class="mt-6 text-xs text-zinc-400">Sessions completed today: <span class="font-medium text-white">0</span></div>
-            </div>
         </div>
 
         <!-- STATE CHANGERS -->
@@ -271,6 +299,34 @@
                 <div class="mt-8 text-xs text-zinc-400">
                     Tony Robbins principle: <span class="text-white">Motion creates emotion.</span>
                 </div>
+            </div>
+        </div>
+
+        <!-- FOCUS TIMER -->
+        <div id="focus" class="section">
+            <div class="max-w-md mx-auto text-center">
+                <h2 class="text-3xl font-semibold tracking-tighter mb-2">Focus Timer</h2>
+                <p class="text-zinc-400 mb-8">Deep work sessions</p>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-10 mb-8">
+                    <div id="timer-display" class="timer-display text-white tabular-nums">25:00</div>
+                </div>
+
+                <div class="flex justify-center gap-3 mb-8">
+                    <button onclick="setTimer(25)" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">25 min</button>
+                    <button onclick="setTimer(50)" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">50 min</button>
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <button onclick="startTimer()" id="start-btn" class="px-8 py-3 bg-sky-600 hover:bg-sky-500 rounded-3xl font-medium flex items-center gap-x-2">
+                        <i class="fa-solid fa-play"></i>
+                        <span>Start</span>
+                    </button>
+                    <button onclick="pauseTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Pause</button>
+                    <button onclick="resetTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Reset</button>
+                </div>
+
+                <div id="session-count" class="mt-6 text-xs text-zinc-400">Sessions completed today: <span class="font-medium text-white">0</span></div>
             </div>
         </div>
 
@@ -376,6 +432,7 @@
         let inboxItems = JSON.parse(localStorage.getItem('cakehub_inbox')) || [];
         let currentMIT = JSON.parse(localStorage.getItem('cakehub_mit')) || null;
         let sessionsToday = parseInt(localStorage.getItem('cakehub_sessions') || '0');
+        let powerAnswers = JSON.parse(localStorage.getItem('cakehub_power')) || {};
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -384,6 +441,7 @@
         function saveHabits() { localStorage.setItem('cakehub_habits', JSON.stringify(habits)); }
         function saveEnergy() { localStorage.setItem('cakehub_energy', JSON.stringify(energyLogs)); }
         function saveInbox() { localStorage.setItem('cakehub_inbox', JSON.stringify(inboxItems)); }
+        function savePower() { localStorage.setItem('cakehub_power', JSON.stringify(powerAnswers)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -441,6 +499,37 @@
             currentMIT = null;
             localStorage.removeItem('cakehub_mit');
             renderMIT();
+        }
+
+        // ==================== POWER QUESTIONS ====================
+        function savePowerQuestions() {
+            powerAnswers = {
+                date: getToday(),
+                q1: document.getElementById('q1').value,
+                q2: document.getElementById('q2').value,
+                q3: document.getElementById('q3').value,
+                q4: document.getElementById('q4').value,
+                q5: document.getElementById('q5').value,
+                q6: document.getElementById('q6').value,
+                savedAt: new Date().toISOString()
+            };
+            savePower();
+            
+            const savedMsg = document.getElementById('power-saved');
+            savedMsg.classList.remove('hidden');
+            setTimeout(() => savedMsg.classList.add('hidden'), 2500);
+        }
+
+        function loadPowerQuestions() {
+            const today = getToday();
+            if (powerAnswers.date === today) {
+                document.getElementById('q1').value = powerAnswers.q1 || '';
+                document.getElementById('q2').value = powerAnswers.q2 || '';
+                document.getElementById('q3').value = powerAnswers.q3 || '';
+                document.getElementById('q4').value = powerAnswers.q4 || '';
+                document.getElementById('q5').value = powerAnswers.q5 || '';
+                document.getElementById('q6').value = powerAnswers.q6 || '';
+            }
         }
 
         // ==================== QUICK CAPTURE ====================
@@ -521,7 +610,6 @@
 
             alert(messages[type] || 'State changed!');
             
-            // Log the state change
             const log = {
                 type: type,
                 timestamp: new Date().toISOString()
@@ -969,6 +1057,7 @@
             }
             if (section === 'energy') renderEnergyLogs();
             if (section === 'inbox') renderInbox();
+            if (section === 'power') loadPowerQuestions();
         }
 
         // ==================== INIT ====================
