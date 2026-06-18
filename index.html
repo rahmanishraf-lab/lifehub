@@ -48,6 +48,12 @@
         .fab {
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
+        
+        .habit-day {
+            width: 22px;
+            height: 22px;
+            font-size: 10px;
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200 pb-20">
@@ -94,7 +100,6 @@
                         <div id="daily-score-bar" class="h-2 bg-emerald-500 transition-all" style="width: 72%"></div>
                     </div>
                     
-                    <!-- Score Breakdown -->
                     <div class="text-xs text-zinc-400 grid grid-cols-2 gap-x-4 gap-y-1">
                         <div class="flex justify-between"><span>Morning Ritual</span> <span class="text-emerald-400">+25</span></div>
                         <div class="flex justify-between"><span>MIT Completed</span> <span class="text-emerald-400">+30</span></div>
@@ -113,6 +118,19 @@
                 </div>
                 <div class="glass border border-zinc-800 rounded-3xl p-5">
                     <canvas id="life-balance-chart" width="300" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- 30-Day Habit Calendar -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <div>
+                        <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">LAST 30 DAYS</span>
+                    </div>
+                    <div class="text-xs text-zinc-400">Morning + Evening</div>
+                </div>
+                <div class="glass border border-zinc-800 rounded-3xl p-5">
+                    <div id="habit-calendar" class="grid grid-cols-10 gap-1.5"></div>
                 </div>
             </div>
 
@@ -363,6 +381,32 @@
             });
         }
 
+        // ==================== 30-DAY HABIT CALENDAR ====================
+        function renderHabitCalendar() {
+            const container = document.getElementById('habit-calendar');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            const today = new Date();
+            
+            for (let i = 29; i >= 0; i--) {
+                const checkDate = new Date(today);
+                checkDate.setDate(today.getDate() - i);
+                const dateStr = checkDate.toISOString().split('T')[0];
+                
+                const completed = ritualStatus[dateStr]?.morning && ritualStatus[dateStr]?.evening;
+                
+                const day = document.createElement('div');
+                day.className = `habit-day flex items-center justify-center rounded-lg font-medium cursor-pointer transition-all
+                    ${completed ? 'bg-emerald-500 text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'}`;
+                
+                day.textContent = checkDate.getDate();
+                day.title = dateStr;
+                
+                container.appendChild(day);
+            }
+        }
+
         // ==================== TOAST SYSTEM ====================
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -437,6 +481,7 @@
             updateStreak();
             updateDailyProgress();
             updateDailyScore();
+            renderHabitCalendar();
             showToast('Morning Ritual completed');
         }
 
@@ -449,6 +494,7 @@
             updateStreak();
             updateDailyProgress();
             updateDailyScore();
+            renderHabitCalendar();
             showToast('Evening Ritual completed');
         }
 
@@ -709,6 +755,7 @@
             renderMIT();
             updateDailyScore();
             initLifeBalanceChart();
+            renderHabitCalendar();
 
             document.getElementById('home').classList.add('active');
             document.getElementById('nav-home').classList.add('nav-active', 'bg-indigo-600');
