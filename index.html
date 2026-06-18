@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.3 • Weekly</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.4 • Identity</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -60,6 +60,9 @@
             </button>
             <button onclick="showSection('weekly')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-weekly">
                 <i class="fa-solid fa-calendar-week w-4"></i><span>Weekly</span>
+            </button>
+            <button onclick="showSection('identity')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-identity">
+                <i class="fa-solid fa-user w-4"></i><span>Identity</span>
             </button>
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
@@ -138,12 +141,12 @@
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('state')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400 transition-colors">
+                <div onclick="showSection('identity')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-purple-400 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-bolt text-yellow-400 text-xl"></i>
+                        <i class="fa-solid fa-user text-purple-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">State Changers</div>
-                            <div class="text-xs text-zinc-400">Change state fast</div>
+                            <div class="font-medium">Identity</div>
+                            <div class="text-xs text-zinc-400">I am becoming...</div>
                         </div>
                     </div>
                 </div>
@@ -202,30 +205,34 @@
                 </div>
 
                 <div class="space-y-4">
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-emerald-400">1. What were my biggest wins this week?</div>
-                        <textarea id="w1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
-                    </div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-emerald-400">2. What didn’t go well?</div>
-                        <textarea id="w2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
-                    </div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-emerald-400">3. Key lessons learned</div>
-                        <textarea id="w3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
-                    </div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-emerald-400">4. What blockers keep showing up?</div>
-                        <textarea id="w4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
-                    </div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-emerald-400">5. 3–5 priorities for next week</div>
-                        <textarea id="w5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="3"></textarea>
-                    </div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">1. What were my biggest wins this week?</div><textarea id="w1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">2. What didn’t go well?</div><textarea id="w2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">3. Key lessons learned</div><textarea id="w3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">4. What blockers keep showing up?</div><textarea id="w4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">5. 3–5 priorities for next week</div><textarea id="w5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="3"></textarea></div>
                 </div>
 
                 <button onclick="saveWeeklyReview()" class="mt-8 w-full py-4 bg-emerald-600 hover:bg-emerald-500 rounded-3xl font-semibold text-lg">Save Weekly Review</button>
                 <div id="weekly-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
+            </div>
+        </div>
+
+        <!-- IDENTITY STATEMENTS -->
+        <div id="identity" class="section">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Identity Statements</h2>
+                    <p class="text-zinc-400 mt-2">"I am becoming..." — Shape who you are becoming</p>
+                </div>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
+                    <div class="flex gap-2">
+                        <input id="identity-input" type="text" placeholder="I am becoming more..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addIdentityStatement()">
+                        <button onclick="addIdentityStatement()" class="px-6 bg-purple-600 hover:bg-purple-500 rounded-3xl text-sm font-medium">Add</button>
+                    </div>
+                </div>
+
+                <div id="identity-list" class="space-y-3"></div>
             </div>
         </div>
 
@@ -426,6 +433,7 @@
         let powerAnswers = JSON.parse(localStorage.getItem('cakehub_power')) || {};
         let eveningReviews = JSON.parse(localStorage.getItem('cakehub_review')) || {};
         let weeklyReviews = JSON.parse(localStorage.getItem('cakehub_weekly')) || {};
+        let identityStatements = JSON.parse(localStorage.getItem('cakehub_identity')) || [];
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -437,6 +445,7 @@
         function savePower() { localStorage.setItem('cakehub_power', JSON.stringify(powerAnswers)); }
         function saveReview() { localStorage.setItem('cakehub_review', JSON.stringify(eveningReviews)); }
         function saveWeekly() { localStorage.setItem('cakehub_weekly', JSON.stringify(weeklyReviews)); }
+        function saveIdentity() { localStorage.setItem('cakehub_identity', JSON.stringify(identityStatements)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -589,6 +598,49 @@
                 document.getElementById('w4').value = weeklyReviews.w4 || '';
                 document.getElementById('w5').value = weeklyReviews.w5 || '';
             }
+        }
+
+        // ==================== IDENTITY STATEMENTS ====================
+        function renderIdentityStatements() {
+            const container = document.getElementById('identity-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (identityStatements.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No identity statements yet. Add some above.</div>`;
+                return;
+            }
+
+            identityStatements.forEach((statement, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between glass border border-zinc-800 px-6 py-4 rounded-3xl`;
+                div.innerHTML = `
+                    <div class="flex-1 text-lg">"${statement.text}"</div>
+                    <button onclick="deleteIdentityStatement(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
+                        <i class="fa-solid fa-times text-sm"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addIdentityStatement() {
+            const input = document.getElementById('identity-input');
+            if (!input || !input.value.trim()) return;
+            
+            identityStatements.unshift({
+                text: input.value.trim(),
+                created: new Date().toISOString()
+            });
+            input.value = '';
+            saveIdentity();
+            renderIdentityStatements();
+        }
+
+        function deleteIdentityStatement(index) {
+            identityStatements.splice(index, 1);
+            saveIdentity();
+            renderIdentityStatements();
         }
 
         // ==================== QUICK CAPTURE ====================
@@ -1104,6 +1156,7 @@
             if (section === 'power') loadPowerQuestions();
             if (section === 'review') loadEveningReview();
             if (section === 'weekly') loadWeeklyReview();
+            if (section === 'identity') renderIdentityStatements();
         }
 
         // ==================== INIT ====================
