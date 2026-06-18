@@ -40,7 +40,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.7 • MIT Flow</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.8 • Execution</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -153,7 +153,7 @@
                             <i class="fa-solid fa-tasks text-indigo-400 text-2xl w-8"></i>
                             <div class="flex-1">
                                 <div class="font-medium">Daily Execution</div>
-                                <div class="text-xs text-zinc-400">Tasks, focus &amp; state</div>
+                                <div class="text-xs text-zinc-400"><span id="daily-execution-status">0 tasks done</span></div>
                             </div>
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                 </div>
             </div>
 
-            <!-- Most Important Thing - Integrated -->
+            <!-- Most Important Thing -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
@@ -614,12 +614,21 @@
             if (morningDone) completed++;
             if (eveningDone) completed++;
             
-            if (todos.length > 0 || inboxItems.length > 0) completed++;
+            // Daily Execution = at least one task completed today
+            const hasCompletedTaskToday = todos.some(t => t.completed);
+            if (hasCompletedTaskToday) completed++;
             
             const progress = Math.round((completed / 3) * 100);
             
             document.getElementById('daily-progress-bar').style.width = progress + '%';
             document.getElementById('daily-progress-text').textContent = `${completed}/3 completed`;
+            
+            // Update Daily Execution status text
+            const dailyStatus = document.getElementById('daily-execution-status');
+            if (dailyStatus) {
+                const completedCount = todos.filter(t => t.completed).length;
+                dailyStatus.textContent = `${completedCount} tasks done`;
+            }
         }
 
         function updateRitualStatusIndicators() {
