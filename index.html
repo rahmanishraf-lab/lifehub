@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.3 • Leaks</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.0 • Clean</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -47,75 +47,33 @@
             <p class="text-xl text-zinc-400 mt-1">Your personal operating system.</p>
         </div>
 
-        <!-- Navigation -->
-        <div class="flex items-center gap-x-1 mb-8 bg-zinc-900 p-1 rounded-3xl w-fit border border-zinc-800">
-            <button onclick="showSection('dashboard')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 nav-active" id="nav-dashboard">
-                <i class="fa-solid fa-home w-4"></i><span>Dashboard</span>
+        <!-- NEW CLEAN NAVIGATION -->
+        <div class="flex items-center gap-x-1 mb-8 bg-zinc-900 p-1 rounded-3xl w-fit border border-zinc-800 overflow-x-auto">
+            <button onclick="showSection('home')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 nav-active" id="nav-home">
+                <i class="fa-solid fa-home w-4"></i><span>Home</span>
             </button>
-            <button onclick="showSection('power')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-power">
-                <i class="fa-solid fa-sun w-4"></i><span>Power</span>
+            <button onclick="showSection('morning')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-morning">
+                <i class="fa-solid fa-sun w-4"></i><span>Morning</span>
             </button>
-            <button onclick="showSection('review')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-review">
-                <i class="fa-solid fa-moon w-4"></i><span>Review</span>
+            <button onclick="showSection('daily')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-daily">
+                <i class="fa-solid fa-tasks w-4"></i><span>Daily</span>
+            </button>
+            <button onclick="showSection('evening')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-evening">
+                <i class="fa-solid fa-moon w-4"></i><span>Evening</span>
             </button>
             <button onclick="showSection('weekly')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-weekly">
                 <i class="fa-solid fa-calendar-week w-4"></i><span>Weekly</span>
             </button>
-            <button onclick="showSection('identity')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-identity">
-                <i class="fa-solid fa-user w-4"></i><span>Identity</span>
-            </button>
-            <button onclick="showSection('contribution')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-contribution">
-                <i class="fa-solid fa-hand-holding-heart w-4"></i><span>Give</span>
-            </button>
-            <button onclick="showSection('goals')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-goals">
-                <i class="fa-solid fa-bullseye w-4"></i><span>Goals</span>
-            </button>
-            <button onclick="showSection('relationships')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-relationships">
-                <i class="fa-solid fa-users w-4"></i><span>People</span>
-            </button>
-            <button onclick="showSection('gratitude')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-gratitude">
-                <i class="fa-solid fa-heart w-4"></i><span>Gratitude</span>
+            <button onclick="showSection('growth')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-growth">
+                <i class="fa-solid fa-seedling w-4"></i><span>Growth</span>
             </button>
             <button onclick="showSection('finance')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-finance">
                 <i class="fa-solid fa-chart-line w-4"></i><span>Finance</span>
             </button>
-            <button onclick="showSection('time')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-time">
-                <i class="fa-solid fa-clock w-4"></i><span>Time</span>
-            </button>
-            <button onclick="showSection('body')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-body">
-                <i class="fa-solid fa-dumbbell w-4"></i><span>Body</span>
-            </button>
-            <button onclick="showSection('leaks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-leaks">
-                <i class="fa-solid fa-exclamation-circle w-4"></i><span>Leaks</span>
-            </button>
-            <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
-                <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
-            </button>
-            <button onclick="showSection('money')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-money">
-                <i class="fa-solid fa-dollar-sign w-4"></i><span>Money</span>
-            </button>
-            <button onclick="showSection('state')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-state">
-                <i class="fa-solid fa-bolt w-4"></i><span>State</span>
-            </button>
-            <button onclick="showSection('focus')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-focus">
-                <i class="fa-solid fa-clock w-4"></i><span>Focus</span>
-            </button>
-            <button onclick="showSection('blockers')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-blockers">
-                <i class="fa-solid fa-exclamation-triangle w-4"></i><span>Blockers</span>
-            </button>
-            <button onclick="showSection('habits')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-habits">
-                <i class="fa-solid fa-chart-line w-4"></i><span>Habits</span>
-            </button>
-            <button onclick="showSection('energy')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-energy">
-                <i class="fa-solid fa-battery-full w-4"></i><span>Energy</span>
-            </button>
-            <button onclick="showSection('inbox')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-inbox">
-                <i class="fa-solid fa-inbox w-4"></i><span>Inbox</span>
-            </button>
         </div>
 
-        <!-- DASHBOARD -->
-        <div id="dashboard" class="section active">
+        <!-- HOME / DASHBOARD -->
+        <div id="home" class="section active">
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
@@ -138,20 +96,29 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div onclick="showSection('power')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400 transition-colors">
+                <div onclick="showSection('morning')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400 transition-colors">
                     <div class="flex items-center gap-x-3">
                         <i class="fa-solid fa-sun text-yellow-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Power Questions</div>
+                            <div class="font-medium">Morning Ritual</div>
                             <div class="text-xs text-zinc-400">Start strong</div>
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('review')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-indigo-400 transition-colors">
+                <div onclick="showSection('daily')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-indigo-400 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-moon text-indigo-400 text-xl"></i>
+                        <i class="fa-solid fa-tasks text-indigo-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Evening Review</div>
+                            <div class="font-medium">Daily Tools</div>
+                            <div class="text-xs text-zinc-400">Execution</div>
+                        </div>
+                    </div>
+                </div>
+                <div onclick="showSection('evening')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-purple-400 transition-colors">
+                    <div class="flex items-center gap-x-3">
+                        <i class="fa-solid fa-moon text-purple-400 text-xl"></i>
+                        <div>
+                            <div class="font-medium">Evening Ritual</div>
                             <div class="text-xs text-zinc-400">Close the day</div>
                         </div>
                     </div>
@@ -161,66 +128,125 @@
                         <i class="fa-solid fa-calendar-week text-emerald-400 text-xl"></i>
                         <div>
                             <div class="font-medium">Weekly Review</div>
-                            <div class="text-xs text-zinc-400">Plan your week</div>
-                        </div>
-                    </div>
-                </div>
-                <div onclick="showSection('leaks')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-orange-400 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-exclamation-circle text-orange-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Focus Leaks</div>
-                            <div class="text-xs text-zinc-400">Track distractions</div>
+                            <div class="text-xs text-zinc-400">Reflect &amp; plan</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- POWER QUESTIONS -->
-        <div id="power" class="section">
+        <!-- MORNING RITUAL -->
+        <div id="morning" class="section">
             <div class="max-w-2xl mx-auto">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Morning Power Questions</h2>
-                    <p class="text-zinc-400 mt-2">Tony Robbins’ daily ritual</p>
+                    <h2 class="text-3xl font-semibold tracking-tighter">Morning Ritual</h2>
+                    <p class="text-zinc-400 mt-2">Start the day with clarity and energy</p>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">1. What am I happy about?</div><textarea id="q1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">2. What am I excited about?</div><textarea id="q2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">3. What am I grateful for?</div><textarea id="q3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">4. What am I proud of?</div><textarea id="q4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">5. What am I committed to?</div><textarea id="q5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">6. What am I learning?</div><textarea id="q6" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                <div class="space-y-6">
+                    <!-- Power Questions -->
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-4 text-yellow-400">Power Questions</div>
+                        <div class="space-y-3">
+                            <div><div class="text-sm text-zinc-400 mb-1">1. What am I happy about?</div><textarea id="q1" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-sm focus:outline-none" rows="1"></textarea></div>
+                            <div><div class="text-sm text-zinc-400 mb-1">2. What am I excited about?</div><textarea id="q2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-sm focus:outline-none" rows="1"></textarea></div>
+                            <div><div class="text-sm text-zinc-400 mb-1">3. What am I grateful for?</div><textarea id="q3" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-sm focus:outline-none" rows="1"></textarea></div>
+                        </div>
+                    </div>
+
+                    <!-- Body Check-in -->
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-4 text-sky-400">Body Check-in</div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <div class="text-sm text-zinc-400 mb-1">Energy</div>
+                                <input type="range" id="body-energy" min="1" max="10" value="7" class="w-full accent-sky-500">
+                            </div>
+                            <div>
+                                <div class="text-sm text-zinc-400 mb-1">Sleep Quality</div>
+                                <input type="range" id="body-sleep" min="1" max="10" value="7" class="w-full accent-purple-500">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <button onclick="savePowerQuestions()" class="mt-8 w-full py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold rounded-3xl text-lg">Save Today’s Answers</button>
-                <div id="power-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
+                <button onclick="saveMorningRitual()" class="mt-8 w-full py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold rounded-3xl text-lg">Save Morning Ritual</button>
             </div>
         </div>
 
-        <!-- EVENING REVIEW -->
-        <div id="review" class="section">
+        <!-- DAILY TOOLS -->
+        <div id="daily" class="section">
             <div class="max-w-2xl mx-auto">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Evening Review</h2>
-                    <p class="text-zinc-400 mt-2">Close the day with clarity</p>
+                    <h2 class="text-3xl font-semibold tracking-tighter">Daily Tools</h2>
+                    <p class="text-zinc-400 mt-2">Execution &amp; focus</p>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">1. What went well today?</div><textarea id="r1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">2. What could I have done better?</div><textarea id="r2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">3. What did I learn today?</div><textarea id="r3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">4. What am I grateful for today?</div><textarea id="r4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">5. One thing I’m committing to tomorrow:</div><textarea id="r5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div onclick="showSection('tasks')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-indigo-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-check-circle text-indigo-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Tasks</div>
+                                <div class="text-xs text-zinc-400"><span id="quick-task-count">0</span> active</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="showSection('inbox')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-purple-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-inbox text-purple-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Inbox</div>
+                                <div class="text-xs text-zinc-400"><span id="quick-inbox-count">0</span> captured</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="showSection('state')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-yellow-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-bolt text-yellow-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">State Changers</div>
+                                <div class="text-xs text-zinc-400">Change emotional state</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="showSection('focus')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-sky-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-clock text-sky-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Focus Timer</div>
+                                <div class="text-xs text-zinc-400">Deep work</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <button onclick="saveEveningReview()" class="mt-8 w-full py-4 bg-indigo-600 hover:bg-indigo-500 rounded-3xl font-semibold text-lg">Save Evening Review</button>
-                <div id="review-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
             </div>
         </div>
 
-        <!-- WEEKLY REVIEW -->
+        <!-- EVENING RITUAL -->
+        <div id="evening" class="section">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Evening Ritual</h2>
+                    <p class="text-zinc-400 mt-2">Close the day with reflection</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-indigo-400">Evening Review</div>
+                        <div class="space-y-3">
+                            <div><div class="text-sm text-zinc-400 mb-1">What went well today?</div><textarea id="r1" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-sm focus:outline-none" rows="1"></textarea></div>
+                            <div><div class="text-sm text-zinc-400 mb-1">What could I improve?</div><textarea id="r2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-sm focus:outline-none" rows="1"></textarea></div>
+                            <div><div class="text-sm text-zinc-400 mb-1">What am I grateful for?</div><textarea id="r3" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-sm focus:outline-none" rows="1"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="saveEveningRitual()" class="mt-8 w-full py-4 bg-indigo-600 hover:bg-indigo-500 rounded-3xl font-semibold text-lg">Save Evening Ritual</button>
+            </div>
+        </div>
+
+        <!-- WEEKLY -->
         <div id="weekly" class="section">
             <div class="max-w-2xl mx-auto">
                 <div class="text-center mb-8">
@@ -229,120 +255,75 @@
                 </div>
 
                 <div class="space-y-4">
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">1. What were my biggest wins this week?</div><textarea id="w1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">2. What didn’t go well?</div><textarea id="w2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">3. Key lessons learned</div><textarea id="w3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">4. What blockers keep showing up?</div><textarea id="w4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-emerald-400">5. 3–5 priorities for next week</div><textarea id="w5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="3"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-emerald-400">Weekly Review</div>
+                        <div class="space-y-3">
+                            <div><div class="text-sm text-zinc-400 mb-1">Biggest wins this week?</div><textarea id="w1" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-sm focus:outline-none" rows="1"></textarea></div>
+                            <div><div class="text-sm text-zinc-400 mb-1">What didn’t go well?</div><textarea id="w2" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-sm focus:outline-none" rows="1"></textarea></div>
+                            <div><div class="text-sm text-zinc-400 mb-1">3 priorities for next week</div><textarea id="w3" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-3 text-sm focus:outline-none" rows="2"></textarea></div>
+                        </div>
+                    </div>
                 </div>
 
                 <button onclick="saveWeeklyReview()" class="mt-8 w-full py-4 bg-emerald-600 hover:bg-emerald-500 rounded-3xl font-semibold text-lg">Save Weekly Review</button>
-                <div id="weekly-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
             </div>
         </div>
 
-        <!-- IDENTITY STATEMENTS -->
-        <div id="identity" class="section">
+        <!-- GROWTH -->
+        <div id="growth" class="section">
             <div class="max-w-2xl mx-auto">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Identity Statements</h2>
-                    <p class="text-zinc-400 mt-2">"I am becoming..." — Shape who you are becoming</p>
+                    <h2 class="text-3xl font-semibold tracking-tighter">Growth</h2>
+                    <p class="text-zinc-400 mt-2">Long-term development</p>
                 </div>
 
-                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                    <div class="flex gap-2">
-                        <input id="identity-input" type="text" placeholder="I am becoming more..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addIdentityStatement()">
-                        <button onclick="addIdentityStatement()" class="px-6 bg-purple-600 hover:bg-purple-500 rounded-3xl text-sm font-medium">Add</button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div onclick="showSection('identity')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-purple-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-user text-purple-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Identity</div>
+                                <div class="text-xs text-zinc-400">"I am becoming..."</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="showSection('goals')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-emerald-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-bullseye text-emerald-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Goals</div>
+                                <div class="text-xs text-zinc-400">Big picture</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="showSection('relationships')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-purple-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-users text-purple-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Relationships</div>
+                                <div class="text-xs text-zinc-400">Key people</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="showSection('contribution')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-rose-400 transition-colors">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-hand-holding-heart text-rose-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Contribution</div>
+                                <div class="text-xs text-zinc-400">Value created</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div id="identity-list" class="space-y-3"></div>
             </div>
         </div>
 
-        <!-- CONTRIBUTION LOG -->
-        <div id="contribution" class="section">
-            <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Contribution Log</h2>
-                    <p class="text-zinc-400 mt-2">Track the value you create for others</p>
-                </div>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                    <div class="flex gap-2">
-                        <input id="contribution-input" type="text" placeholder="Who did I help or what value did I create?" class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addContribution()">
-                        <input id="contribution-note" type="text" placeholder="Note (optional)" class="w-48 bg-zinc-900 border border-zinc-700 px-4 text-sm rounded-3xl">
-                        <button onclick="addContribution()" class="px-6 bg-rose-600 hover:bg-rose-500 rounded-3xl text-sm font-medium">Log</button>
-                    </div>
-                </div>
-
-                <div id="contribution-list" class="space-y-2"></div>
-            </div>
-        </div>
-
-        <!-- GOALS -->
-        <div id="goals" class="section">
-            <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Goals</h2>
-                    <p class="text-zinc-400 mt-2">Your big picture — stay focused on what matters</p>
-                </div>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                    <div class="flex gap-2">
-                        <input id="goal-input" type="text" placeholder="Add a new goal..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addGoal()">
-                        <button onclick="addGoal()" class="px-6 bg-emerald-600 hover:bg-emerald-500 rounded-3xl text-sm font-medium">Add</button>
-                    </div>
-                </div>
-
-                <div id="goals-list" class="space-y-3"></div>
-            </div>
-        </div>
-
-        <!-- RELATIONSHIPS -->
-        <div id="relationships" class="section">
-            <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Key Relationships</h2>
-                    <p class="text-zinc-400 mt-2">The 5–10 people who matter most</p>
-                </div>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                    <div class="flex gap-2">
-                        <input id="relationship-input" type="text" placeholder="Name of important person..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addRelationship()">
-                        <button onclick="addRelationship()" class="px-6 bg-purple-600 hover:bg-purple-500 rounded-3xl text-sm font-medium">Add</button>
-                    </div>
-                </div>
-
-                <div id="relationships-list" class="space-y-3"></div>
-            </div>
-        </div>
-
-        <!-- GRATITUDE LOG -->
-        <div id="gratitude" class="section">
-            <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Gratitude Log</h2>
-                    <p class="text-zinc-400 mt-2">What are you grateful for today?</p>
-                </div>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                    <div class="flex gap-2">
-                        <input id="gratitude-input" type="text" placeholder="I am grateful for..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addGratitude()">
-                        <button onclick="addGratitude()" class="px-6 bg-rose-600 hover:bg-rose-500 rounded-3xl text-sm font-medium">Add</button>
-                    </div>
-                </div>
-
-                <div id="gratitude-list" class="space-y-2"></div>
-            </div>
-        </div>
-
-        <!-- FINANCE SNAPSHOT -->
+        <!-- FINANCE -->
         <div id="finance" class="section">
             <div class="max-w-md mx-auto">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Financial Snapshot</h2>
-                    <p class="text-zinc-400 mt-2">Monthly money overview</p>
+                    <h2 class="text-3xl font-semibold tracking-tighter">Finance</h2>
+                    <p class="text-zinc-400 mt-2">Money clarity</p>
                 </div>
 
                 <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6 space-y-5">
@@ -369,154 +350,6 @@
                 </div>
 
                 <button onclick="saveFinanceSnapshot()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 rounded-3xl font-medium">Save Snapshot</button>
-
-                <div class="mt-6 text-center">
-                    <div class="text-xs text-zinc-400">Money Moves logged this month</div>
-                    <div class="text-3xl font-semibold text-emerald-400 mt-1"><span id="finance-moves-count">0</span></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- WEEKLY TIME ALLOCATION -->
-        <div id="time" class="section">
-            <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Weekly Time Allocation</h2>
-                    <p class="text-zinc-400 mt-2">Where did your time actually go?</p>
-                </div>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6 space-y-6">
-                    <div>
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Deep Work / Focus</span>
-                            <span id="time-deepwork-value">25</span>%
-                        </div>
-                        <input type="range" id="time-deepwork" min="0" max="100" value="25" class="w-full accent-sky-500" oninput="updateTimeTotal()">
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Money-making Activities</span>
-                            <span id="time-money-value">20</span>%
-                        </div>
-                        <input type="range" id="time-money" min="0" max="100" value="20" class="w-full accent-emerald-500" oninput="updateTimeTotal()">
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Health &amp; Movement</span>
-                            <span id="time-health-value">15</span>%
-                        </div>
-                        <input type="range" id="time-health" min="0" max="100" value="15" class="w-full accent-rose-500" oninput="updateTimeTotal()">
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Relationships</span>
-                            <span id="time-relationships-value">15</span>%
-                        </div>
-                        <input type="range" id="time-relationships" min="0" max="100" value="15" class="w-full accent-purple-500" oninput="updateTimeTotal()">
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Low-value / Distractions</span>
-                            <span id="time-lowvalue-value">25</span>%
-                        </div>
-                        <input type="range" id="time-lowvalue" min="0" max="100" value="25" class="w-full accent-orange-500" oninput="updateTimeTotal()">
-                    </div>
-
-                    <div class="pt-4 border-t border-zinc-700">
-                        <div class="flex justify-between items-center text-sm">
-                            <span>Total</span>
-                            <span id="time-total" class="font-semibold">100%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
-                    <div class="font-medium mb-3">How did this week feel in terms of time usage?</div>
-                    <div class="flex items-center gap-4">
-                        <input type="range" id="time-rating" min="1" max="10" value="7" class="flex-1 accent-indigo-500">
-                        <span id="time-rating-value" class="font-semibold text-lg w-8 text-center">7</span>
-                    </div>
-                </div>
-
-                <button onclick="saveTimeAllocation()" class="w-full py-4 bg-sky-600 hover:bg-sky-500 rounded-3xl font-semibold text-lg">Save Weekly Time Review</button>
-                <div id="time-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
-            </div>
-        </div>
-
-        <!-- DAILY BODY CHECK-IN -->
-        <div id="body" class="section">
-            <div class="max-w-md mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Daily Body Check-in</h2>
-                    <p class="text-zinc-400 mt-2">Track your physical foundation</p>
-                </div>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6 space-y-6">
-                    <div>
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Energy Level</span>
-                            <span id="body-energy-value">7</span>
-                        </div>
-                        <input type="range" id="body-energy" min="1" max="10" value="7" class="w-full accent-sky-500" oninput="document.getElementById('body-energy-value').textContent = this.value">
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Sleep Quality</span>
-                            <span id="body-sleep-value">7</span>
-                        </div>
-                        <input type="range" id="body-sleep" min="1" max="10" value="7" class="w-full accent-purple-500" oninput="document.getElementById('body-sleep-value').textContent = this.value">
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Movement Today?</span>
-                        </div>
-                        <div class="flex gap-3">
-                            <label class="flex items-center gap-2">
-                                <input type="radio" name="body-movement" value="yes" class="accent-emerald-500"> Yes
-                            </label>
-                            <label class="flex items-center gap-2">
-                                <input type="radio" name="body-movement" value="no" class="accent-rose-500" checked> No
-                            </label>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Water (glasses)</span>
-                            <span id="body-water-value">6</span>
-                        </div>
-                        <input type="range" id="body-water" min="0" max="15" value="6" class="w-full accent-cyan-500" oninput="document.getElementById('body-water-value').textContent = this.value">
-                    </div>
-                </div>
-
-                <button onclick="saveBodyCheckin()" class="w-full py-4 bg-sky-600 hover:bg-sky-500 rounded-3xl font-semibold text-lg">Save Today’s Check-in</button>
-                <div id="body-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
-            </div>
-        </div>
-
-        <!-- FOCUS LEAKS (DISTRACTION TRACKER) -->
-        <div id="leaks" class="section">
-            <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Focus Leaks</h2>
-                    <p class="text-zinc-400 mt-2">What’s stealing your attention?</p>
-                </div>
-
-                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                    <div class="flex gap-2">
-                        <select id="leak-type" class="bg-zinc-900 border border-zinc-700 px-4 text-sm rounded-3xl">
-                            <option value="Phone">Phone</option>
-                            <option value="Email">Email</option>
-                            <option value="Social Media">Social Media</option>
-                            <option value="People">People interrupting</option>
-                            <option value="Fatigue">Fatigue / Low energy</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        <input id="leak-note" type="text" placeholder="Optional note" class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none border border-zinc-700 rounded-3xl">
-                        <button onclick="logLeak()" class="px-6 bg-orange-600 hover:bg-orange-500 rounded-3xl text-sm font-medium">Log</button>
-                    </div>
-                </div>
-
-                <div id="leaks-list" class="space-y-2"></div>
             </div>
         </div>
 
@@ -530,66 +363,45 @@
             <div id="todo-list" class="space-y-2"></div>
         </div>
 
-        <!-- MONEY MOVES -->
-        <div id="money" class="section">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-3xl font-semibold tracking-tighter">Money Moves</h2>
-                <div class="text-xs px-3 py-1 bg-emerald-400/10 text-emerald-400 rounded-full"><span id="money-count">0</span> ideas</div>
+        <!-- INBOX -->
+        <div id="inbox" class="section">
+            <h2 class="text-3xl font-semibold tracking-tighter mb-4">Inbox</h2>
+            <div class="glass border border-zinc-800 rounded-3xl p-2 flex mb-6">
+                <input id="inbox-input" type="text" placeholder="Capture anything here..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addToInbox()">
+                <button onclick="addToInbox()" class="px-6 bg-purple-600 hover:bg-purple-500 rounded-3xl text-sm font-medium">Capture</button>
             </div>
-            <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                <div class="flex gap-2">
-                    <input id="money-input" type="text" placeholder="Business idea or revenue opportunity..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addMoneyMove()">
-                    <input id="money-value" type="number" placeholder="$" class="w-24 bg-zinc-900 border border-zinc-700 px-3 text-sm rounded-3xl">
-                    <button onclick="addMoneyMove()" class="px-6 bg-emerald-600 hover:bg-emerald-500 rounded-3xl text-sm font-medium">Log</button>
-                </div>
-            </div>
-            <div id="money-list" class="space-y-2"></div>
+            <div id="inbox-list" class="space-y-2"></div>
         </div>
 
         <!-- STATE CHANGERS -->
         <div id="state" class="section">
             <div class="max-w-md mx-auto text-center">
                 <h2 class="text-3xl font-semibold tracking-tighter mb-2">State Changers</h2>
-                <p class="text-zinc-400 mb-8">Change your emotional state in 60–120 seconds</p>
+                <p class="text-zinc-400 mb-8">Change your emotional state fast</p>
 
                 <div class="grid grid-cols-1 gap-3">
                     <button onclick="changeState('move')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-yellow-400 transition-colors">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-walking text-2xl text-yellow-400"></i>
-                            <div class="text-left"><div class="font-medium">Stand Up &amp; Move</div><div class="text-xs text-zinc-400">2 minutes of movement</div></div>
+                            <div class="text-left"><div class="font-medium">Stand Up &amp; Move</div><div class="text-xs text-zinc-400">2 minutes</div></div>
                         </div>
                         <i class="fa-solid fa-arrow-right text-zinc-400"></i>
                     </button>
                     <button onclick="changeState('breathe')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-sky-400 transition-colors">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-wind text-2xl text-sky-400"></i>
-                            <div class="text-left"><div class="font-medium">Power Breathing</div><div class="text-xs text-zinc-400">60 seconds of deep breaths</div></div>
+                            <div class="text-left"><div class="font-medium">Power Breathing</div><div class="text-xs text-zinc-400">60 seconds</div></div>
                         </div>
                         <i class="fa-solid fa-arrow-right text-zinc-400"></i>
                     </button>
                     <button onclick="changeState('pose')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-purple-400 transition-colors">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-user text-2xl text-purple-400"></i>
-                            <div class="text-left"><div class="font-medium">Power Pose</div><div class="text-xs text-zinc-400">2 minutes of confident posture</div></div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-zinc-400"></i>
-                    </button>
-                    <button onclick="changeState('cold')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-cyan-400 transition-colors">
-                        <div class="flex items-center gap-x-4">
-                            <i class="fa-solid fa-tint text-2xl text-cyan-400"></i>
-                            <div class="text-left"><div class="font-medium">Cold Water on Face</div><div class="text-xs text-zinc-400">Instant reset</div></div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-zinc-400"></i>
-                    </button>
-                    <button onclick="changeState('music')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-pink-400 transition-colors">
-                        <div class="flex items-center gap-x-4">
-                            <i class="fa-solid fa-music text-2xl text-pink-400"></i>
-                            <div class="text-left"><div class="font-medium">Play a Power Song</div><div class="text-xs text-zinc-400">Change your emotional state</div></div>
+                            <div class="text-left"><div class="font-medium">Power Pose</div><div class="text-xs text-zinc-400">2 minutes</div></div>
                         </div>
                         <i class="fa-solid fa-arrow-right text-zinc-400"></i>
                     </button>
                 </div>
-                <div class="mt-8 text-xs text-zinc-400">Tony Robbins: <span class="text-white">Motion creates emotion.</span></div>
             </div>
         </div>
 
@@ -615,72 +427,9 @@
                     <button onclick="pauseTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Pause</button>
                     <button onclick="resetTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Reset</button>
                 </div>
-
-                <div id="session-count" class="mt-6 text-xs text-zinc-400">Sessions completed today: <span class="font-medium text-white">0</span></div>
             </div>
         </div>
 
-        <!-- BLOCKERS -->
-        <div id="blockers" class="section">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-3xl font-semibold tracking-tighter">Blockers</h2>
-                <div class="text-xs px-3 py-1 bg-orange-400/10 text-orange-400 rounded-full"><span id="blocker-count">0</span> open</div>
-            </div>
-
-            <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                <div class="flex gap-2">
-                    <input id="blocker-input" type="text" placeholder="What's blocking you right now?" class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addBlocker()">
-                    <button onclick="addBlocker()" class="px-6 bg-orange-600 hover:bg-orange-500 rounded-3xl text-sm font-medium">Log</button>
-                </div>
-            </div>
-
-            <div id="blocker-list" class="space-y-2"></div>
-        </div>
-
-        <!-- HABITS -->
-        <div id="habits" class="section">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-3xl font-semibold tracking-tighter">Habits</h2>
-                <div class="text-xs px-3 py-1 bg-emerald-400/10 text-emerald-400 rounded-full"><span id="habit-count">0</span> tracked</div>
-            </div>
-
-            <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                <div class="flex gap-2">
-                    <input id="habit-input" type="text" placeholder="New habit (e.g. No phone before 9am)" class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addHabit()">
-                    <button onclick="addHabit()" class="px-6 bg-emerald-600 hover:bg-emerald-500 rounded-3xl text-sm font-medium">Add</button>
-                </div>
-            </div>
-
-            <div id="habit-list" class="space-y-2"></div>
-        </div>
-
-        <!-- INBOX -->
-        <div id="inbox" class="section">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-3xl font-semibold tracking-tighter">Inbox</h2>
-                <div class="text-xs px-3 py-1 bg-purple-400/10 text-purple-400 rounded-full"><span id="inbox-count">0</span> items</div>
-            </div>
-
-            <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
-                <div class="flex gap-2">
-                    <input id="inbox-input" type="text" placeholder="Capture anything here..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addToInbox()">
-                    <button onclick="addToInbox()" class="px-6 bg-purple-600 hover:bg-purple-500 rounded-3xl text-sm font-medium">Capture</button>
-                </div>
-            </div>
-
-            <div id="inbox-list" class="space-y-2"></div>
-        </div>
-
-        <!-- REMINDERS -->
-        <div id="reminders" class="section">
-            <h2 class="text-3xl font-semibold tracking-tighter mb-4">Reminders</h2>
-            <div class="glass border border-zinc-800 rounded-3xl p-2 flex mb-6">
-                <input id="reminder-input" type="text" placeholder="Don't forget..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addReminder()">
-                <input id="reminder-date" type="date" class="bg-zinc-900 border border-zinc-700 px-4 text-sm rounded-3xl mx-2">
-                <button onclick="addReminder()" class="px-6 bg-violet-600 hover:bg-violet-500 rounded-3xl text-sm font-medium">Add</button>
-            </div>
-            <div id="reminder-list" class="space-y-2"></div>
-        </div>
     </div>
 
     <script>
@@ -705,7 +454,6 @@
         let financeSnapshot = JSON.parse(localStorage.getItem('cakehub_finance')) || {};
         let timeAllocation = JSON.parse(localStorage.getItem('cakehub_time')) || {};
         let bodyCheckins = JSON.parse(localStorage.getItem('cakehub_body')) || [];
-        let leaks = JSON.parse(localStorage.getItem('cakehub_leaks')) || [];
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -725,7 +473,6 @@
         function saveFinance() { localStorage.setItem('cakehub_finance', JSON.stringify(financeSnapshot)); }
         function saveTime() { localStorage.setItem('cakehub_time', JSON.stringify(timeAllocation)); }
         function saveBody() { localStorage.setItem('cakehub_body', JSON.stringify(bodyCheckins)); }
-        function saveLeaks() { localStorage.setItem('cakehub_leaks', JSON.stringify(leaks)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -785,397 +532,6 @@
             renderMIT();
         }
 
-        // ==================== POWER QUESTIONS ====================
-        function savePowerQuestions() {
-            powerAnswers = {
-                date: getToday(),
-                q1: document.getElementById('q1').value,
-                q2: document.getElementById('q2').value,
-                q3: document.getElementById('q3').value,
-                q4: document.getElementById('q4').value,
-                q5: document.getElementById('q5').value,
-                q6: document.getElementById('q6').value,
-                savedAt: new Date().toISOString()
-            };
-            savePower();
-            const savedMsg = document.getElementById('power-saved');
-            savedMsg.classList.remove('hidden');
-            setTimeout(() => savedMsg.classList.add('hidden'), 2500);
-        }
-
-        function loadPowerQuestions() {
-            const today = getToday();
-            if (powerAnswers.date === today) {
-                document.getElementById('q1').value = powerAnswers.q1 || '';
-                document.getElementById('q2').value = powerAnswers.q2 || '';
-                document.getElementById('q3').value = powerAnswers.q3 || '';
-                document.getElementById('q4').value = powerAnswers.q4 || '';
-                document.getElementById('q5').value = powerAnswers.q5 || '';
-                document.getElementById('q6').value = powerAnswers.q6 || '';
-            }
-        }
-
-        // ==================== EVENING REVIEW ====================
-        function saveEveningReview() {
-            eveningReviews = {
-                date: getToday(),
-                r1: document.getElementById('r1').value,
-                r2: document.getElementById('r2').value,
-                r3: document.getElementById('r3').value,
-                r4: document.getElementById('r4').value,
-                r5: document.getElementById('r5').value,
-                savedAt: new Date().toISOString()
-            };
-            saveReview();
-            const savedMsg = document.getElementById('review-saved');
-            savedMsg.classList.remove('hidden');
-            setTimeout(() => savedMsg.classList.add('hidden'), 2500);
-        }
-
-        function loadEveningReview() {
-            const today = getToday();
-            if (eveningReviews.date === today) {
-                document.getElementById('r1').value = eveningReviews.r1 || '';
-                document.getElementById('r2').value = eveningReviews.r2 || '';
-                document.getElementById('r3').value = eveningReviews.r3 || '';
-                document.getElementById('r4').value = eveningReviews.r4 || '';
-                document.getElementById('r5').value = eveningReviews.r5 || '';
-            }
-        }
-
-        // ==================== WEEKLY REVIEW ====================
-        function saveWeeklyReview() {
-            const weekNumber = getWeekNumber(new Date());
-            weeklyReviews = {
-                week: weekNumber,
-                w1: document.getElementById('w1').value,
-                w2: document.getElementById('w2').value,
-                w3: document.getElementById('w3').value,
-                w4: document.getElementById('w4').value,
-                w5: document.getElementById('w5').value,
-                savedAt: new Date().toISOString()
-            };
-            saveWeekly();
-            const savedMsg = document.getElementById('weekly-saved');
-            savedMsg.classList.remove('hidden');
-            setTimeout(() => savedMsg.classList.add('hidden'), 2500);
-        }
-
-        function getWeekNumber(d) {
-            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-            const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-            return d.getUTCFullYear() + "-W" + weekNo;
-        }
-
-        function loadWeeklyReview() {
-            const week = getWeekNumber(new Date());
-            if (weeklyReviews.week === week) {
-                document.getElementById('w1').value = weeklyReviews.w1 || '';
-                document.getElementById('w2').value = weeklyReviews.w2 || '';
-                document.getElementById('w3').value = weeklyReviews.w3 || '';
-                document.getElementById('w4').value = weeklyReviews.w4 || '';
-                document.getElementById('w5').value = weeklyReviews.w5 || '';
-            }
-        }
-
-        // ==================== IDENTITY STATEMENTS ====================
-        function renderIdentityStatements() {
-            const container = document.getElementById('identity-list');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (identityStatements.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No identity statements yet.</div>`;
-                return;
-            }
-
-            identityStatements.forEach((statement, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-6 py-4 rounded-3xl`;
-                div.innerHTML = `
-                    <div class="flex-1 text-lg">"${statement.text}"</div>
-                    <button onclick="deleteIdentityStatement(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-times text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function addIdentityStatement() {
-            const input = document.getElementById('identity-input');
-            if (!input || !input.value.trim()) return;
-            
-            identityStatements.unshift({
-                text: input.value.trim(),
-                created: new Date().toISOString()
-            });
-            input.value = '';
-            saveIdentity();
-            renderIdentityStatements();
-        }
-
-        function deleteIdentityStatement(index) {
-            identityStatements.splice(index, 1);
-            saveIdentity();
-            renderIdentityStatements();
-        }
-
-        // ==================== CONTRIBUTION LOG ====================
-        function renderContributions() {
-            const container = document.getElementById('contribution-list');
-            const quick = document.getElementById('quick-contribution-count');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (contributions.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No contributions logged yet.</div>`;
-                if (quick) quick.textContent = '0';
-                return;
-            }
-
-            contributions.forEach((contribution, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
-                const note = contribution.note ? `<div class="text-xs text-zinc-400 mt-0.5">${contribution.note}</div>` : '';
-                div.innerHTML = `
-                    <div class="flex-1">
-                        <div class="text-sm">${contribution.text}</div>
-                        ${note}
-                        <div class="text-xs text-zinc-500">${new Date(contribution.date).toLocaleDateString()}</div>
-                    </div>
-                    <button onclick="deleteContribution(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-times text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-
-            if (quick) quick.textContent = contributions.length;
-        }
-
-        function addContribution() {
-            const input = document.getElementById('contribution-input');
-            const noteInput = document.getElementById('contribution-note');
-            if (!input || !input.value.trim()) return;
-            
-            const contribution = {
-                text: input.value.trim(),
-                note: noteInput.value.trim(),
-                date: new Date().toISOString()
-            };
-            contributions.unshift(contribution);
-            input.value = '';
-            noteInput.value = '';
-            saveContributions();
-            renderContributions();
-            updateQuickCounts();
-        }
-
-        function deleteContribution(index) {
-            contributions.splice(index, 1);
-            saveContributions();
-            renderContributions();
-            updateQuickCounts();
-        }
-
-        // ==================== GOALS ====================
-        function renderGoals() {
-            const container = document.getElementById('goals-list');
-            const quick = document.getElementById('quick-goals-count');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (goals.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No goals yet.</div>`;
-                if (quick) quick.textContent = '0';
-                return;
-            }
-
-            goals.forEach((goal, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
-                div.innerHTML = `
-                    <div class="flex-1">
-                        <div class="text-sm">${goal.text}</div>
-                        <div class="text-xs text-emerald-400">${goal.status || 'On Track'}</div>
-                    </div>
-                    <div class="flex items-center gap-x-2">
-                        <select onchange="updateGoalStatus(${index}, this.value)" class="bg-zinc-900 border border-zinc-700 text-xs rounded-xl px-2 py-1">
-                            <option value="On Track" ${goal.status === 'On Track' ? 'selected' : ''}>On Track</option>
-                            <option value="Behind" ${goal.status === 'Behind' ? 'selected' : ''}>Behind</option>
-                            <option value="Completed" ${goal.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                        </select>
-                        <button onclick="deleteGoal(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                            <i class="fa-solid fa-times text-sm"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-
-            if (quick) quick.textContent = goals.length;
-        }
-
-        function addGoal() {
-            const input = document.getElementById('goal-input');
-            if (!input || !input.value.trim()) return;
-            
-            goals.unshift({
-                text: input.value.trim(),
-                status: 'On Track',
-                created: new Date().toISOString()
-            });
-            input.value = '';
-            saveGoals();
-            renderGoals();
-            updateQuickCounts();
-        }
-
-        function updateGoalStatus(index, status) {
-            goals[index].status = status;
-            saveGoals();
-            renderGoals();
-        }
-
-        function deleteGoal(index) {
-            goals.splice(index, 1);
-            saveGoals();
-            renderGoals();
-            updateQuickCounts();
-        }
-
-        // ==================== RELATIONSHIPS ====================
-        function renderRelationships() {
-            const container = document.getElementById('relationships-list');
-            const quick = document.getElementById('quick-relationships-count');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (relationships.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No relationships tracked yet.</div>`;
-                if (quick) quick.textContent = '0';
-                return;
-            }
-
-            relationships.forEach((rel, index) => {
-                const lastInteraction = rel.lastInteraction ? new Date(rel.lastInteraction).toLocaleDateString() : 'Never';
-                const statusColor = rel.status === 'Strong' ? 'text-emerald-400' : rel.status === 'Good' ? 'text-yellow-400' : 'text-orange-400';
-
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
-                div.innerHTML = `
-                    <div class="flex-1">
-                        <div class="text-sm">${rel.name}</div>
-                        <div class="text-xs ${statusColor}">${rel.status || 'Good'} • Last: ${lastInteraction}</div>
-                    </div>
-                    <div class="flex items-center gap-x-2">
-                        <select onchange="updateRelationshipStatus(${index}, this.value)" class="bg-zinc-900 border border-zinc-700 text-xs rounded-xl px-2 py-1">
-                            <option value="Strong" ${rel.status === 'Strong' ? 'selected' : ''}>Strong</option>
-                            <option value="Good" ${rel.status === 'Good' ? 'selected' : ''}>Good</option>
-                            <option value="Neglected" ${rel.status === 'Neglected' ? 'selected' : ''}>Neglected</option>
-                        </select>
-                        <button onclick="logInteraction(${index}); event.stopImmediatePropagation()" class="text-xs px-3 py-1 bg-purple-600 hover:bg-purple-500 rounded-xl">Contact</button>
-                        <button onclick="deleteRelationship(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                            <i class="fa-solid fa-times text-sm"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-
-            if (quick) quick.textContent = relationships.length;
-        }
-
-        function addRelationship() {
-            const input = document.getElementById('relationship-input');
-            if (!input || !input.value.trim()) return;
-            
-            relationships.unshift({
-                name: input.value.trim(),
-                status: 'Good',
-                lastInteraction: null,
-                created: new Date().toISOString()
-            });
-            input.value = '';
-            saveRelationships();
-            renderRelationships();
-            updateQuickCounts();
-        }
-
-        function updateRelationshipStatus(index, status) {
-            relationships[index].status = status;
-            saveRelationships();
-            renderRelationships();
-        }
-
-        function logInteraction(index) {
-            relationships[index].lastInteraction = new Date().toISOString();
-            saveRelationships();
-            renderRelationships();
-        }
-
-        function deleteRelationship(index) {
-            relationships.splice(index, 1);
-            saveRelationships();
-            renderRelationships();
-            updateQuickCounts();
-        }
-
-        // ==================== GRATITUDE LOG ====================
-        function renderGratitudes() {
-            const container = document.getElementById('gratitude-list');
-            const quick = document.getElementById('quick-gratitude-count');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (gratitudes.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No gratitude entries yet.</div>`;
-                if (quick) quick.textContent = '0';
-                return;
-            }
-
-            gratitudes.forEach((gratitude, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
-                div.innerHTML = `
-                    <div class="flex-1">
-                        <div class="text-sm">${gratitude.text}</div>
-                        <div class="text-xs text-zinc-500">${new Date(gratitude.date).toLocaleDateString()}</div>
-                    </div>
-                    <button onclick="deleteGratitude(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-times text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-
-            if (quick) quick.textContent = gratitudes.length;
-        }
-
-        function addGratitude() {
-            const input = document.getElementById('gratitude-input');
-            if (!input || !input.value.trim()) return;
-            
-            gratitudes.unshift({
-                text: input.value.trim(),
-                date: new Date().toISOString()
-            });
-            input.value = '';
-            saveGratitudes();
-            renderGratitudes();
-            updateQuickCounts();
-        }
-
-        function deleteGratitude(index) {
-            gratitudes.splice(index, 1);
-            saveGratitudes();
-            renderGratitudes();
-            updateQuickCounts();
-        }
-
         // ==================== QUICK CAPTURE ====================
         function quickCapture() {
             const input = document.getElementById('quick-capture');
@@ -1184,546 +540,6 @@
             input.value = '';
             saveInbox();
             updateQuickCounts();
-        }
-
-        // ==================== INBOX ====================
-        function renderInbox() {
-            const container = document.getElementById('inbox-list');
-            const countEl = document.getElementById('inbox-count');
-            const quick = document.getElementById('quick-inbox-count');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (inboxItems.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">Inbox is empty.</div>`;
-                if (countEl) countEl.textContent = '0';
-                if (quick) quick.textContent = '0';
-                return;
-            }
-
-            inboxItems.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
-                div.innerHTML = `
-                    <div class="flex-1 text-sm">${item.text}</div>
-                    <button onclick="deleteInboxItem(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-times text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-
-            if (countEl) countEl.textContent = inboxItems.length;
-            if (quick) quick.textContent = inboxItems.length;
-        }
-
-        function addToInbox() {
-            const input = document.getElementById('inbox-input');
-            if (!input || !input.value.trim()) return;
-            inboxItems.unshift({ text: input.value.trim(), timestamp: new Date().toISOString() });
-            input.value = '';
-            saveInbox();
-            renderInbox();
-            updateQuickCounts();
-        }
-
-        function deleteInboxItem(index) {
-            inboxItems.splice(index, 1);
-            saveInbox();
-            renderInbox();
-            updateQuickCounts();
-        }
-
-        // ==================== STATE CHANGERS ====================
-        function changeState(type) {
-            const messages = {
-                'move': 'Great! Stand up, move your body for 2 minutes.',
-                'breathe': 'Inhale 4s, hold 4s, exhale 6s. Repeat 6 times.',
-                'pose': 'Stand tall, hands on hips, chin up. Hold 2 minutes.',
-                'cold': 'Splash cold water on your face 10 times.',
-                'music': 'Put on a powerful song and feel it.'
-            };
-            alert(messages[type] || 'State changed!');
-        }
-
-        // ==================== MONEY MOVES ====================
-        function renderMoneyMoves() {
-            const container = document.getElementById('money-list');
-            const countEl = document.getElementById('money-count');
-            const quick = document.getElementById('quick-money-count');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (moneyMoves.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No money moves logged yet.</div>`;
-                if (countEl) countEl.textContent = '0';
-                if (quick) quick.textContent = '0';
-                return;
-            }
-
-            moneyMoves.forEach((move, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
-                const value = move.value ? `<span class="text-emerald-400 font-medium ml-2">+$${move.value}</span>` : '';
-                div.innerHTML = `
-                    <div class="flex-1">
-                        <div class="text-sm">${move.text}${value}</div>
-                        <div class="text-xs text-zinc-500">${new Date(move.date).toLocaleDateString()}</div>
-                    </div>
-                    <button onclick="deleteMoneyMove(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-times text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-            if (countEl) countEl.textContent = moneyMoves.length;
-            if (quick) quick.textContent = moneyMoves.length;
-        }
-
-        function addMoneyMove() {
-            const input = document.getElementById('money-input');
-            const valueInput = document.getElementById('money-value');
-            if (!input || !input.value.trim()) return;
-            const move = { text: input.value.trim(), value: valueInput.value ? parseInt(valueInput.value) : null, date: new Date().toISOString() };
-            moneyMoves.unshift(move);
-            input.value = '';
-            valueInput.value = '';
-            saveMoney();
-            renderMoneyMoves();
-        }
-        function deleteMoneyMove(index) {
-            moneyMoves.splice(index, 1);
-            saveMoney();
-            renderMoneyMoves();
-        }
-
-        // ==================== BLOCKERS ====================
-        function renderBlockers() {
-            const container = document.getElementById('blocker-list');
-            const countEl = document.getElementById('blocker-count');
-            const quick = document.getElementById('quick-blocker-count');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const openBlockers = blockers.filter(b => !b.resolved);
-
-            if (blockers.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No blockers logged.</div>`;
-                if (countEl) countEl.textContent = '0';
-                if (quick) quick.textContent = '0';
-                return;
-            }
-
-            blockers.forEach((blocker, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl ${blocker.resolved ? 'opacity-60' : ''}`;
-                
-                let html = `
-                    <div class="flex-1">
-                        <div class="text-sm">${blocker.text}</div>
-                        <div class="text-xs text-zinc-500">${new Date(blocker.date).toLocaleDateString()}</div>
-                    </div>
-                `;
-
-                if (!blocker.resolved) {
-                    html += `
-                        <button onclick="resolveBlocker(${index}); event.stopImmediatePropagation()" class="text-xs px-3 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-xl mr-2">Resolve</button>
-                        <button onclick="deleteBlocker(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                            <i class="fa-solid fa-times text-sm"></i>
-                        </button>
-                    `;
-                } else {
-                    html += `<div class="text-xs text-emerald-400 px-3">Resolved</div>`;
-                }
-
-                div.innerHTML = html;
-                container.appendChild(div);
-            });
-
-            if (countEl) countEl.textContent = openBlockers.length;
-            if (quick) quick.textContent = openBlockers.length;
-        }
-
-        function addBlocker() {
-            const input = document.getElementById('blocker-input');
-            if (!input || !input.value.trim()) return;
-            const blocker = { text: input.value.trim(), date: new Date().toISOString(), resolved: false };
-            blockers.unshift(blocker);
-            input.value = '';
-            saveBlockers();
-            renderBlockers();
-        }
-
-        function resolveBlocker(index) {
-            blockers[index].resolved = true;
-            blockers[index].resolvedAt = new Date().toISOString();
-            saveBlockers();
-            renderBlockers();
-        }
-
-        function deleteBlocker(index) {
-            blockers.splice(index, 1);
-            saveBlockers();
-            renderBlockers();
-        }
-
-        // ==================== HABITS ====================
-        function renderHabits() {
-            const container = document.getElementById('habit-list');
-            const countEl = document.getElementById('habit-count');
-            const quick = document.getElementById('quick-habit-count');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (habits.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No habits tracked yet.</div>`;
-                if (countEl) countEl.textContent = '0';
-                if (quick) quick.textContent = '0';
-                return;
-            }
-
-            const today = getToday();
-
-            habits.forEach((habit, index) => {
-                const completedToday = habit.completedDates && habit.completedDates.includes(today);
-                const streak = habit.streak || 0;
-
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
-                
-                div.innerHTML = `
-                    <div class="flex items-center gap-x-4 flex-1">
-                        <div onclick="toggleHabit(${index})" class="w-6 h-6 flex-shrink-0 rounded-xl border ${completedToday ? 'bg-emerald-500 border-emerald-500' : 'border-zinc-600'} flex items-center justify-center cursor-pointer">
-                            ${completedToday ? '<i class="fa-solid fa-check text-white text-xs"></i>' : ''}
-                        </div>
-                        <div class="flex-1">
-                            <div class="text-sm">${habit.name}</div>
-                            <div class="text-xs text-emerald-400">${streak} day streak</div>
-                        </div>
-                    </div>
-                    <button onclick="deleteHabit(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-times text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-
-            if (countEl) countEl.textContent = habits.length;
-            if (quick) quick.textContent = habits.length;
-        }
-
-        function addHabit() {
-            const input = document.getElementById('habit-input');
-            if (!input || !input.value.trim()) return;
-            
-            const habit = {
-                name: input.value.trim(),
-                completedDates: [],
-                streak: 0,
-                created: new Date().toISOString()
-            };
-            habits.unshift(habit);
-            input.value = '';
-            saveHabits();
-            renderHabits();
-        }
-
-        function toggleHabit(index) {
-            const today = getToday();
-            const habit = habits[index];
-            
-            if (!habit.completedDates) habit.completedDates = [];
-
-            const isCompleted = habit.completedDates.includes(today);
-
-            if (isCompleted) {
-                habit.completedDates = habit.completedDates.filter(d => d !== today);
-                habit.streak = Math.max(0, (habit.streak || 1) - 1);
-            } else {
-                habit.completedDates.push(today);
-                habit.streak = (habit.streak || 0) + 1;
-            }
-
-            saveHabits();
-            renderHabits();
-        }
-
-        function deleteHabit(index) {
-            habits.splice(index, 1);
-            saveHabits();
-            renderHabits();
-        }
-
-        // ==================== MOOD + ENERGY CORRELATION ====================
-        function logMoodEnergy() {
-            const energy = parseInt(document.getElementById('mood-energy').value);
-            const mood = parseInt(document.getElementById('mood-mood').value);
-            
-            const entry = {
-                date: getToday(),
-                energy: energy,
-                mood: mood,
-                timestamp: new Date().toISOString()
-            };
-            
-            energyLogs = energyLogs.filter(e => e.date !== getToday());
-            energyLogs.unshift(entry);
-            saveEnergy();
-            
-            updateMoodInsights();
-        }
-
-        function updateMoodInsights() {
-            const container = document.getElementById('mood-insights');
-            if (!container) return;
-            
-            if (energyLogs.length < 3) {
-                container.innerHTML = `<div class="text-zinc-400">Log a few days to see patterns...</div>`;
-                return;
-            }
-
-            let withMovement = [];
-            let withoutMovement = [];
-            
-            energyLogs.forEach(log => {
-                const bodyCheck = bodyCheckins.find(b => b.date === log.date);
-                if (bodyCheck) {
-                    if (bodyCheck.movement) {
-                        withMovement.push(log);
-                    } else {
-                        withoutMovement.push(log);
-                    }
-                }
-            });
-
-            let html = '';
-            
-            if (withMovement.length > 0 && withoutMovement.length > 0) {
-                const avgEnergyWith = withMovement.reduce((sum, log) => sum + log.energy, 0) / withMovement.length;
-                const avgEnergyWithout = withoutMovement.reduce((sum, log) => sum + log.energy, 0) / withoutMovement.length;
-                const diff = Math.round(((avgEnergyWith - avgEnergyWithout) / avgEnergyWithout) * 100);
-                
-                if (diff > 0) {
-                    html += `<div class="text-emerald-400">✓ Days you move = <strong>+${diff}%</strong> higher energy</div>`;
-                }
-            }
-
-            const goodSleep = energyLogs.filter(log => {
-                const body = bodyCheckins.find(b => b.date === log.date);
-                return body && body.sleep >= 7;
-            });
-            const badSleep = energyLogs.filter(log => {
-                const body = bodyCheckins.find(b => b.date === log.date);
-                return body && body.sleep < 7;
-            });
-
-            if (goodSleep.length > 0 && badSleep.length > 0) {
-                const avgMoodGood = goodSleep.reduce((sum, log) => sum + log.mood, 0) / goodSleep.length;
-                const avgMoodBad = badSleep.reduce((sum, log) => sum + log.mood, 0) / badSleep.length;
-                const diff = Math.round(((avgMoodGood - avgMoodBad) / avgMoodBad) * 100);
-                
-                if (diff > 0) {
-                    html += `<div class="text-emerald-400">✓ Good sleep = <strong>+${diff}%</strong> better mood</div>`;
-                }
-            }
-
-            if (!html) {
-                html = `<div class="text-zinc-400">Keep logging to discover your patterns</div>`;
-            }
-
-            container.innerHTML = html;
-        }
-
-        // ==================== FOCUS LEAKS (DISTRACTION TRACKER) ====================
-        function renderLeaks() {
-            const container = document.getElementById('leaks-list');
-            if (!container) return;
-            container.innerHTML = '';
-
-            if (leaks.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No leaks logged yet.</div>`;
-                return;
-            }
-
-            leaks.forEach((leak, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
-                const note = leak.note ? `<div class="text-xs text-zinc-400">${leak.note}</div>` : '';
-                div.innerHTML = `
-                    <div class="flex-1">
-                        <div class="text-sm"><span class="font-medium">${leak.type}</span></div>
-                        ${note}
-                        <div class="text-xs text-zinc-500">${new Date(leak.date).toLocaleDateString()}</div>
-                    </div>
-                    <button onclick="deleteLeak(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-times text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function logLeak() {
-            const type = document.getElementById('leak-type').value;
-            const note = document.getElementById('leak-note').value.trim();
-            
-            leaks.unshift({
-                type: type,
-                note: note,
-                date: new Date().toISOString()
-            });
-            
-            document.getElementById('leak-note').value = '';
-            saveLeaks();
-            renderLeaks();
-        }
-
-        function deleteLeak(index) {
-            leaks.splice(index, 1);
-            saveLeaks();
-            renderLeaks();
-        }
-
-        // ==================== TODOS ====================
-        function renderTodos() {
-            const container = document.getElementById('todo-list');
-            const quick = document.getElementById('quick-task-count');
-            if (!container) return;
-            container.innerHTML = '';
-            if (todos.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No tasks yet.</div>`;
-                if (quick) quick.textContent = '0';
-                return;
-            }
-            todos.forEach((todo, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center gap-x-3 glass border border-zinc-800 px-5 py-4 rounded-3xl ${todo.completed ? 'opacity-60' : ''}`;
-                div.innerHTML = `
-                    <div onclick="toggleTodo(${index})" class="w-5 h-5 flex-shrink-0 rounded-xl border ${todo.completed ? 'bg-indigo-600 border-indigo-600' : 'border-zinc-600'} flex items-center justify-center cursor-pointer">
-                        ${todo.completed ? '<i class="fa-solid fa-check text-white text-xs"></i>' : ''}
-                    </div>
-                    <div class="flex-1 ${todo.completed ? 'line-through opacity-60' : ''}">${todo.text}</div>
-                    <button onclick="deleteTodo(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-trash text-xs"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-            if (quick) quick.textContent = todos.filter(t => !t.completed).length;
-        }
-        function addTodo() {
-            const input = document.getElementById('todo-input');
-            if (!input || !input.value.trim()) return;
-            todos.unshift({ text: input.value.trim(), completed: false });
-            input.value = '';
-            saveTodos();
-            renderTodos();
-        }
-        function toggleTodo(index) {
-            todos[index].completed = !todos[index].completed;
-            saveTodos();
-            renderTodos();
-        }
-        function deleteTodo(index) {
-            todos.splice(index, 1);
-            saveTodos();
-            renderTodos();
-        }
-
-        // ==================== REMINDERS ====================
-        function renderReminders() {
-            const container = document.getElementById('reminder-list');
-            const quick = document.getElementById('quick-reminder-count');
-            if (!container) return;
-            container.innerHTML = '';
-            if (reminders.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No reminders.</div>`;
-                if (quick) quick.textContent = '0';
-                return;
-            }
-            reminders.forEach((reminder, index) => {
-                const div = document.createElement('div');
-                div.className = `flex items-center gap-x-4 glass border border-zinc-800 px-5 py-4 rounded-3xl`;
-                const dateStr = new Date(reminder.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                div.innerHTML = `
-                    <div class="text-center w-12 flex-shrink-0 text-xs text-zinc-400">${dateStr}</div>
-                    <div class="flex-1">${reminder.text}</div>
-                    <button onclick="deleteReminder(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
-                        <i class="fa-solid fa-times text-sm"></i>
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-            if (quick) quick.textContent = reminders.length;
-        }
-        function addReminder() {
-            const input = document.getElementById('reminder-input');
-            const dateInput = document.getElementById('reminder-date');
-            if (!input || !input.value.trim()) return;
-            const date = dateInput.value || new Date().toISOString().split('T')[0];
-            reminders.unshift({ text: input.value.trim(), date: date });
-            input.value = '';
-            dateInput.value = '';
-            saveReminders();
-            renderReminders();
-        }
-        function deleteReminder(index) {
-            reminders.splice(index, 1);
-            saveReminders();
-            renderReminders();
-        }
-
-        // ==================== FOCUS TIMER ====================
-        let timerInterval = null;
-        let timeLeft = 25 * 60;
-        let isRunning = false;
-
-        function updateTimerDisplay() {
-            const display = document.getElementById('timer-display');
-            if (!display) return;
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function setTimer(minutes) {
-            if (isRunning) return;
-            timeLeft = minutes * 60;
-            updateTimerDisplay();
-        }
-
-        function startTimer() {
-            if (isRunning) return;
-            isRunning = true;
-            document.getElementById('start-btn').innerHTML = `<i class="fa-solid fa-play"></i><span> Running...</span>`;
-            
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    isRunning = false;
-                    sessionsToday++;
-                    localStorage.setItem('cakehub_sessions', sessionsToday);
-                    document.getElementById('session-count').innerHTML = `Sessions completed today: <span class="font-medium text-white">${sessionsToday}</span>`;
-                    alert("Session complete! Great work.");
-                    resetTimer();
-                }
-            }, 1000);
-        }
-
-        function pauseTimer() {
-            clearInterval(timerInterval);
-            isRunning = false;
-            document.getElementById('start-btn').innerHTML = `<i class="fa-solid fa-play"></i><span> Start</span>`;
-        }
-
-        function resetTimer() {
-            clearInterval(timerInterval);
-            isRunning = false;
-            timeLeft = 25 * 60;
-            updateTimerDisplay();
-            document.getElementById('start-btn').innerHTML = `<i class="fa-solid fa-play"></i><span> Start</span>`;
         }
 
         // ==================== HELPERS ====================
@@ -1735,22 +551,9 @@
 
         function updateQuickCounts() {
             const taskEl = document.getElementById('quick-task-count');
-            const moneyEl = document.getElementById('quick-money-count');
             const inboxEl = document.getElementById('quick-inbox-count');
-            const blockerEl = document.getElementById('quick-blocker-count');
-            const habitEl = document.getElementById('quick-habit-count');
-            const contributionEl = document.getElementById('quick-contribution-count');
-            const goalsEl = document.getElementById('quick-goals-count');
-            const relationshipsEl = document.getElementById('quick-relationships-count');
-
             if (taskEl) taskEl.textContent = todos.filter(t => !t.completed).length;
-            if (moneyEl) moneyEl.textContent = moneyMoves.length;
             if (inboxEl) inboxEl.textContent = inboxItems.length;
-            if (blockerEl) blockerEl.textContent = blockers.filter(b => !b.resolved).length;
-            if (habitEl) habitEl.textContent = habits.length;
-            if (contributionEl) contributionEl.textContent = contributions.length;
-            if (goalsEl) goalsEl.textContent = goals.length;
-            if (relationshipsEl) relationshipsEl.textContent = relationships.length;
         }
 
         function showSection(section) {
@@ -1759,33 +562,16 @@
             document.getElementById(section).classList.add('active');
             const nav = document.getElementById('nav-' + section);
             if (nav) nav.classList.add('nav-active', 'bg-indigo-600');
-
-            if (section === 'focus') {
-                updateTimerDisplay();
-                document.getElementById('session-count').innerHTML = `Sessions completed today: <span class="font-medium text-white">${sessionsToday}</span>`;
-            }
-            if (section === 'energy') {
-                updateMoodInsights();
-            }
-            if (section === 'leaks') {
-                renderLeaks();
-            }
         }
 
         // ==================== INIT ====================
         function initializeApp() {
             updateDate();
             renderMIT();
-            renderTodos();
-            renderReminders();
-            renderMoneyMoves();
-            renderBlockers();
-            renderHabits();
-            updateTimerDisplay();
             updateQuickCounts();
 
-            document.getElementById('dashboard').classList.add('active');
-            document.getElementById('nav-dashboard').classList.add('nav-active', 'bg-indigo-600');
+            document.getElementById('home').classList.add('active');
+            document.getElementById('nav-home').classList.add('nav-active', 'bg-indigo-600');
 
             if (!currentMIT) {
                 const defaultMIT = { date: getToday(), text: "Set your #1 priority for today", completed: false, streak: 0 };
