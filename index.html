@@ -20,15 +20,6 @@
             font-variant-numeric: tabular-nums;
             letter-spacing: -4px;
         }
-        .state-btn {
-            transition: all 0.2s ease;
-        }
-        .state-btn:active {
-            transform: scale(0.95);
-        }
-        .power-question {
-            transition: all 0.3s ease;
-        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -41,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.1 • Power</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.2 • Review</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -63,6 +54,9 @@
             </button>
             <button onclick="showSection('power')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-power">
                 <i class="fa-solid fa-sun w-4"></i><span>Power</span>
+            </button>
+            <button onclick="showSection('review')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-review">
+                <i class="fa-solid fa-moon w-4"></i><span>Review</span>
             </button>
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
@@ -106,14 +100,10 @@
                 <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700"></div>
             </div>
 
-            <!-- Quick Capture Bar -->
             <div class="glass border border-zinc-800 rounded-3xl p-2 mb-8 flex">
-                <input id="quick-capture" type="text" placeholder="Capture anything... (thought, idea, task)" 
-                       class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" 
-                       onkeypress="if(event.key === 'Enter') quickCapture()">
+                <input id="quick-capture" type="text" placeholder="Capture anything..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') quickCapture()">
                 <button onclick="quickCapture()" class="px-6 bg-indigo-600 hover:bg-indigo-500 rounded-3xl text-sm font-medium flex items-center gap-x-2">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>Capture</span>
+                    <i class="fa-solid fa-plus"></i><span>Capture</span>
                 </button>
             </div>
 
@@ -124,6 +114,15 @@
                         <div>
                             <div class="font-medium">Power Questions</div>
                             <div class="text-xs text-zinc-400">Start strong</div>
+                        </div>
+                    </div>
+                </div>
+                <div onclick="showSection('review')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-indigo-400 transition-colors">
+                    <div class="flex items-center gap-x-3">
+                        <i class="fa-solid fa-moon text-indigo-400 text-xl"></i>
+                        <div>
+                            <div class="font-medium">Evening Review</div>
+                            <div class="text-xs text-zinc-400">Close the day</div>
                         </div>
                     </div>
                 </div>
@@ -145,15 +144,6 @@
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('focus')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-clock text-sky-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Focus Timer</div>
-                            <div class="text-xs text-zinc-400">Deep work</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -162,48 +152,56 @@
             <div class="max-w-2xl mx-auto">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-semibold tracking-tighter">Morning Power Questions</h2>
-                    <p class="text-zinc-400 mt-2">Tony Robbins’ daily ritual for an extraordinary life</p>
+                    <p class="text-zinc-400 mt-2">Tony Robbins’ daily ritual</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">1. What am I happy about?</div><textarea id="q1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">2. What am I excited about?</div><textarea id="q2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">3. What am I grateful for?</div><textarea id="q3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">4. What am I proud of?</div><textarea id="q4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">5. What am I committed to?</div><textarea id="q5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-yellow-400">6. What am I learning?</div><textarea id="q6" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                </div>
+
+                <button onclick="savePowerQuestions()" class="mt-8 w-full py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold rounded-3xl text-lg">Save Today’s Answers</button>
+                <div id="power-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
+            </div>
+        </div>
+
+        <!-- EVENING REVIEW -->
+        <div id="review" class="section">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Evening Review</h2>
+                    <p class="text-zinc-400 mt-2">Close the day with clarity and growth</p>
                 </div>
 
                 <div class="space-y-4">
                     <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-yellow-400">1. What am I happy about?</div>
-                        <textarea id="q1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                        <div class="font-medium mb-3 text-indigo-400">1. What went well today?</div>
+                        <textarea id="r1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
                     </div>
-
                     <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-yellow-400">2. What am I excited about?</div>
-                        <textarea id="q2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                        <div class="font-medium mb-3 text-indigo-400">2. What could I have done better?</div>
+                        <textarea id="r2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
                     </div>
-
                     <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-yellow-400">3. What am I grateful for?</div>
-                        <textarea id="q3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                        <div class="font-medium mb-3 text-indigo-400">3. What did I learn today?</div>
+                        <textarea id="r3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
                     </div>
-
                     <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-yellow-400">4. What am I proud of?</div>
-                        <textarea id="q4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                        <div class="font-medium mb-3 text-indigo-400">4. What am I grateful for today?</div>
+                        <textarea id="r4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
                     </div>
-
                     <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-yellow-400">5. What am I committed to?</div>
-                        <textarea id="q5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
-                    </div>
-
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-yellow-400">6. What am I learning?</div>
-                        <textarea id="q6" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2" placeholder="Write your answer..."></textarea>
+                        <div class="font-medium mb-3 text-indigo-400">5. One thing I’m committing to tomorrow:</div>
+                        <textarea id="r5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
                     </div>
                 </div>
 
-                <button onclick="savePowerQuestions()" class="mt-8 w-full py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold rounded-3xl text-lg transition-colors">
-                    Save Today’s Answers
-                </button>
-
-                <div id="power-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">
-                    ✓ Saved. Your answers are stored.
-                </div>
+                <button onclick="saveEveningReview()" class="mt-8 w-full py-4 bg-indigo-600 hover:bg-indigo-500 rounded-3xl font-semibold text-lg">Save Evening Review</button>
+                <div id="review-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
             </div>
         </div>
 
@@ -243,62 +241,40 @@
                     <button onclick="changeState('move')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-yellow-400 transition-colors">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-walking text-2xl text-yellow-400"></i>
-                            <div class="text-left">
-                                <div class="font-medium">Stand Up &amp; Move</div>
-                                <div class="text-xs text-zinc-400">2 minutes of movement</div>
-                            </div>
+                            <div class="text-left"><div class="font-medium">Stand Up &amp; Move</div><div class="text-xs text-zinc-400">2 minutes of movement</div></div>
                         </div>
                         <i class="fa-solid fa-arrow-right text-zinc-400"></i>
                     </button>
-
                     <button onclick="changeState('breathe')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-sky-400 transition-colors">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-wind text-2xl text-sky-400"></i>
-                            <div class="text-left">
-                                <div class="font-medium">Power Breathing</div>
-                                <div class="text-xs text-zinc-400">60 seconds of deep breaths</div>
-                            </div>
+                            <div class="text-left"><div class="font-medium">Power Breathing</div><div class="text-xs text-zinc-400">60 seconds of deep breaths</div></div>
                         </div>
                         <i class="fa-solid fa-arrow-right text-zinc-400"></i>
                     </button>
-
                     <button onclick="changeState('pose')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-purple-400 transition-colors">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-user text-2xl text-purple-400"></i>
-                            <div class="text-left">
-                                <div class="font-medium">Power Pose</div>
-                                <div class="text-xs text-zinc-400">2 minutes of confident posture</div>
-                            </div>
+                            <div class="text-left"><div class="font-medium">Power Pose</div><div class="text-xs text-zinc-400">2 minutes of confident posture</div></div>
                         </div>
                         <i class="fa-solid fa-arrow-right text-zinc-400"></i>
                     </button>
-
                     <button onclick="changeState('cold')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-cyan-400 transition-colors">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-tint text-2xl text-cyan-400"></i>
-                            <div class="text-left">
-                                <div class="font-medium">Cold Water on Face</div>
-                                <div class="text-xs text-zinc-400">Instant reset</div>
-                            </div>
+                            <div class="text-left"><div class="font-medium">Cold Water on Face</div><div class="text-xs text-zinc-400">Instant reset</div></div>
                         </div>
                         <i class="fa-solid fa-arrow-right text-zinc-400"></i>
                     </button>
-
                     <button onclick="changeState('music')" class="state-btn flex items-center justify-between glass border border-zinc-800 px-6 py-5 rounded-3xl hover:border-pink-400 transition-colors">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-music text-2xl text-pink-400"></i>
-                            <div class="text-left">
-                                <div class="font-medium">Play a Power Song</div>
-                                <div class="text-xs text-zinc-400">Change your emotional state</div>
-                            </div>
+                            <div class="text-left"><div class="font-medium">Play a Power Song</div><div class="text-xs text-zinc-400">Change your emotional state</div></div>
                         </div>
                         <i class="fa-solid fa-arrow-right text-zinc-400"></i>
                     </button>
                 </div>
-
-                <div class="mt-8 text-xs text-zinc-400">
-                    Tony Robbins principle: <span class="text-white">Motion creates emotion.</span>
-                </div>
+                <div class="mt-8 text-xs text-zinc-400">Tony Robbins: <span class="text-white">Motion creates emotion.</span></div>
             </div>
         </div>
 
@@ -319,8 +295,7 @@
 
                 <div class="flex justify-center gap-4">
                     <button onclick="startTimer()" id="start-btn" class="px-8 py-3 bg-sky-600 hover:bg-sky-500 rounded-3xl font-medium flex items-center gap-x-2">
-                        <i class="fa-solid fa-play"></i>
-                        <span>Start</span>
+                        <i class="fa-solid fa-play"></i><span>Start</span>
                     </button>
                     <button onclick="pauseTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Pause</button>
                     <button onclick="resetTimer()" class="px-6 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-3xl font-medium">Reset</button>
@@ -372,22 +347,14 @@
 
                 <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
                     <div class="mb-4">
-                        <div class="flex justify-between text-sm mb-2">
-                            <span>Energy Level</span>
-                            <span id="energy-value" class="font-medium">7</span>
-                        </div>
-                        <input type="range" id="energy-slider" min="1" max="10" value="7" step="1" 
-                               class="w-full accent-sky-500" oninput="document.getElementById('energy-value').textContent = this.value">
+                        <div class="flex justify-between text-sm mb-2"><span>Energy Level</span><span id="energy-value" class="font-medium">7</span></div>
+                        <input type="range" id="energy-slider" min="1" max="10" value="7" step="1" class="w-full accent-sky-500" oninput="document.getElementById('energy-value').textContent = this.value">
                     </div>
-                    
                     <div class="mb-4">
-                        <input id="energy-note" type="text" placeholder="Optional note (e.g. After coffee)" 
-                               class="w-full bg-zinc-900 border border-zinc-700 px-4 py-3 rounded-2xl text-sm focus:outline-none">
+                        <input id="energy-note" type="text" placeholder="Optional note (e.g. After coffee)" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-3 rounded-2xl text-sm focus:outline-none">
                     </div>
-
                     <button onclick="logEnergy()" class="w-full py-3 bg-sky-600 hover:bg-sky-500 rounded-3xl font-medium">Log Energy</button>
                 </div>
-
                 <div id="energy-list" class="space-y-2"></div>
             </div>
         </div>
@@ -433,6 +400,7 @@
         let currentMIT = JSON.parse(localStorage.getItem('cakehub_mit')) || null;
         let sessionsToday = parseInt(localStorage.getItem('cakehub_sessions') || '0');
         let powerAnswers = JSON.parse(localStorage.getItem('cakehub_power')) || {};
+        let eveningReviews = JSON.parse(localStorage.getItem('cakehub_review')) || {};
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -442,6 +410,7 @@
         function saveEnergy() { localStorage.setItem('cakehub_energy', JSON.stringify(energyLogs)); }
         function saveInbox() { localStorage.setItem('cakehub_inbox', JSON.stringify(inboxItems)); }
         function savePower() { localStorage.setItem('cakehub_power', JSON.stringify(powerAnswers)); }
+        function saveReview() { localStorage.setItem('cakehub_review', JSON.stringify(eveningReviews)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -514,7 +483,6 @@
                 savedAt: new Date().toISOString()
             };
             savePower();
-            
             const savedMsg = document.getElementById('power-saved');
             savedMsg.classList.remove('hidden');
             setTimeout(() => savedMsg.classList.add('hidden'), 2500);
@@ -532,15 +500,39 @@
             }
         }
 
+        // ==================== EVENING REVIEW ====================
+        function saveEveningReview() {
+            eveningReviews = {
+                date: getToday(),
+                r1: document.getElementById('r1').value,
+                r2: document.getElementById('r2').value,
+                r3: document.getElementById('r3').value,
+                r4: document.getElementById('r4').value,
+                r5: document.getElementById('r5').value,
+                savedAt: new Date().toISOString()
+            };
+            saveReview();
+            const savedMsg = document.getElementById('review-saved');
+            savedMsg.classList.remove('hidden');
+            setTimeout(() => savedMsg.classList.add('hidden'), 2500);
+        }
+
+        function loadEveningReview() {
+            const today = getToday();
+            if (eveningReviews.date === today) {
+                document.getElementById('r1').value = eveningReviews.r1 || '';
+                document.getElementById('r2').value = eveningReviews.r2 || '';
+                document.getElementById('r3').value = eveningReviews.r3 || '';
+                document.getElementById('r4').value = eveningReviews.r4 || '';
+                document.getElementById('r5').value = eveningReviews.r5 || '';
+            }
+        }
+
         // ==================== QUICK CAPTURE ====================
         function quickCapture() {
             const input = document.getElementById('quick-capture');
             if (!input || !input.value.trim()) return;
-            
-            inboxItems.unshift({
-                text: input.value.trim(),
-                timestamp: new Date().toISOString()
-            });
+            inboxItems.unshift({ text: input.value.trim(), timestamp: new Date().toISOString() });
             input.value = '';
             saveInbox();
             updateQuickCounts();
@@ -555,7 +547,7 @@
             container.innerHTML = '';
 
             if (inboxItems.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">Inbox is empty. Capture anything above.</div>`;
+                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">Inbox is empty.</div>`;
                 if (countEl) countEl.textContent = '0';
                 if (quick) quick.textContent = '0';
                 return;
@@ -580,11 +572,7 @@
         function addToInbox() {
             const input = document.getElementById('inbox-input');
             if (!input || !input.value.trim()) return;
-            
-            inboxItems.unshift({
-                text: input.value.trim(),
-                timestamp: new Date().toISOString()
-            });
+            inboxItems.unshift({ text: input.value.trim(), timestamp: new Date().toISOString() });
             input.value = '';
             saveInbox();
             renderInbox();
@@ -601,20 +589,13 @@
         // ==================== STATE CHANGERS ====================
         function changeState(type) {
             const messages = {
-                'move': 'Great! Stand up, move your body for 2 minutes. Shake it out.',
-                'breathe': 'Close your eyes. Inhale for 4 seconds, hold for 4, exhale for 6. Repeat 6 times.',
-                'pose': 'Stand tall. Feet shoulder-width. Hands on hips. Chin up. Hold for 2 minutes.',
-                'cold': 'Go to the sink and splash cold water on your face 10 times. Feel the reset.',
-                'music': 'Put on a song that makes you feel powerful. Dance or sing along.'
+                'move': 'Great! Stand up, move your body for 2 minutes.',
+                'breathe': 'Inhale 4s, hold 4s, exhale 6s. Repeat 6 times.',
+                'pose': 'Stand tall, hands on hips, chin up. Hold 2 minutes.',
+                'cold': 'Splash cold water on your face 10 times.',
+                'music': 'Put on a powerful song and feel it.'
             };
-
             alert(messages[type] || 'State changed!');
-            
-            const log = {
-                type: type,
-                timestamp: new Date().toISOString()
-            };
-            localStorage.setItem('cakehub_last_state', JSON.stringify(log));
         }
 
         // ==================== MONEY MOVES ====================
@@ -1058,6 +1039,7 @@
             if (section === 'energy') renderEnergyLogs();
             if (section === 'inbox') renderInbox();
             if (section === 'power') loadPowerQuestions();
+            if (section === 'review') loadEveningReview();
         }
 
         // ==================== INIT ====================
