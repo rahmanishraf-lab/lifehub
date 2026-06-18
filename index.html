@@ -14,18 +14,15 @@
         .nav-active { background-color: #6366f1; color: white; border-radius: 9999px; }
         .glass { background: rgba(255,255,255, 0.06); backdrop-filter: blur(20px); }
         .mit-card { background: linear-gradient(135deg, #1e2937 0%, #0f172a 100%); border: 1px solid #334155; }
-        .timer-display {
-            font-size: 72px;
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
-            letter-spacing: -4px;
-        }
         .flow-card {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
         .flow-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+        .flow-active {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.08);
         }
     </style>
 </head>
@@ -39,7 +36,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.1 • Flow</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.2 • Refined Flow</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -54,7 +51,7 @@
             <p class="text-xl text-zinc-400 mt-1">Your personal operating system.</p>
         </div>
 
-        <!-- CLEAN NAVIGATION -->
+        <!-- Navigation -->
         <div class="flex items-center gap-x-1 mb-8 bg-zinc-900 p-1 rounded-3xl w-fit border border-zinc-800 overflow-x-auto">
             <button onclick="showSection('home')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 nav-active" id="nav-home">
                 <i class="fa-solid fa-home w-4"></i><span>Home</span>
@@ -79,41 +76,67 @@
             </button>
         </div>
 
-        <!-- HOME / DASHBOARD - IMPROVED FLOW -->
+        <!-- HOME - REFINED FLOW -->
         <div id="home" class="section active">
             
+            <!-- Dynamic Greeting + Recommended Action -->
+            <div class="mb-8">
+                <div id="dynamic-greeting" class="mb-4 px-1">
+                    <span class="text-xs font-medium tracking-[1.5px] text-emerald-400" id="time-label">TODAY'S FLOW</span>
+                    <h2 class="text-2xl font-semibold tracking-tighter" id="time-suggestion">Start your day strong</h2>
+                </div>
+                
+                <!-- Recommended Next Action -->
+                <div onclick="goToRecommendedAction()" class="flow-card glass border border-emerald-400/60 rounded-3xl p-5 cursor-pointer hover:border-emerald-400 mb-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-x-4">
+                            <i id="recommended-icon" class="fa-solid fa-sun text-emerald-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium">Recommended right now</div>
+                                <div id="recommended-text" class="text-emerald-400">Morning Ritual</div>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-emerald-400"></i>
+                    </div>
+                </div>
+            </div>
+
             <!-- Today's Flow -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
-                        <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">TODAY'S FLOW</span>
-                        <h2 class="text-2xl font-semibold tracking-tighter">What should you do now?</h2>
+                        <span class="text-xs font-medium tracking-[1.5px] text-zinc-400">YOUR DAILY RHYTHM</span>
                     </div>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div onclick="showSection('morning')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400">
+                    <!-- Morning -->
+                    <div onclick="showSection('morning')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400" id="flow-morning">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-sun text-yellow-400 text-2xl w-8"></i>
-                            <div>
+                            <div class="flex-1">
                                 <div class="font-medium">Morning Ritual</div>
-                                <div class="text-xs text-zinc-400">Power questions + body check</div>
+                                <div class="text-xs text-zinc-400">Power questions + energy</div>
                             </div>
                         </div>
                     </div>
-                    <div onclick="showSection('daily')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-indigo-400">
+                    
+                    <!-- Daily -->
+                    <div onclick="showSection('daily')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-indigo-400" id="flow-daily">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-tasks text-indigo-400 text-2xl w-8"></i>
-                            <div>
+                            <div class="flex-1">
                                 <div class="font-medium">Daily Execution</div>
                                 <div class="text-xs text-zinc-400">Tasks, focus &amp; state</div>
                             </div>
                         </div>
                     </div>
-                    <div onclick="showSection('evening')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-purple-400">
+                    
+                    <!-- Evening -->
+                    <div onclick="showSection('evening')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-purple-400" id="flow-evening">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-moon text-purple-400 text-2xl w-8"></i>
-                            <div>
+                            <div class="flex-1">
                                 <div class="font-medium">Evening Ritual</div>
                                 <div class="text-xs text-zinc-400">Review &amp; gratitude</div>
                             </div>
@@ -496,6 +519,60 @@
 
         function getToday() { return new Date().toISOString().split('T')[0]; }
 
+        // ==================== DYNAMIC TIME-BASED FLOW ====================
+        function updateTimeBasedFlow() {
+            const hour = new Date().getHours();
+            const timeLabel = document.getElementById('time-label');
+            const timeSuggestion = document.getElementById('time-suggestion');
+            const recommendedText = document.getElementById('recommended-text');
+            const recommendedIcon = document.getElementById('recommended-icon');
+
+            // Remove previous highlights
+            document.getElementById('flow-morning').classList.remove('flow-active', 'border-yellow-400');
+            document.getElementById('flow-daily').classList.remove('flow-active', 'border-indigo-400');
+            document.getElementById('flow-evening').classList.remove('flow-active', 'border-purple-400');
+
+            let recommendation = '';
+
+            if (hour >= 5 && hour < 12) {
+                // Morning
+                timeLabel.textContent = 'GOOD MORNING';
+                timeSuggestion.textContent = 'Start your day with intention';
+                recommendation = 'Morning Ritual';
+                recommendedIcon.className = 'fa-solid fa-sun text-emerald-400 text-2xl';
+                document.getElementById('flow-morning').classList.add('flow-active', 'border-yellow-400');
+            } 
+            else if (hour >= 12 && hour < 18) {
+                // Afternoon
+                timeLabel.textContent = 'AFTERNOON';
+                timeSuggestion.textContent = 'Stay focused and execute';
+                recommendation = 'Daily Execution';
+                recommendedIcon.className = 'fa-solid fa-tasks text-emerald-400 text-2xl';
+                document.getElementById('flow-daily').classList.add('flow-active', 'border-indigo-400');
+            } 
+            else {
+                // Evening
+                timeLabel.textContent = 'EVENING';
+                timeSuggestion.textContent = 'Close the day with reflection';
+                recommendation = 'Evening Ritual';
+                recommendedIcon.className = 'fa-solid fa-moon text-emerald-400 text-2xl';
+                document.getElementById('flow-evening').classList.add('flow-active', 'border-purple-400');
+            }
+
+            recommendedText.textContent = recommendation;
+        }
+
+        function goToRecommendedAction() {
+            const hour = new Date().getHours();
+            if (hour >= 5 && hour < 12) {
+                showSection('morning');
+            } else if (hour >= 12 && hour < 18) {
+                showSection('daily');
+            } else {
+                showSection('evening');
+            }
+        }
+
         // ==================== MIT ====================
         function renderMIT() {
             const container = document.getElementById('mit-card');
@@ -629,6 +706,7 @@
         // ==================== INIT ====================
         function initializeApp() {
             updateDate();
+            updateTimeBasedFlow();
             renderMIT();
             updateQuickCounts();
 
@@ -639,6 +717,9 @@
                 const defaultMIT = { date: getToday(), text: "Set your #1 priority for today", completed: false, streak: 0 };
                 saveMIT(defaultMIT);
             }
+
+            // Update flow every minute
+            setInterval(updateTimeBasedFlow, 60000);
         }
 
         window.onload = initializeApp;
