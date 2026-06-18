@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.2 • Review</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.3 • Weekly</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -57,6 +57,9 @@
             </button>
             <button onclick="showSection('review')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-review">
                 <i class="fa-solid fa-moon w-4"></i><span>Review</span>
+            </button>
+            <button onclick="showSection('weekly')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-weekly">
+                <i class="fa-solid fa-calendar-week w-4"></i><span>Weekly</span>
             </button>
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
@@ -126,21 +129,21 @@
                         </div>
                     </div>
                 </div>
+                <div onclick="showSection('weekly')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-emerald-400 transition-colors">
+                    <div class="flex items-center gap-x-3">
+                        <i class="fa-solid fa-calendar-week text-emerald-400 text-xl"></i>
+                        <div>
+                            <div class="font-medium">Weekly Review</div>
+                            <div class="text-xs text-zinc-400">Plan your week</div>
+                        </div>
+                    </div>
+                </div>
                 <div onclick="showSection('state')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400 transition-colors">
                     <div class="flex items-center gap-x-3">
                         <i class="fa-solid fa-bolt text-yellow-400 text-xl"></i>
                         <div>
                             <div class="font-medium">State Changers</div>
                             <div class="text-xs text-zinc-400">Change state fast</div>
-                        </div>
-                    </div>
-                </div>
-                <div onclick="showSection('inbox')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-zinc-600 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-inbox text-purple-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Inbox</div>
-                            <div class="text-xs text-zinc-400"><span id="quick-inbox-count">0</span> captured</div>
                         </div>
                     </div>
                 </div>
@@ -174,34 +177,55 @@
             <div class="max-w-2xl mx-auto">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-semibold tracking-tighter">Evening Review</h2>
-                    <p class="text-zinc-400 mt-2">Close the day with clarity and growth</p>
+                    <p class="text-zinc-400 mt-2">Close the day with clarity</p>
                 </div>
 
                 <div class="space-y-4">
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-indigo-400">1. What went well today?</div>
-                        <textarea id="r1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
-                    </div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-indigo-400">2. What could I have done better?</div>
-                        <textarea id="r2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
-                    </div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-indigo-400">3. What did I learn today?</div>
-                        <textarea id="r3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
-                    </div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-indigo-400">4. What am I grateful for today?</div>
-                        <textarea id="r4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
-                    </div>
-                    <div class="glass border border-zinc-800 rounded-3xl p-6">
-                        <div class="font-medium mb-3 text-indigo-400">5. One thing I’m committing to tomorrow:</div>
-                        <textarea id="r5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
-                    </div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">1. What went well today?</div><textarea id="r1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">2. What could I have done better?</div><textarea id="r2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">3. What did I learn today?</div><textarea id="r3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">4. What am I grateful for today?</div><textarea id="r4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6"><div class="font-medium mb-3 text-indigo-400">5. One thing I’m committing to tomorrow:</div><textarea id="r5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea></div>
                 </div>
 
                 <button onclick="saveEveningReview()" class="mt-8 w-full py-4 bg-indigo-600 hover:bg-indigo-500 rounded-3xl font-semibold text-lg">Save Evening Review</button>
                 <div id="review-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
+            </div>
+        </div>
+
+        <!-- WEEKLY REVIEW -->
+        <div id="weekly" class="section">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Weekly Review</h2>
+                    <p class="text-zinc-400 mt-2">Reflect • Reset • Plan</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-emerald-400">1. What were my biggest wins this week?</div>
+                        <textarea id="w1" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
+                    </div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-emerald-400">2. What didn’t go well?</div>
+                        <textarea id="w2" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
+                    </div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-emerald-400">3. Key lessons learned</div>
+                        <textarea id="w3" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
+                    </div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-emerald-400">4. What blockers keep showing up?</div>
+                        <textarea id="w4" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="2"></textarea>
+                    </div>
+                    <div class="glass border border-zinc-800 rounded-3xl p-6">
+                        <div class="font-medium mb-3 text-emerald-400">5. 3–5 priorities for next week</div>
+                        <textarea id="w5" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 text-sm focus:outline-none" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <button onclick="saveWeeklyReview()" class="mt-8 w-full py-4 bg-emerald-600 hover:bg-emerald-500 rounded-3xl font-semibold text-lg">Save Weekly Review</button>
+                <div id="weekly-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
             </div>
         </div>
 
@@ -401,6 +425,7 @@
         let sessionsToday = parseInt(localStorage.getItem('cakehub_sessions') || '0');
         let powerAnswers = JSON.parse(localStorage.getItem('cakehub_power')) || {};
         let eveningReviews = JSON.parse(localStorage.getItem('cakehub_review')) || {};
+        let weeklyReviews = JSON.parse(localStorage.getItem('cakehub_weekly')) || {};
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -411,6 +436,7 @@
         function saveInbox() { localStorage.setItem('cakehub_inbox', JSON.stringify(inboxItems)); }
         function savePower() { localStorage.setItem('cakehub_power', JSON.stringify(powerAnswers)); }
         function saveReview() { localStorage.setItem('cakehub_review', JSON.stringify(eveningReviews)); }
+        function saveWeekly() { localStorage.setItem('cakehub_weekly', JSON.stringify(weeklyReviews)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -525,6 +551,43 @@
                 document.getElementById('r3').value = eveningReviews.r3 || '';
                 document.getElementById('r4').value = eveningReviews.r4 || '';
                 document.getElementById('r5').value = eveningReviews.r5 || '';
+            }
+        }
+
+        // ==================== WEEKLY REVIEW ====================
+        function saveWeeklyReview() {
+            const weekNumber = getWeekNumber(new Date());
+            weeklyReviews = {
+                week: weekNumber,
+                w1: document.getElementById('w1').value,
+                w2: document.getElementById('w2').value,
+                w3: document.getElementById('w3').value,
+                w4: document.getElementById('w4').value,
+                w5: document.getElementById('w5').value,
+                savedAt: new Date().toISOString()
+            };
+            saveWeekly();
+            const savedMsg = document.getElementById('weekly-saved');
+            savedMsg.classList.remove('hidden');
+            setTimeout(() => savedMsg.classList.add('hidden'), 2500);
+        }
+
+        function getWeekNumber(d) {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+            return d.getUTCFullYear() + "-W" + weekNo;
+        }
+
+        function loadWeeklyReview() {
+            const week = getWeekNumber(new Date());
+            if (weeklyReviews.week === week) {
+                document.getElementById('w1').value = weeklyReviews.w1 || '';
+                document.getElementById('w2').value = weeklyReviews.w2 || '';
+                document.getElementById('w3').value = weeklyReviews.w3 || '';
+                document.getElementById('w4').value = weeklyReviews.w4 || '';
+                document.getElementById('w5').value = weeklyReviews.w5 || '';
             }
         }
 
@@ -1040,6 +1103,7 @@
             if (section === 'inbox') renderInbox();
             if (section === 'power') loadPowerQuestions();
             if (section === 'review') loadEveningReview();
+            if (section === 'weekly') loadWeeklyReview();
         }
 
         // ==================== INIT ====================
