@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.0 • Time</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.1 • Body</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -81,6 +81,9 @@
             </button>
             <button onclick="showSection('time')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-time">
                 <i class="fa-solid fa-clock w-4"></i><span>Time</span>
+            </button>
+            <button onclick="showSection('body')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-body">
+                <i class="fa-solid fa-dumbbell w-4"></i><span>Body</span>
             </button>
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
@@ -159,12 +162,12 @@
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('time')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-sky-400 transition-colors">
+                <div onclick="showSection('body')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-sky-400 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-clock text-sky-400 text-xl"></i>
+                        <i class="fa-solid fa-dumbbell text-sky-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Time Allocation</div>
-                            <div class="text-xs text-zinc-400">Weekly breakdown</div>
+                            <div class="font-medium">Body Check-in</div>
+                            <div class="text-xs text-zinc-400">Daily physical</div>
                         </div>
                     </div>
                 </div>
@@ -437,6 +440,56 @@
             </div>
         </div>
 
+        <!-- DAILY BODY CHECK-IN -->
+        <div id="body" class="section">
+            <div class="max-w-md mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Daily Body Check-in</h2>
+                    <p class="text-zinc-400 mt-2">Track your physical foundation</p>
+                </div>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6 space-y-6">
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Energy Level</span>
+                            <span id="body-energy-value">7</span>
+                        </div>
+                        <input type="range" id="body-energy" min="1" max="10" value="7" class="w-full accent-sky-500" oninput="document.getElementById('body-energy-value').textContent = this.value">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Sleep Quality</span>
+                            <span id="body-sleep-value">7</span>
+                        </div>
+                        <input type="range" id="body-sleep" min="1" max="10" value="7" class="w-full accent-purple-500" oninput="document.getElementById('body-sleep-value').textContent = this.value">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Movement Today?</span>
+                        </div>
+                        <div class="flex gap-3">
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="body-movement" value="yes" class="accent-emerald-500"> Yes
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="body-movement" value="no" class="accent-rose-500" checked> No
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>Water (glasses)</span>
+                            <span id="body-water-value">6</span>
+                        </div>
+                        <input type="range" id="body-water" min="0" max="15" value="6" class="w-full accent-cyan-500" oninput="document.getElementById('body-water-value').textContent = this.value">
+                    </div>
+                </div>
+
+                <button onclick="saveBodyCheckin()" class="w-full py-4 bg-sky-600 hover:bg-sky-500 rounded-3xl font-semibold text-lg">Save Today’s Check-in</button>
+                <div id="body-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
+            </div>
+        </div>
+
         <!-- TASKS -->
         <div id="tasks" class="section">
             <h2 class="text-3xl font-semibold tracking-tighter mb-4">Tasks</h2>
@@ -641,6 +694,7 @@
         let relationships = JSON.parse(localStorage.getItem('cakehub_relationships')) || [];
         let financeSnapshot = JSON.parse(localStorage.getItem('cakehub_finance')) || {};
         let timeAllocation = JSON.parse(localStorage.getItem('cakehub_time')) || {};
+        let bodyCheckins = JSON.parse(localStorage.getItem('cakehub_body')) || [];
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -659,6 +713,7 @@
         function saveRelationships() { localStorage.setItem('cakehub_relationships', JSON.stringify(relationships)); }
         function saveFinance() { localStorage.setItem('cakehub_finance', JSON.stringify(financeSnapshot)); }
         function saveTime() { localStorage.setItem('cakehub_time', JSON.stringify(timeAllocation)); }
+        function saveBody() { localStorage.setItem('cakehub_body', JSON.stringify(bodyCheckins)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -1585,6 +1640,79 @@
             document.getElementById('start-btn').innerHTML = `<i class="fa-solid fa-play"></i><span> Start</span>`;
         }
 
+        // ==================== DAILY BODY CHECK-IN ====================
+        function saveBodyCheckin() {
+            const today = getToday();
+            const checkin = {
+                date: today,
+                energy: parseInt(document.getElementById('body-energy').value),
+                sleep: parseInt(document.getElementById('body-sleep').value),
+                movement: document.querySelector('input[name="body-movement"]:checked').value === 'yes',
+                water: parseInt(document.getElementById('body-water').value),
+                savedAt: new Date().toISOString()
+            };
+            
+            // Remove existing entry for today if exists
+            bodyCheckins = bodyCheckins.filter(c => c.date !== today);
+            bodyCheckins.unshift(checkin);
+            saveBody();
+            
+            const savedMsg = document.getElementById('body-saved');
+            savedMsg.classList.remove('hidden');
+            setTimeout(() => savedMsg.classList.add('hidden'), 2500);
+        }
+
+        function loadBodyCheckin() {
+            const today = getToday();
+            const todayCheckin = bodyCheckins.find(c => c.date === today);
+            
+            if (todayCheckin) {
+                document.getElementById('body-energy').value = todayCheckin.energy;
+                document.getElementById('body-energy-value').textContent = todayCheckin.energy;
+                document.getElementById('body-sleep').value = todayCheckin.sleep;
+                document.getElementById('body-sleep-value').textContent = todayCheckin.sleep;
+                document.getElementById('body-water').value = todayCheckin.water;
+                document.getElementById('body-water-value').textContent = todayCheckin.water;
+                
+                const movementRadios = document.querySelectorAll('input[name="body-movement"]');
+                movementRadios.forEach(radio => {
+                    radio.checked = (radio.value === 'yes' && todayCheckin.movement) || (radio.value === 'no' && !todayCheckin.movement);
+                });
+            }
+        }
+
+        // ==================== FINANCE SNAPSHOT ====================
+        function saveFinanceSnapshot() {
+            const income = parseFloat(document.getElementById('finance-income').value) || 0;
+            const expenses = parseFloat(document.getElementById('finance-expenses').value) || 0;
+            const net = income - expenses;
+
+            financeSnapshot = {
+                month: new Date().toISOString().slice(0, 7),
+                income: income,
+                expenses: expenses,
+                net: net,
+                savedAt: new Date().toISOString()
+            };
+            saveFinance();
+            
+            document.getElementById('finance-net').textContent = '$' + net;
+            document.getElementById('finance-net').className = net >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
+        }
+
+        function loadFinanceSnapshot() {
+            const currentMonth = new Date().toISOString().slice(0, 7);
+            if (financeSnapshot.month === currentMonth) {
+                document.getElementById('finance-income').value = financeSnapshot.income || '';
+                document.getElementById('finance-expenses').value = financeSnapshot.expenses || '';
+                document.getElementById('finance-net').textContent = '$' + (financeSnapshot.net || 0);
+                document.getElementById('finance-net').className = (financeSnapshot.net || 0) >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
+            }
+            
+            const currentMonthMoves = moneyMoves.filter(m => m.date && m.date.slice(0, 7) === currentMonth).length;
+            document.getElementById('finance-moves-count').textContent = currentMonthMoves;
+        }
+
         // ==================== WEEKLY TIME ALLOCATION ====================
         function updateTimeTotal() {
             const deep = parseInt(document.getElementById('time-deepwork').value) || 0;
@@ -1638,38 +1766,6 @@
             }
         }
 
-        // ==================== FINANCE SNAPSHOT ====================
-        function saveFinanceSnapshot() {
-            const income = parseFloat(document.getElementById('finance-income').value) || 0;
-            const expenses = parseFloat(document.getElementById('finance-expenses').value) || 0;
-            const net = income - expenses;
-
-            financeSnapshot = {
-                month: new Date().toISOString().slice(0, 7),
-                income: income,
-                expenses: expenses,
-                net: net,
-                savedAt: new Date().toISOString()
-            };
-            saveFinance();
-            
-            document.getElementById('finance-net').textContent = '$' + net;
-            document.getElementById('finance-net').className = net >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
-        }
-
-        function loadFinanceSnapshot() {
-            const currentMonth = new Date().toISOString().slice(0, 7);
-            if (financeSnapshot.month === currentMonth) {
-                document.getElementById('finance-income').value = financeSnapshot.income || '';
-                document.getElementById('finance-expenses').value = financeSnapshot.expenses || '';
-                document.getElementById('finance-net').textContent = '$' + (financeSnapshot.net || 0);
-                document.getElementById('finance-net').className = (financeSnapshot.net || 0) >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
-            }
-            
-            const currentMonthMoves = moneyMoves.filter(m => m.date && m.date.slice(0, 7) === currentMonth).length;
-            document.getElementById('finance-moves-count').textContent = currentMonthMoves;
-        }
-
         // ==================== HELPERS ====================
         function updateDate() {
             const dateEl = document.getElementById('current-date');
@@ -1720,6 +1816,7 @@
             if (section === 'gratitude') renderGratitudes();
             if (section === 'finance') loadFinanceSnapshot();
             if (section === 'time') loadTimeAllocation();
+            if (section === 'body') loadBodyCheckin();
         }
 
         // ==================== INIT ====================
