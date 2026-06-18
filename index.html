@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.4 • Identity</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v1.5 • Contribution</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -63,6 +63,9 @@
             </button>
             <button onclick="showSection('identity')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-identity">
                 <i class="fa-solid fa-user w-4"></i><span>Identity</span>
+            </button>
+            <button onclick="showSection('contribution')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-contribution">
+                <i class="fa-solid fa-hand-holding-heart w-4"></i><span>Give</span>
             </button>
             <button onclick="showSection('tasks')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 hover:bg-zinc-800 rounded-3xl" id="nav-tasks">
                 <i class="fa-solid fa-check-circle w-4"></i><span>Tasks</span>
@@ -141,12 +144,12 @@
                         </div>
                     </div>
                 </div>
-                <div onclick="showSection('identity')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-purple-400 transition-colors">
+                <div onclick="showSection('contribution')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-rose-400 transition-colors">
                     <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-user text-purple-400 text-xl"></i>
+                        <i class="fa-solid fa-hand-holding-heart text-rose-400 text-xl"></i>
                         <div>
-                            <div class="font-medium">Identity</div>
-                            <div class="text-xs text-zinc-400">I am becoming...</div>
+                            <div class="font-medium">Contribution</div>
+                            <div class="text-xs text-zinc-400"><span id="quick-contribution-count">0</span> acts</div>
                         </div>
                     </div>
                 </div>
@@ -233,6 +236,26 @@
                 </div>
 
                 <div id="identity-list" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- CONTRIBUTION LOG -->
+        <div id="contribution" class="section">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Contribution Log</h2>
+                    <p class="text-zinc-400 mt-2">Track the value you create for others</p>
+                </div>
+
+                <div class="glass border border-zinc-800 rounded-3xl p-2 mb-6">
+                    <div class="flex gap-2">
+                        <input id="contribution-input" type="text" placeholder="Who did I help or what value did I create?" class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') addContribution()">
+                        <input id="contribution-note" type="text" placeholder="Note (optional)" class="w-48 bg-zinc-900 border border-zinc-700 px-4 text-sm rounded-3xl">
+                        <button onclick="addContribution()" class="px-6 bg-rose-600 hover:bg-rose-500 rounded-3xl text-sm font-medium">Log</button>
+                    </div>
+                </div>
+
+                <div id="contribution-list" class="space-y-2"></div>
             </div>
         </div>
 
@@ -434,6 +457,7 @@
         let eveningReviews = JSON.parse(localStorage.getItem('cakehub_review')) || {};
         let weeklyReviews = JSON.parse(localStorage.getItem('cakehub_weekly')) || {};
         let identityStatements = JSON.parse(localStorage.getItem('cakehub_identity')) || [];
+        let contributions = JSON.parse(localStorage.getItem('cakehub_contributions')) || [];
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
         function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
@@ -446,6 +470,7 @@
         function saveReview() { localStorage.setItem('cakehub_review', JSON.stringify(eveningReviews)); }
         function saveWeekly() { localStorage.setItem('cakehub_weekly', JSON.stringify(weeklyReviews)); }
         function saveIdentity() { localStorage.setItem('cakehub_identity', JSON.stringify(identityStatements)); }
+        function saveContributions() { localStorage.setItem('cakehub_contributions', JSON.stringify(contributions)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
         // ==================== MIT ====================
@@ -607,7 +632,7 @@
             container.innerHTML = '';
 
             if (identityStatements.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No identity statements yet. Add some above.</div>`;
+                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No identity statements yet.</div>`;
                 return;
             }
 
@@ -641,6 +666,64 @@
             identityStatements.splice(index, 1);
             saveIdentity();
             renderIdentityStatements();
+        }
+
+        // ==================== CONTRIBUTION LOG ====================
+        function renderContributions() {
+            const container = document.getElementById('contribution-list');
+            const quick = document.getElementById('quick-contribution-count');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (contributions.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-zinc-500 text-sm">No contributions logged yet.</div>`;
+                if (quick) quick.textContent = '0';
+                return;
+            }
+
+            contributions.forEach((contribution, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center justify-between glass border border-zinc-800 px-5 py-4 rounded-3xl`;
+                const note = contribution.note ? `<div class="text-xs text-zinc-400 mt-0.5">${contribution.note}</div>` : '';
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <div class="text-sm">${contribution.text}</div>
+                        ${note}
+                        <div class="text-xs text-zinc-500">${new Date(contribution.date).toLocaleDateString()}</div>
+                    </div>
+                    <button onclick="deleteContribution(${index}); event.stopImmediatePropagation()" class="text-zinc-400 hover:text-rose-400 w-8 h-8 flex items-center justify-center">
+                        <i class="fa-solid fa-times text-sm"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+
+            if (quick) quick.textContent = contributions.length;
+        }
+
+        function addContribution() {
+            const input = document.getElementById('contribution-input');
+            const noteInput = document.getElementById('contribution-note');
+            if (!input || !input.value.trim()) return;
+            
+            const contribution = {
+                text: input.value.trim(),
+                note: noteInput.value.trim(),
+                date: new Date().toISOString()
+            };
+            contributions.unshift(contribution);
+            input.value = '';
+            noteInput.value = '';
+            saveContributions();
+            renderContributions();
+            updateQuickCounts();
+        }
+
+        function deleteContribution(index) {
+            contributions.splice(index, 1);
+            saveContributions();
+            renderContributions();
+            updateQuickCounts();
         }
 
         // ==================== QUICK CAPTURE ====================
@@ -1132,12 +1215,14 @@
             const inboxEl = document.getElementById('quick-inbox-count');
             const blockerEl = document.getElementById('quick-blocker-count');
             const habitEl = document.getElementById('quick-habit-count');
+            const contributionEl = document.getElementById('quick-contribution-count');
 
             if (taskEl) taskEl.textContent = todos.filter(t => !t.completed).length;
             if (moneyEl) moneyEl.textContent = moneyMoves.length;
             if (inboxEl) inboxEl.textContent = inboxItems.length;
             if (blockerEl) blockerEl.textContent = blockers.filter(b => !b.resolved).length;
             if (habitEl) habitEl.textContent = habits.length;
+            if (contributionEl) contributionEl.textContent = contributions.length;
         }
 
         function showSection(section) {
@@ -1157,6 +1242,7 @@
             if (section === 'review') loadEveningReview();
             if (section === 'weekly') loadWeeklyReview();
             if (section === 'identity') renderIdentityStatements();
+            if (section === 'contribution') renderContributions();
         }
 
         // ==================== INIT ====================
@@ -1170,6 +1256,8 @@
             renderHabits();
             renderEnergyLogs();
             renderInbox();
+            renderIdentityStatements();
+            renderContributions();
             updateTimerDisplay();
             updateQuickCounts();
 
