@@ -20,6 +20,13 @@
             font-variant-numeric: tabular-nums;
             letter-spacing: -4px;
         }
+        .flow-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .flow-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200">
@@ -32,7 +39,7 @@
                 </div>
                 <div>
                     <span class="font-display text-2xl font-semibold tracking-tighter">CakeHub</span>
-                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.0 • Clean</span>
+                    <span class="text-xs px-1.5 py-0.5 bg-zinc-800 text-zinc-400 rounded-full ml-1.5 text-[10px]">v2.1 • Flow</span>
                 </div>
             </div>
             <div id="current-date" class="text-sm text-zinc-400 font-mono"></div>
@@ -47,7 +54,7 @@
             <p class="text-xl text-zinc-400 mt-1">Your personal operating system.</p>
         </div>
 
-        <!-- NEW CLEAN NAVIGATION -->
+        <!-- CLEAN NAVIGATION -->
         <div class="flex items-center gap-x-1 mb-8 bg-zinc-900 p-1 rounded-3xl w-fit border border-zinc-800 overflow-x-auto">
             <button onclick="showSection('home')" class="nav-item px-5 py-2 text-sm font-medium flex items-center gap-x-2 nav-active" id="nav-home">
                 <i class="fa-solid fa-home w-4"></i><span>Home</span>
@@ -72,8 +79,50 @@
             </button>
         </div>
 
-        <!-- HOME / DASHBOARD -->
+        <!-- HOME / DASHBOARD - IMPROVED FLOW -->
         <div id="home" class="section active">
+            
+            <!-- Today's Flow -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-3 px-1">
+                    <div>
+                        <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">TODAY'S FLOW</span>
+                        <h2 class="text-2xl font-semibold tracking-tighter">What should you do now?</h2>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div onclick="showSection('morning')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-sun text-yellow-400 text-2xl w-8"></i>
+                            <div>
+                                <div class="font-medium">Morning Ritual</div>
+                                <div class="text-xs text-zinc-400">Power questions + body check</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="showSection('daily')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-indigo-400">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-tasks text-indigo-400 text-2xl w-8"></i>
+                            <div>
+                                <div class="font-medium">Daily Execution</div>
+                                <div class="text-xs text-zinc-400">Tasks, focus &amp; state</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="showSection('evening')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-purple-400">
+                        <div class="flex items-center gap-x-4">
+                            <i class="fa-solid fa-moon text-purple-400 text-2xl w-8"></i>
+                            <div>
+                                <div class="font-medium">Evening Ritual</div>
+                                <div class="text-xs text-zinc-400">Review &amp; gratitude</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Most Important Thing -->
             <div class="mb-8">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <div>
@@ -88,6 +137,7 @@
                 <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700"></div>
             </div>
 
+            <!-- Quick Capture -->
             <div class="glass border border-zinc-800 rounded-3xl p-2 mb-8 flex">
                 <input id="quick-capture" type="text" placeholder="Capture anything..." class="flex-1 bg-transparent px-5 py-3 text-sm focus:outline-none" onkeypress="if(event.key === 'Enter') quickCapture()">
                 <button onclick="quickCapture()" class="px-6 bg-indigo-600 hover:bg-indigo-500 rounded-3xl text-sm font-medium flex items-center gap-x-2">
@@ -95,40 +145,41 @@
                 </button>
             </div>
 
+            <!-- Quick Access -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div onclick="showSection('morning')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-yellow-400 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-sun text-yellow-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Morning Ritual</div>
-                            <div class="text-xs text-zinc-400">Start strong</div>
-                        </div>
-                    </div>
-                </div>
-                <div onclick="showSection('daily')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-indigo-400 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-tasks text-indigo-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Daily Tools</div>
-                            <div class="text-xs text-zinc-400">Execution</div>
-                        </div>
-                    </div>
-                </div>
-                <div onclick="showSection('evening')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-purple-400 transition-colors">
-                    <div class="flex items-center gap-x-3">
-                        <i class="fa-solid fa-moon text-purple-400 text-xl"></i>
-                        <div>
-                            <div class="font-medium">Evening Ritual</div>
-                            <div class="text-xs text-zinc-400">Close the day</div>
-                        </div>
-                    </div>
-                </div>
                 <div onclick="showSection('weekly')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-emerald-400 transition-colors">
                     <div class="flex items-center gap-x-3">
                         <i class="fa-solid fa-calendar-week text-emerald-400 text-xl"></i>
                         <div>
                             <div class="font-medium">Weekly Review</div>
-                            <div class="text-xs text-zinc-400">Reflect &amp; plan</div>
+                            <div class="text-xs text-zinc-400">Plan your week</div>
+                        </div>
+                    </div>
+                </div>
+                <div onclick="showSection('growth')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-purple-400 transition-colors">
+                    <div class="flex items-center gap-x-3">
+                        <i class="fa-solid fa-seedling text-purple-400 text-xl"></i>
+                        <div>
+                            <div class="font-medium">Growth</div>
+                            <div class="text-xs text-zinc-400">Identity &amp; goals</div>
+                        </div>
+                    </div>
+                </div>
+                <div onclick="showSection('finance')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-emerald-400 transition-colors">
+                    <div class="flex items-center gap-x-3">
+                        <i class="fa-solid fa-chart-line text-emerald-400 text-xl"></i>
+                        <div>
+                            <div class="font-medium">Finance</div>
+                            <div class="text-xs text-zinc-400">Money snapshot</div>
+                        </div>
+                    </div>
+                </div>
+                <div onclick="showSection('daily')" class="glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-sky-400 transition-colors">
+                    <div class="flex items-center gap-x-3">
+                        <i class="fa-solid fa-bolt text-sky-400 text-xl"></i>
+                        <div>
+                            <div class="font-medium">Focus Mode</div>
+                            <div class="text-xs text-zinc-400">Deep work</div>
                         </div>
                     </div>
                 </div>
@@ -144,7 +195,6 @@
                 </div>
 
                 <div class="space-y-6">
-                    <!-- Power Questions -->
                     <div class="glass border border-zinc-800 rounded-3xl p-6">
                         <div class="font-medium mb-4 text-yellow-400">Power Questions</div>
                         <div class="space-y-3">
@@ -154,12 +204,11 @@
                         </div>
                     </div>
 
-                    <!-- Body Check-in -->
                     <div class="glass border border-zinc-800 rounded-3xl p-6">
                         <div class="font-medium mb-4 text-sky-400">Body Check-in</div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <div class="text-sm text-zinc-400 mb-1">Energy</div>
+                                <div class="text-sm text-zinc-400 mb-1">Energy Level</div>
                                 <input type="range" id="body-energy" min="1" max="10" value="7" class="w-full accent-sky-500">
                             </div>
                             <div>
@@ -171,6 +220,7 @@
                 </div>
 
                 <button onclick="saveMorningRitual()" class="mt-8 w-full py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold rounded-3xl text-lg">Save Morning Ritual</button>
+                <div id="morning-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
             </div>
         </div>
 
@@ -183,7 +233,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div onclick="showSection('tasks')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-indigo-400 transition-colors">
+                    <div onclick="showSection('tasks')" class="flow-card glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-indigo-400">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-check-circle text-indigo-400 text-2xl"></i>
                             <div>
@@ -192,7 +242,7 @@
                             </div>
                         </div>
                     </div>
-                    <div onclick="showSection('inbox')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-purple-400 transition-colors">
+                    <div onclick="showSection('inbox')" class="flow-card glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-purple-400">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-inbox text-purple-400 text-2xl"></i>
                             <div>
@@ -201,7 +251,7 @@
                             </div>
                         </div>
                     </div>
-                    <div onclick="showSection('state')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-yellow-400 transition-colors">
+                    <div onclick="showSection('state')" class="flow-card glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-yellow-400">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-bolt text-yellow-400 text-2xl"></i>
                             <div>
@@ -210,12 +260,12 @@
                             </div>
                         </div>
                     </div>
-                    <div onclick="showSection('focus')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-sky-400 transition-colors">
+                    <div onclick="showSection('focus')" class="flow-card glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-sky-400">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-clock text-sky-400 text-2xl"></i>
                             <div>
                                 <div class="font-medium">Focus Timer</div>
-                                <div class="text-xs text-zinc-400">Deep work</div>
+                                <div class="text-xs text-zinc-400">Deep work sessions</div>
                             </div>
                         </div>
                     </div>
@@ -243,6 +293,7 @@
                 </div>
 
                 <button onclick="saveEveningRitual()" class="mt-8 w-full py-4 bg-indigo-600 hover:bg-indigo-500 rounded-3xl font-semibold text-lg">Save Evening Ritual</button>
+                <div id="evening-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
             </div>
         </div>
 
@@ -266,6 +317,7 @@
                 </div>
 
                 <button onclick="saveWeeklyReview()" class="mt-8 w-full py-4 bg-emerald-600 hover:bg-emerald-500 rounded-3xl font-semibold text-lg">Save Weekly Review</button>
+                <div id="weekly-saved" class="hidden mt-4 text-center text-emerald-400 text-sm">✓ Saved</div>
             </div>
         </div>
 
@@ -278,16 +330,16 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div onclick="showSection('identity')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-purple-400 transition-colors">
+                    <div onclick="showSection('identity')" class="flow-card glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-purple-400">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-user text-purple-400 text-2xl"></i>
                             <div>
-                                <div class="font-medium">Identity</div>
+                                <div class="font-medium">Identity Statements</div>
                                 <div class="text-xs text-zinc-400">"I am becoming..."</div>
                             </div>
                         </div>
                     </div>
-                    <div onclick="showSection('goals')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-emerald-400 transition-colors">
+                    <div onclick="showSection('goals')" class="flow-card glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-emerald-400">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-bullseye text-emerald-400 text-2xl"></i>
                             <div>
@@ -296,21 +348,21 @@
                             </div>
                         </div>
                     </div>
-                    <div onclick="showSection('relationships')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-purple-400 transition-colors">
+                    <div onclick="showSection('relationships')" class="flow-card glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-purple-400">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-users text-purple-400 text-2xl"></i>
                             <div>
-                                <div class="font-medium">Relationships</div>
-                                <div class="text-xs text-zinc-400">Key people</div>
+                                <div class="font-medium">Key Relationships</div>
+                                <div class="text-xs text-zinc-400">The 5–10 people who matter</div>
                             </div>
                         </div>
                     </div>
-                    <div onclick="showSection('contribution')" class="glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-rose-400 transition-colors">
+                    <div onclick="showSection('contribution')" class="flow-card glass border border-zinc-800 rounded-3xl p-6 cursor-pointer hover:border-rose-400">
                         <div class="flex items-center gap-x-4">
                             <i class="fa-solid fa-hand-holding-heart text-rose-400 text-2xl"></i>
                             <div>
-                                <div class="font-medium">Contribution</div>
-                                <div class="text-xs text-zinc-400">Value created</div>
+                                <div class="font-medium">Contribution Log</div>
+                                <div class="text-xs text-zinc-400">Value you create</div>
                             </div>
                         </div>
                     </div>
@@ -435,49 +487,16 @@
     <script>
         // ==================== DATA ====================
         let todos = JSON.parse(localStorage.getItem('cakehub_todos')) || [];
-        let reminders = JSON.parse(localStorage.getItem('cakehub_reminders')) || [];
-        let moneyMoves = JSON.parse(localStorage.getItem('cakehub_money')) || [];
-        let blockers = JSON.parse(localStorage.getItem('cakehub_blockers')) || [];
-        let habits = JSON.parse(localStorage.getItem('cakehub_habits')) || [];
-        let energyLogs = JSON.parse(localStorage.getItem('cakehub_energy')) || [];
         let inboxItems = JSON.parse(localStorage.getItem('cakehub_inbox')) || [];
         let currentMIT = JSON.parse(localStorage.getItem('cakehub_mit')) || null;
-        let sessionsToday = parseInt(localStorage.getItem('cakehub_sessions') || '0');
-        let powerAnswers = JSON.parse(localStorage.getItem('cakehub_power')) || {};
-        let eveningReviews = JSON.parse(localStorage.getItem('cakehub_review')) || {};
-        let weeklyReviews = JSON.parse(localStorage.getItem('cakehub_weekly')) || {};
-        let identityStatements = JSON.parse(localStorage.getItem('cakehub_identity')) || [];
-        let contributions = JSON.parse(localStorage.getItem('cakehub_contributions')) || [];
-        let goals = JSON.parse(localStorage.getItem('cakehub_goals')) || [];
-        let gratitudes = JSON.parse(localStorage.getItem('cakehub_gratitudes')) || [];
-        let relationships = JSON.parse(localStorage.getItem('cakehub_relationships')) || [];
-        let financeSnapshot = JSON.parse(localStorage.getItem('cakehub_finance')) || {};
-        let timeAllocation = JSON.parse(localStorage.getItem('cakehub_time')) || {};
-        let bodyCheckins = JSON.parse(localStorage.getItem('cakehub_body')) || [];
 
         function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
-        function saveReminders() { localStorage.setItem('cakehub_reminders', JSON.stringify(reminders)); }
-        function saveMoney() { localStorage.setItem('cakehub_money', JSON.stringify(moneyMoves)); }
-        function saveBlockers() { localStorage.setItem('cakehub_blockers', JSON.stringify(blockers)); }
-        function saveHabits() { localStorage.setItem('cakehub_habits', JSON.stringify(habits)); }
-        function saveEnergy() { localStorage.setItem('cakehub_energy', JSON.stringify(energyLogs)); }
         function saveInbox() { localStorage.setItem('cakehub_inbox', JSON.stringify(inboxItems)); }
-        function savePower() { localStorage.setItem('cakehub_power', JSON.stringify(powerAnswers)); }
-        function saveReview() { localStorage.setItem('cakehub_review', JSON.stringify(eveningReviews)); }
-        function saveWeekly() { localStorage.setItem('cakehub_weekly', JSON.stringify(weeklyReviews)); }
-        function saveIdentity() { localStorage.setItem('cakehub_identity', JSON.stringify(identityStatements)); }
-        function saveContributions() { localStorage.setItem('cakehub_contributions', JSON.stringify(contributions)); }
-        function saveGoals() { localStorage.setItem('cakehub_goals', JSON.stringify(goals)); }
-        function saveGratitudes() { localStorage.setItem('cakehub_gratitudes', JSON.stringify(gratitudes)); }
-        function saveRelationships() { localStorage.setItem('cakehub_relationships', JSON.stringify(relationships)); }
-        function saveFinance() { localStorage.setItem('cakehub_finance', JSON.stringify(financeSnapshot)); }
-        function saveTime() { localStorage.setItem('cakehub_time', JSON.stringify(timeAllocation)); }
-        function saveBody() { localStorage.setItem('cakehub_body', JSON.stringify(bodyCheckins)); }
         function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
 
-        // ==================== MIT ====================
         function getToday() { return new Date().toISOString().split('T')[0]; }
 
+        // ==================== MIT ====================
         function renderMIT() {
             const container = document.getElementById('mit-card');
             if (!container) return;
@@ -563,6 +582,49 @@
             const nav = document.getElementById('nav-' + section);
             if (nav) nav.classList.add('nav-active', 'bg-indigo-600');
         }
+
+        function saveMorningRitual() {
+            const savedMsg = document.getElementById('morning-saved');
+            savedMsg.classList.remove('hidden');
+            setTimeout(() => savedMsg.classList.add('hidden'), 2000);
+        }
+
+        function saveEveningRitual() {
+            const savedMsg = document.getElementById('evening-saved');
+            savedMsg.classList.remove('hidden');
+            setTimeout(() => savedMsg.classList.add('hidden'), 2000);
+        }
+
+        function saveWeeklyReview() {
+            const savedMsg = document.getElementById('weekly-saved');
+            savedMsg.classList.remove('hidden');
+            setTimeout(() => savedMsg.classList.add('hidden'), 2000);
+        }
+
+        function saveFinanceSnapshot() {
+            const income = parseFloat(document.getElementById('finance-income').value) || 0;
+            const expenses = parseFloat(document.getElementById('finance-expenses').value) || 0;
+            const net = income - expenses;
+            document.getElementById('finance-net').textContent = '$' + net;
+            document.getElementById('finance-net').className = net >= 0 ? 'text-2xl font-semibold text-emerald-400' : 'text-2xl font-semibold text-rose-400';
+        }
+
+        function changeState(type) {
+            const messages = {
+                'move': 'Great! Stand up and move for 2 minutes.',
+                'breathe': 'Inhale 4s, hold 4s, exhale 6s. Repeat 6 times.',
+                'pose': 'Stand tall, hands on hips, chin up. Hold 2 minutes.'
+            };
+            alert(messages[type] || 'State changed!');
+        }
+
+        function setTimer(minutes) {}
+        function startTimer() {}
+        function pauseTimer() {}
+        function resetTimer() {}
+
+        function addTodo() {}
+        function addToInbox() {}
 
         // ==================== INIT ====================
         function initializeApp() {
