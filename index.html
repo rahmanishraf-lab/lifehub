@@ -16,6 +16,8 @@
         .mit-input:focus { outline: none; }
         .completed { text-decoration: line-through; opacity: 0.6; }
         .money-entry { transition: all 0.2s ease; }
+        .capture-item { transition: all 0.2s ease; }
+        .fab { position: fixed; bottom: 80px; right: 24px; z-index: 60; }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200 pb-20">
@@ -104,7 +106,6 @@
             <p class="text-zinc-400 text-sm">Track every dollar. Clarity creates wealth.</p>
         </div>
 
-        <!-- Add new move form -->
         <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
             <div class="grid grid-cols-2 gap-3 mb-4">
                 <div>
@@ -143,7 +144,6 @@
             </button>
         </div>
 
-        <!-- Summary -->
         <div class="glass border border-zinc-800 rounded-3xl p-4 mb-6 flex justify-between text-sm">
             <div>
                 <div class="text-xs text-zinc-400">THIS WEEK</div>
@@ -155,7 +155,6 @@
             </div>
         </div>
 
-        <!-- List of moves -->
         <div class="mb-2 px-1 flex justify-between items-center">
             <div class="text-xs font-medium tracking-[1.5px] text-zinc-400">RECENT MOVES</div>
             <button onclick="clearMoneyMoves()" class="text-xs text-red-400 hover:text-red-300">Clear all</button>
@@ -164,12 +163,43 @@
         <div id="money-list" class="space-y-2 mb-8"></div>
     </div>
 
+    <!-- CAPTURE / INBOX -->
+    <div id="capture" class="section max-w-screen-sm mx-auto px-6 pt-8">
+        <div class="mb-6">
+            <h2 class="text-2xl font-display tracking-tighter">Quick Capture</h2>
+            <p class="text-zinc-400 text-sm">Empty your mind. Capture everything.</p>
+        </div>
+
+        <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
+            <textarea id="capture-input" rows="3" placeholder="Drop anything here — ideas, tasks, blockers, wins..."
+                      class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-4 py-3 text-sm resize-y focus:outline-none"></textarea>
+            <button onclick="addCapture()" 
+                    class="mt-3 w-full bg-amber-500 hover:bg-amber-600 transition text-black font-medium py-3 rounded-2xl text-sm flex items-center justify-center gap-2">
+                <i class="fa-solid fa-inbox"></i>
+                <span>Capture</span>
+            </button>
+        </div>
+
+        <div class="mb-2 px-1 flex justify-between items-center">
+            <div class="text-xs font-medium tracking-[1.5px] text-zinc-400">INBOX</div>
+            <button onclick="clearCaptures()" class="text-xs text-red-400 hover:text-red-300">Clear</button>
+        </div>
+        
+        <div id="capture-list" class="space-y-2"></div>
+    </div>
+
+    <!-- Floating Action Button (Quick Capture) -->
+    <button onclick="quickCaptureFromHome()" 
+            class="fab w-14 h-14 bg-emerald-500 hover:bg-emerald-600 active:scale-95 transition-all rounded-2xl flex items-center justify-center shadow-xl">
+        <i class="fa-solid fa-plus text-black text-2xl"></i>
+    </button>
+
     <!-- Bottom Navigation -->
     <div class="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 z-50">
         <div class="max-w-screen-sm mx-auto flex items-center justify-around py-3 text-xs">
             <button onclick="showSection('home')" class="flex flex-col items-center"><i class="fa-solid fa-home text-lg"></i><span class="mt-1">Home</span></button>
             <button onclick="showSection('money')" class="flex flex-col items-center"><i class="fa-solid fa-dollar-sign text-lg"></i><span class="mt-1">Money</span></button>
-            <button onclick="showSection('focus')" class="flex flex-col items-center"><i class="fa-solid fa-bullseye text-lg"></i><span class="mt-1">Focus</span></button>
+            <button onclick="showSection('capture')" class="flex flex-col items-center"><i class="fa-solid fa-inbox text-lg"></i><span class="mt-1">Capture</span></button>
             <button onclick="showSection('energy')" class="flex flex-col items-center"><i class="fa-solid fa-battery-full text-lg"></i><span class="mt-1">Energy</span></button>
             <button onclick="showSection('growth')" class="flex flex-col items-center"><i class="fa-solid fa-seedling text-lg"></i><span class="mt-1">Growth</span></button>
         </div>
@@ -182,9 +212,8 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(section).classList.add('active');
             
-            if (section === 'money') {
-                renderMoneyList();
-            }
+            if (section === 'money') renderMoneyList();
+            if (section === 'capture') renderCaptureList();
         }
 
         function updateDate() {
@@ -193,7 +222,7 @@
             dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         }
 
-        // MIT functionality (unchanged)
+        // MIT (unchanged)
         let mitCompletedToday = false;
 
         function loadMIT() {
@@ -219,23 +248,15 @@
 
         function saveMIT() {
             const input = document.getElementById('mit-input');
-            if (input.value.trim()) {
-                localStorage.setItem('forge_mit', input.value.trim());
-            }
+            if (input.value.trim()) localStorage.setItem('forge_mit', input.value.trim());
         }
 
         function markMITDone() {
             const input = document.getElementById('mit-input');
             const status = document.getElementById('mit-status');
             
-            if (!input.value.trim()) {
-                alert('Set your MIT first!');
-                return;
-            }
-            if (mitCompletedToday) {
-                alert('Already marked done today. Great work!');
-                return;
-            }
+            if (!input.value.trim()) { alert('Set your MIT first!'); return; }
+            if (mitCompletedToday) { alert('Already marked done today. Great work!'); return; }
             
             mitCompletedToday = true;
             localStorage.setItem('forge_mit_completed', 'true');
@@ -264,47 +285,31 @@
             });
         }
 
-        // ========== MONEY MOVES ==========
+        // MONEY MOVES (unchanged)
         function getMoneyMoves() {
             return JSON.parse(localStorage.getItem('forge_money_moves') || '[]');
         }
-
         function saveMoneyMoves(moves) {
             localStorage.setItem('forge_money_moves', JSON.stringify(moves));
         }
-
         function addMoneyMove() {
             const amount = parseFloat(document.getElementById('money-amount').value);
             const type = document.getElementById('money-type').value;
             const category = document.getElementById('money-category').value.trim() || 'Uncategorized';
             const note = document.getElementById('money-note').value.trim();
 
-            if (!amount || amount <= 0) {
-                alert('Please enter a valid amount');
-                return;
-            }
+            if (!amount || amount <= 0) { alert('Please enter a valid amount'); return; }
 
-            const move = {
-                id: Date.now(),
-                date: new Date().toISOString(),
-                amount: amount,
-                type: type,
-                category: category,
-                note: note
-            };
-
+            const move = { id: Date.now(), date: new Date().toISOString(), amount, type, category, note };
             const moves = getMoneyMoves();
             moves.unshift(move);
             saveMoneyMoves(moves);
 
-            // Clear form
             document.getElementById('money-amount').value = '';
             document.getElementById('money-category').value = '';
             document.getElementById('money-note').value = '';
-
             renderMoneyList();
         }
-
         function renderMoneyList() {
             const container = document.getElementById('money-list');
             const moves = getMoneyMoves();
@@ -316,27 +321,19 @@
                 return;
             }
 
-            let weekTotal = 0;
-            let net = 0;
-
+            let weekTotal = 0, net = 0;
             const now = new Date();
             const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
 
             moves.forEach(move => {
                 const moveDate = new Date(move.date);
-                const isThisWeek = moveDate >= weekStart;
-
-                if (isThisWeek) {
-                    weekTotal += move.type === 'income' ? move.amount : -move.amount;
-                }
+                if (moveDate >= weekStart) weekTotal += move.type === 'income' ? move.amount : -move.amount;
                 net += move.type === 'income' ? move.amount : -move.amount;
 
                 const div = document.createElement('div');
                 div.className = `money-entry glass border border-zinc-800 rounded-2xl p-4 flex justify-between items-start`;
-                
                 const sign = move.type === 'income' ? '+' : '-';
                 const color = move.type === 'income' ? 'text-emerald-400' : 'text-red-400';
-
                 div.innerHTML = `
                     <div>
                         <div class="font-medium">${move.category}</div>
@@ -349,20 +346,128 @@
                 `;
                 container.appendChild(div);
             });
-
             updateMoneySummary(weekTotal, net);
         }
-
         function updateMoneySummary(weekTotal, net) {
             document.getElementById('money-week-total').innerHTML = `$${Math.abs(weekTotal).toFixed(2)}`;
-            document.getElementById('money-net').innerHTML = `$${net.toFixed(2)}`;
-            document.getElementById('money-net').className = net >= 0 ? 'font-semibold text-lg text-emerald-400' : 'font-semibold text-lg text-red-400';
+            const netEl = document.getElementById('money-net');
+            netEl.innerHTML = `$${net.toFixed(2)}`;
+            netEl.className = net >= 0 ? 'font-semibold text-lg text-emerald-400' : 'font-semibold text-lg text-red-400';
         }
-
         function clearMoneyMoves() {
             if (confirm('Clear all money moves?')) {
                 localStorage.removeItem('forge_money_moves');
                 renderMoneyList();
+            }
+        }
+
+        // ========== QUICK CAPTURE / INBOX ==========
+        function getCaptures() {
+            return JSON.parse(localStorage.getItem('forge_captures') || '[]');
+        }
+        function saveCaptures(captures) {
+            localStorage.setItem('forge_captures', JSON.stringify(captures));
+        }
+
+        function addCapture(text = null) {
+            const input = document.getElementById('capture-input');
+            const value = text || input.value.trim();
+            if (!value) return;
+
+            const capture = {
+                id: Date.now(),
+                text: value,
+                date: new Date().toISOString()
+            };
+
+            const captures = getCaptures();
+            captures.unshift(capture);
+            saveCaptures(captures);
+
+            if (!text) {
+                input.value = '';
+            }
+            renderCaptureList();
+        }
+
+        function renderCaptureList() {
+            const container = document.getElementById('capture-list');
+            const captures = getCaptures();
+            container.innerHTML = '';
+
+            if (captures.length === 0) {
+                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">Inbox is empty. Capture something.</div>`;
+                return;
+            }
+
+            captures.forEach((cap, index) => {
+                const div = document.createElement('div');
+                div.className = `capture-item glass border border-zinc-800 rounded-2xl p-4 flex justify-between items-start gap-3`;
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <div class="text-sm">${cap.text}</div>
+                        <div class="text-[10px] text-zinc-500 mt-1">${new Date(cap.date).toLocaleString()}</div>
+                    </div>
+                    <div class="flex gap-2 pt-1">
+                        <button onclick="useCaptureAsMIT(${index})" class="text-emerald-400 hover:text-emerald-300 text-xs" title="Use as MIT">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </button>
+                        <button onclick="deleteCapture(${index})" class="text-red-400 hover:text-red-300 text-xs" title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function deleteCapture(index) {
+            const captures = getCaptures();
+            captures.splice(index, 1);
+            saveCaptures(captures);
+            renderCaptureList();
+        }
+
+        function useCaptureAsMIT(index) {
+            const captures = getCaptures();
+            const text = captures[index].text;
+            
+            // Set as MIT
+            const mitInput = document.getElementById('mit-input');
+            mitInput.value = text;
+            saveMIT();
+            
+            // Remove from inbox
+            captures.splice(index, 1);
+            saveCaptures(captures);
+            
+            // Switch to home and show success
+            showSection('home');
+            setTimeout(() => {
+                alert('Moved to MIT!');
+            }, 300);
+        }
+
+        function clearCaptures() {
+            if (confirm('Clear entire inbox?')) {
+                localStorage.removeItem('forge_captures');
+                renderCaptureList();
+            }
+        }
+
+        function quickCaptureFromHome() {
+            const text = prompt('Quick capture:');
+            if (text && text.trim()) {
+                const captures = getCaptures();
+                captures.unshift({ id: Date.now(), text: text.trim(), date: new Date().toISOString() });
+                saveCaptures(captures);
+                
+                // Optional: show toast
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-zinc-800 text-xs px-4 py-2 rounded-full';
+                toast.textContent = 'Captured!';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 1200);
             }
         }
 
