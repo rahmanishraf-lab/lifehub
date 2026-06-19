@@ -3,1159 +3,375 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ForgeLife • Your Life OS</title>
+    <title>ForgeLife</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body { font-family: 'Inter', system_ui, sans-serif; }
         .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600; }
+        .glass { background: rgba(255,255,255, 0.06); backdrop-filter: blur(20px); }
         .section { display: none; }
         .section.active { display: block; }
-        .nav-active { background-color: #6366f1; color: white; border-radius: 9999px; }
-        .glass { background: rgba(255,255,255, 0.06); backdrop-filter: blur(20px); }
-        .mit-card { background: linear-gradient(135deg, #1e2937 0%, #0f172a 100%); border: 1px solid #334155; }
-        .flow-card {
-            transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
-        .flow-card:hover {
-            transform: translateY(-2px);
-        }
-        .flow-active {
-            border-color: #6366f1;
-            background: rgba(99, 102, 241, 0.08);
-        }
-        .flow-done {
-            border-color: #10b981;
-            opacity: 0.75;
-        }
-        .toast {
-            animation: slideUp 0.3s ease-out forwards;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        @media (max-width: 640px) {
-            .nav-item span { display: none; }
-        }
-        
-        .bottom-nav {
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .fab {
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-        }
-        
-        .habit-day {
-            width: 22px;
-            height: 22px;
-            font-size: 10px;
-        }
+        .mit-input { background: transparent; border: none; outline: none; font-size: 1.125rem; font-weight: 500; width: 100%; }
+        .mit-input:focus { outline: none; }
+        .completed { text-decoration: line-through; opacity: 0.6; }
+        .money-entry { transition: all 0.2s ease; }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200 pb-20">
+    
     <!-- Header -->
     <div class="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-50">
-        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div class="max-w-screen-sm mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-x-3">
-                <div class="flex items-center gap-x-3">
-                    <div class="w-10 h-10 flex items-center justify-center">
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 4 L26 14 L32 14 L22 28 L18 28 L8 14 L14 14 Z" fill="#6366f1"/>
-                            <path d="M20 10 L24 16 L28 16 L20 24 L16 16 L20 10 Z" fill="#a5b4fc"/>
-                            <circle cx="20" cy="32" r="3" fill="#6366f1"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <span class="font-display text-2xl font-semibold tracking-tighter">ForgeLife</span>
-                    </div>
+                <div class="w-9 h-9 bg-[#1a252f] border border-[#2a3a4a] rounded flex items-center justify-center">
+                    <i class="fa-solid fa-chess-rook text-[#c5a46e]"></i>
                 </div>
+                <span class="font-display text-2xl font-semibold tracking-tighter">ForgeLife</span>
             </div>
-            <div id="current-date" class="text-xs sm:text-sm text-zinc-400 font-mono"></div>
+            <div id="current-date" class="text-xs text-zinc-400 font-mono"></div>
         </div>
     </div>
 
-    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12">
+    <!-- HOME -->
+    <div id="home" class="section active max-w-screen-sm mx-auto px-6 pt-8">
         
         <!-- Greeting -->
-        <div class="mb-6 sm:mb-8">
-            <h1 id="greeting" class="text-4xl sm:text-5xl font-display tracking-tighter font-semibold"></h1>
-            <p class="text-lg sm:text-xl text-zinc-400 mt-1">Your personal operating system.</p>
-            <div id="motivational-message" class="text-sm text-emerald-400 mt-1"></div>
+        <div class="mb-8">
+            <h1 class="text-4xl font-display tracking-tighter">Good morning, Ishraf.</h1>
+            <p class="text-zinc-400 mt-1">Let's make today count.</p>
         </div>
 
-        <!-- HOME -->
-        <div id="home" class="section active">
-            
-            <!-- Daily Life Score -->
-            <div class="mb-6">
-                <div class="glass border border-zinc-800 rounded-3xl p-5">
-                    <div class="flex items-center justify-between mb-3">
-                        <div>
-                            <div class="text-xs font-medium tracking-[1.5px] text-emerald-400">TODAY'S SCORE</div>
-                            <div id="daily-score" class="text-5xl font-bold tracking-tighter">72</div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-xs text-zinc-400">Target</div>
-                            <div class="text-2xl font-semibold text-zinc-400">100</div>
-                        </div>
-                    </div>
-                    <div class="h-2 bg-zinc-800 rounded-full overflow-hidden mb-3">
-                        <div id="daily-score-bar" class="h-2 bg-emerald-500 transition-all" style="width: 72%"></div>
-                    </div>
-                    
-                    <div class="text-xs text-zinc-400 grid grid-cols-2 gap-x-4 gap-y-1">
-                        <div class="flex justify-between"><span>Morning Ritual</span> <span class="text-emerald-400">+20</span></div>
-                        <div class="flex justify-between"><span>MIT Completed</span> <span class="text-emerald-400">+25</span></div>
-                        <div class="flex justify-between"><span>Tasks Done</span> <span class="text-emerald-400">+20</span></div>
-                        <div class="flex justify-between"><span>Evening Ritual</span> <span class="text-emerald-400">+15</span></div>
-                        <div class="flex justify-between"><span>Uber Performance</span> <span class="text-emerald-400">+20</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Life Balance Radar Chart -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-3 px-1">
-                    <div>
-                        <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">LIFE BALANCE</span>
-                    </div>
-                </div>
-                <div class="glass border border-zinc-800 rounded-3xl p-5">
-                    <canvas id="life-balance-chart" width="300" height="300"></canvas>
-                </div>
-            </div>
-
-            <!-- 30-Day Habit Calendar -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-3 px-1">
-                    <div>
-                        <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">LAST 30 DAYS</span>
-                    </div>
-                    <div class="text-xs text-zinc-400">Morning + Evening</div>
-                </div>
-                <div class="glass border border-zinc-800 rounded-3xl p-5">
-                    <div id="habit-calendar" class="grid grid-cols-10 gap-1.5"></div>
-                </div>
-            </div>
-
-            <!-- Weekly Success Snapshot -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-3 px-1">
-                    <div>
-                        <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">WEEKLY SUCCESS SNAPSHOT</span>
-                    </div>
-                </div>
-                <div class="glass border border-zinc-800 rounded-3xl p-5">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                        <div>
-                            <div class="text-3xl font-bold text-emerald-400">6/7</div>
-                            <div class="text-xs text-zinc-400 mt-1">Days with Rituals</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-emerald-400">5</div>
-                            <div class="text-xs text-zinc-400 mt-1">MITs Completed</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-emerald-400">23</div>
-                            <div class="text-xs text-zinc-400 mt-1">Tasks Finished</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-emerald-400">4</div>
-                            <div class="text-xs text-zinc-400 mt-1">Deep Work Sessions</div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-5 pt-5 border-t border-zinc-700">
-                        <div class="text-xs text-zinc-400 mb-2">Key Wins This Week</div>
-                        <div class="text-sm text-zinc-300">Completed major project milestone • Consistent morning routine • Improved energy tracking</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dynamic Greeting -->
-            <div class="mb-6">
-                <div id="dynamic-greeting" class="mb-4 px-1">
-                    <span class="text-xs font-medium tracking-[1.5px] text-emerald-400" id="time-label">TODAY'S FLOW</span>
-                    <h2 class="text-2xl font-semibold tracking-tighter" id="time-suggestion">Start your day strong</h2>
-                    <div id="motivational-message" class="text-sm text-emerald-400 mt-1"></div>
-                </div>
-                
-                <div onclick="goToRecommendedAction()" class="flow-card glass border border-emerald-400/60 rounded-3xl p-5 cursor-pointer hover:border-emerald-400">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-x-4">
-                            <i id="recommended-icon" class="fa-solid fa-sun text-emerald-400 text-2xl"></i>
-                            <div>
-                                <div class="font-medium">Recommended right now</div>
-                                <div id="recommended-text" class="text-emerald-400">Morning Ritual</div>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-emerald-400"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Today's Focus Summary -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-3 px-1">
-                    <div>
-                        <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">TODAY'S FOCUS</span>
-                    </div>
-                </div>
-                
-                <div class="glass border border-zinc-800 rounded-3xl p-5">
-                    <div class="mb-4">
-                        <div class="text-xs text-amber-400 mb-1">MOST IMPORTANT</div>
-                        <div id="focus-mit" class="text-lg font-medium"></div>
-                    </div>
-                    
-                    <div>
-                        <div class="text-xs text-indigo-400 mb-2">TOP TASKS</div>
-                        <div id="focus-tasks" class="space-y-1.5 text-sm"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Daily Rhythm -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-3 px-1">
-                    <div>
-                        <span class="text-xs font-medium tracking-[1.5px] text-zinc-400">YOUR DAILY RHYTHM</span>
-                    </div>
-                    <div id="daily-streak" class="hidden items-center gap-x-1 px-3 py-1 bg-emerald-400/10 text-emerald-400 rounded-2xl text-xs font-medium">
-                        <i class="fa-solid fa-fire"></i>
-                        <span id="streak-count">0</span> day streak
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div class="flow-card glass border border-zinc-800 rounded-3xl p-5" id="flow-morning">
-                        <div class="flex items-center gap-x-4">
-                            <i class="fa-solid fa-sun text-yellow-400 text-2xl w-8"></i>
-                            <div class="flex-1">
-                                <div class="font-medium flex items-center justify-between">
-                                    <span>Morning Ritual</span>
-                                    <span id="morning-status" class="text-xs text-emerald-400 hidden">Done</span>
-                                </div>
-                                <div class="text-xs text-zinc-400">Power questions + energy</div>
-                            </div>
-                        </div>
-                        <div class="mt-3 flex gap-2">
-                            <button onclick="quickCompleteMorning(); event.stopImmediatePropagation()" class="flex-1 text-xs py-1.5 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 rounded-xl">Mark Done</button>
-                            <button onclick="showSection('morning'); event.stopImmediatePropagation()" class="flex-1 text-xs py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-xl">Open</button>
-                        </div>
-                    </div>
-                    
-                    <div onclick="showSection('daily')" class="flow-card glass border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:border-indigo-400" id="flow-daily">
-                        <div class="flex items-center gap-x-4">
-                            <i class="fa-solid fa-tasks text-indigo-400 text-2xl w-8"></i>
-                            <div class="flex-1">
-                                <div class="font-medium">Daily Execution</div>
-                                <div class="text-xs text-zinc-400"><span id="daily-execution-status">0 tasks done</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flow-card glass border border-zinc-800 rounded-3xl p-5" id="flow-evening">
-                        <div class="flex items-center gap-x-4">
-                            <i class="fa-solid fa-moon text-purple-400 text-2xl w-8"></i>
-                            <div class="flex-1">
-                                <div class="font-medium flex items-center justify-between">
-                                    <span>Evening Ritual</span>
-                                    <span id="evening-status" class="text-xs text-emerald-400 hidden">Done</span>
-                                </div>
-                                <div class="text-xs text-zinc-400">Review &amp; gratitude</div>
-                            </div>
-                        </div>
-                        <div class="mt-3 flex gap-2">
-                            <button onclick="quickCompleteEvening(); event.stopImmediatePropagation()" class="flex-1 text-xs py-1.5 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 rounded-xl">Mark Done</button>
-                            <button onclick="showSection('evening'); event.stopImmediatePropagation()" class="flex-1 text-xs py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-xl">Open</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MIT -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between mb-3 px-1">
-                    <div>
-                        <span class="text-xs font-medium tracking-[1.5px] text-amber-400">MOST IMPORTANT</span>
-                        <h2 class="text-2xl font-semibold tracking-tighter">Today’s #1 Priority</h2>
-                    </div>
-                </div>
-                
-                <div id="mit-card" class="mit-card rounded-3xl p-6 border border-zinc-700"></div>
-                
-                <div class="flex gap-2 mt-3">
-                    <button onclick="quickCompleteMIT()" class="flex-1 text-sm py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 rounded-2xl">Mark Done</button>
-                    <button onclick="showSection('daily')" class="flex-1 text-sm py-2 bg-zinc-800 hover:bg-zinc-700 rounded-2xl">Focus on this today</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- DRIVE SECTION -->
-        <div id="drive" class="section">
-            <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semibold tracking-tighter">Drive Mode</h2>
-                    <p class="text-zinc-400 mt-2">Track your Uber performance</p>
-                </div>
-
-                <!-- Goal Settings -->
-                <div class="glass border border-zinc-800 rounded-3xl p-5 mb-6">
-                    <div class="font-medium mb-4 text-emerald-400">Goals</div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-xs text-zinc-400">Daily Earnings Goal</label>
-                            <div class="flex items-center gap-2">
-                                <span class="text-sm">$</span>
-                                <input id="uber-daily-goal" type="number" value="200" class="flex-1 bg-zinc-900 border border-zinc-700 px-3 py-2 rounded-xl focus:outline-none" onchange="saveUberGoals()">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="text-xs text-zinc-400">Weekly Earnings Goal</label>
-                            <div class="flex items-center gap-2">
-                                <span class="text-sm">$</span>
-                                <input id="uber-weekly-goal" type="number" value="1000" class="flex-1 bg-zinc-900 border border-zinc-700 px-3 py-2 rounded-xl focus:outline-none" onchange="saveUberGoals()">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Log Form -->
-                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-8">
-                    <div class="font-medium mb-4 text-emerald-400">Log Today's Drive</div>
-                    
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="text-xs text-zinc-400">Hours Online</label>
-                            <input id="uber-hours" type="number" step="0.5" placeholder="7.5" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="text-xs text-zinc-400">Trips</label>
-                            <input id="uber-trips" type="number" placeholder="18" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="text-xs text-zinc-400">Gross Earnings ($)</label>
-                            <input id="uber-gross" type="number" placeholder="187" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="text-xs text-zinc-400">Total Expenses ($)</label>
-                            <input id="uber-expenses" type="number" placeholder="32" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
-                        </div>
-                    </div>
-
-                    <!-- Expense Breakdown -->
-                    <div class="mb-4">
-                        <div class="text-xs text-zinc-400 mb-2">Expense Breakdown (optional)</div>
-                        <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
-                            <input id="expense-gas" type="number" placeholder="Gas" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
-                            <input id="expense-maintenance" type="number" placeholder="Maintenance" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
-                            <input id="expense-tolls" type="number" placeholder="Tolls" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
-                            <input id="expense-insurance" type="number" placeholder="Insurance" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
-                            <input id="expense-other" type="number" placeholder="Other" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
-                        </div>
-                    </div>
-                    
-                    <button onclick="logUberDay()" class="mt-2 w-full py-3 bg-emerald-600 hover:bg-emerald-500 rounded-3xl font-medium">Log Drive Day</button>
-                </div>
-
-                <!-- Today's Stats -->
-                <div id="uber-today-stats" class="glass border border-zinc-800 rounded-3xl p-6 mb-8 hidden">
-                    <div class="font-medium mb-4 text-emerald-400">Today's Performance</div>
-                    <div class="grid grid-cols-2 gap-4 text-sm">
-                        <div>Net Profit: <span id="uber-net" class="font-semibold text-emerald-400"></span></div>
-                        <div>Earnings/Hour: <span id="uber-per-hour" class="font-semibold"></span></div>
-                        <div>Trips/Hour: <span id="uber-trips-per-hour" class="font-semibold"></span></div>
-                        <div>Goal Progress: <span id="uber-goal-progress" class="font-semibold"></span></div>
-                    </div>
-                </div>
-
-                <!-- Driving Streak -->
-                <div class="glass border border-zinc-800 rounded-3xl p-5 mb-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <div class="font-medium text-emerald-400">Driving Streak</div>
-                            <div class="text-xs text-zinc-400">Consecutive days logged</div>
-                        </div>
-                        <div class="text-right">
-                            <div id="uber-streak" class="text-4xl font-bold text-emerald-400">0</div>
-                            <div class="text-xs text-zinc-400">days</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Performance Summary -->
-                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-8">
-                    <div class="font-medium mb-4 text-emerald-400">Performance Summary</div>
-                    
-                    <div class="mb-6">
-                        <div class="text-sm text-zinc-400 mb-2">This Week</div>
-                        <div class="grid grid-cols-3 gap-4 text-sm">
-                            <div>Total Net: <span id="uber-week-net" class="font-semibold"></span></div>
-                            <div>Avg/Day: <span id="uber-week-avg" class="font-semibold"></span></div>
-                            <div>Best Day: <span id="uber-week-best" class="font-semibold"></span></div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div class="text-sm text-zinc-400 mb-2">This Month</div>
-                        <div class="grid grid-cols-3 gap-4 text-sm">
-                            <div>Total Net: <span id="uber-month-net" class="font-semibold"></span></div>
-                            <div>Avg/Day: <span id="uber-month-avg" class="font-semibold"></span></div>
-                            <div>Best Day: <span id="uber-month-best" class="font-semibold"></span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- History -->
+        <!-- Daily Score -->
+        <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-2">
                 <div>
-                    <div class="font-medium mb-4 text-emerald-400">Recent Drives</div>
-                    <div id="uber-history" class="space-y-2"></div>
+                    <div class="text-xs font-medium tracking-[1.5px] text-emerald-400">TODAY'S SCORE</div>
+                    <div id="daily-score" class="text-6xl font-bold">74</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-xs text-zinc-400">Target</div>
+                    <div class="text-2xl font-semibold text-zinc-400">100</div>
                 </div>
             </div>
+            <div class="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                <div id="score-bar" class="h-2 bg-emerald-500 rounded-full transition-all" style="width: 74%"></div>
+            </div>
+        </div>
+
+        <!-- Today's Priority (MIT) -->
+        <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <div class="text-xs font-medium tracking-[1.5px] text-amber-400">TODAY'S PRIORITY • MIT</div>
+                <button onclick="markMITDone()" 
+                        class="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition flex items-center gap-1">
+                    <i class="fa-solid fa-check text-xs"></i>
+                    <span>Mark Done</span>
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <input id="mit-input" type="text" 
+                       class="mit-input text-lg font-medium placeholder-zinc-500" 
+                       placeholder="What's the one thing that moves the needle today?"
+                       onkeyup="if (event.key === 'Enter') saveMIT()">
+                <button onclick="saveMIT()" 
+                        class="text-emerald-400 hover:text-emerald-300 px-2">
+                    <i class="fa-solid fa-save"></i>
+                </button>
+            </div>
+            
+            <div id="mit-status" class="mt-2 text-xs text-emerald-400 hidden">
+                <i class="fa-solid fa-check-circle mr-1"></i>
+                <span id="mit-completed-text"></span>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-2 gap-3">
+            <button onclick="showSection('money')" class="glass border border-zinc-800 rounded-3xl py-4 text-sm font-medium">Log Money</button>
+            <button onclick="showSection('focus')" class="glass border border-zinc-800 rounded-3xl py-4 text-sm font-medium">Set Priority</button>
+            <button onclick="showSection('energy')" class="glass border border-zinc-800 rounded-3xl py-4 text-sm font-medium">Log Energy</button>
+            <button onclick="showSection('growth')" class="glass border border-zinc-800 rounded-3xl py-4 text-sm font-medium">Add Win</button>
         </div>
 
     </div>
 
-    <!-- Floating Action Button -->
-    <div class="fixed bottom-20 right-6 z-50">
-        <div id="fab-menu" class="hidden flex flex-col gap-2 mb-3">
-            <button onclick="quickAddTask()" class="flex items-center gap-x-3 px-5 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">
-                <i class="fa-solid fa-check-circle w-5"></i>
-                <span>Add Task</span>
-            </button>
-            <button onclick="quickCapture()" class="flex items-center gap-x-3 px-5 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">
-                <i class="fa-solid fa-lightbulb w-5"></i>
-                <span>Capture Idea</span>
-            </button>
-            <button onclick="logEnergyQuick()" class="flex items-center gap-x-3 px-5 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">
-                <i class="fa-solid fa-battery-full w-5"></i>
-                <span>Log Energy</span>
-            </button>
-            <button onclick="startFocusFromFab()" class="flex items-center gap-x-3 px-5 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-2xl text-sm">
-                <i class="fa-solid fa-clock w-5"></i>
-                <span>Start Focus</span>
+    <!-- MONEY MOVES -->
+    <div id="money" class="section max-w-screen-sm mx-auto px-6 pt-8">
+        <div class="mb-6">
+            <h2 class="text-2xl font-display tracking-tighter">Money Moves</h2>
+            <p class="text-zinc-400 text-sm">Track every dollar. Clarity creates wealth.</p>
+        </div>
+
+        <!-- Add new move form -->
+        <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">AMOUNT</label>
+                    <div class="flex">
+                        <span class="px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-l-xl text-zinc-400">$</span>
+                        <input id="money-amount" type="number" step="0.01" placeholder="0.00"
+                               class="flex-1 bg-zinc-900 border border-zinc-700 border-l-0 rounded-r-xl px-3 py-2 text-sm focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-400 block mb-1">TYPE</label>
+                    <select id="money-type" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-sm focus:outline-none">
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="text-xs text-zinc-400 block mb-1">CATEGORY</label>
+                <input id="money-category" type="text" placeholder="Uber, Client, Food, etc."
+                       class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-sm focus:outline-none">
+            </div>
+            
+            <div class="mb-4">
+                <label class="text-xs text-zinc-400 block mb-1">NOTE (optional)</label>
+                <input id="money-note" type="text" placeholder="Notes..."
+                       class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-sm focus:outline-none">
+            </div>
+            
+            <button onclick="addMoneyMove()" 
+                    class="w-full bg-emerald-500 hover:bg-emerald-600 transition text-black font-medium py-3 rounded-2xl text-sm flex items-center justify-center gap-2">
+                <i class="fa-solid fa-plus"></i>
+                <span>Log Money Move</span>
             </button>
         </div>
+
+        <!-- Summary -->
+        <div class="glass border border-zinc-800 rounded-3xl p-4 mb-6 flex justify-between text-sm">
+            <div>
+                <div class="text-xs text-zinc-400">THIS WEEK</div>
+                <div id="money-week-total" class="font-semibold text-lg">$0</div>
+            </div>
+            <div class="text-right">
+                <div class="text-xs text-zinc-400">NET</div>
+                <div id="money-net" class="font-semibold text-lg">$0</div>
+            </div>
+        </div>
+
+        <!-- List of moves -->
+        <div class="mb-2 px-1 flex justify-between items-center">
+            <div class="text-xs font-medium tracking-[1.5px] text-zinc-400">RECENT MOVES</div>
+            <button onclick="clearMoneyMoves()" class="text-xs text-red-400 hover:text-red-300">Clear all</button>
+        </div>
         
-        <button onclick="toggleFabMenu()" class="fab w-14 h-14 bg-indigo-600 hover:bg-indigo-500 rounded-2xl flex items-center justify-center shadow-lg">
-            <i id="fab-icon" class="fa-solid fa-plus text-white text-2xl"></i>
-        </button>
+        <div id="money-list" class="space-y-2 mb-8"></div>
     </div>
 
     <!-- Bottom Navigation -->
-    <div class="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 z-50 md:hidden">
-        <div class="flex items-center justify-around py-2">
-            <button onclick="showSection('home')" class="flex flex-col items-center px-3 py-1 text-xs">
-                <i class="fa-solid fa-home text-lg"></i>
-                <span class="mt-0.5">Home</span>
-            </button>
-            <button onclick="showSection('morning')" class="flex flex-col items-center px-3 py-1 text-xs">
-                <i class="fa-solid fa-sun text-lg"></i>
-                <span class="mt-0.5">Morning</span>
-            </button>
-            <button onclick="showSection('daily')" class="flex flex-col items-center px-3 py-1 text-xs">
-                <i class="fa-solid fa-tasks text-lg"></i>
-                <span class="mt-0.5">Daily</span>
-            </button>
-            <button onclick="showSection('evening')" class="flex flex-col items-center px-3 py-1 text-xs">
-                <i class="fa-solid fa-moon text-lg"></i>
-                <span class="mt-0.5">Evening</span>
-            </button>
-            <button onclick="showSection('growth')" class="flex flex-col items-center px-3 py-1 text-xs">
-                <i class="fa-solid fa-seedling text-lg"></i>
-                <span class="mt-0.5">Growth</span>
-            </button>
-            <button onclick="showSection('drive')" class="flex flex-col items-center px-3 py-1 text-xs">
-                <i class="fa-solid fa-car text-lg"></i>
-                <span class="mt-0.5">Drive</span>
-            </button>
+    <div class="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 z-50">
+        <div class="max-w-screen-sm mx-auto flex items-center justify-around py-3 text-xs">
+            <button onclick="showSection('home')" class="flex flex-col items-center"><i class="fa-solid fa-home text-lg"></i><span class="mt-1">Home</span></button>
+            <button onclick="showSection('money')" class="flex flex-col items-center"><i class="fa-solid fa-dollar-sign text-lg"></i><span class="mt-1">Money</span></button>
+            <button onclick="showSection('focus')" class="flex flex-col items-center"><i class="fa-solid fa-bullseye text-lg"></i><span class="mt-1">Focus</span></button>
+            <button onclick="showSection('energy')" class="flex flex-col items-center"><i class="fa-solid fa-battery-full text-lg"></i><span class="mt-1">Energy</span></button>
+            <button onclick="showSection('growth')" class="flex flex-col items-center"><i class="fa-solid fa-seedling text-lg"></i><span class="mt-1">Growth</span></button>
         </div>
     </div>
 
-    <!-- Toast Container -->
-    <div id="toast-container" class="fixed bottom-24 right-6 z-50"></div>
-
     <script>
-        // ==================== DATA ====================
-        let todos = JSON.parse(localStorage.getItem('forge_todos')) || [];
-        let inboxItems = JSON.parse(localStorage.getItem('forge_inbox')) || [];
-        let currentMIT = JSON.parse(localStorage.getItem('forge_mit')) || null;
-        let ritualStatus = JSON.parse(localStorage.getItem('forge_ritual_status')) || {};
-        let uberLogs = JSON.parse(localStorage.getItem('forge_uber_logs')) || [];
-        let uberGoals = JSON.parse(localStorage.getItem('forge_uber_goals')) || { daily: 200, weekly: 1000 };
+        function initTailwind() {}
 
-        function saveTodos() { localStorage.setItem('forge_todos', JSON.stringify(todos)); }
-        function saveInbox() { localStorage.setItem('forge_inbox', JSON.stringify(inboxItems)); }
-        function saveMIT(mit) { currentMIT = mit; localStorage.setItem('forge_mit', JSON.stringify(mit)); renderMIT(); }
-        function saveRitualStatus() { localStorage.setItem('forge_ritual_status', JSON.stringify(ritualStatus)); }
-        function saveUberLogs() { localStorage.setItem('forge_uber_logs', JSON.stringify(uberLogs)); }
-        function saveUberGoals() {
-            uberGoals.daily = parseInt(document.getElementById('uber-daily-goal').value) || 200;
-            uberGoals.weekly = parseInt(document.getElementById('uber-weekly-goal').value) || 1000;
-            localStorage.setItem('forge_uber_goals', JSON.stringify(uberGoals));
-        }
-
-        function getToday() { return new Date().toISOString().split('T')[0]; }
-
-        // ==================== DAILY LIFE SCORE (Updated with Uber) ====================
-        function calculateDailyScore() {
-            const today = getToday();
-            let score = 0;
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(section).classList.add('active');
             
-            if (ritualStatus[today]?.morning) score += 20;
-            if (currentMIT && currentMIT.date === today && currentMIT.completed) score += 25;
-            if (todos.some(t => t.completed)) score += 20;
-            if (ritualStatus[today]?.evening) score += 15;
-            
-            // Uber integration
-            const todayLog = uberLogs.find(log => log.date === today);
-            if (todayLog) {
-                const goalProgress = Math.min((todayLog.net / uberGoals.daily) * 100, 100);
-                score += Math.round(goalProgress * 0.2);
-            }
-            
-            return Math.min(score, 100);
-        }
-
-        function updateDailyScore() {
-            const score = calculateDailyScore();
-            document.getElementById('daily-score').textContent = score;
-            document.getElementById('daily-score-bar').style.width = score + '%';
-            
-            const msg = document.getElementById('motivational-message');
-            if (msg) {
-                if (score >= 90) msg.textContent = "Excellent work today!";
-                else if (score >= 70) msg.textContent = "Solid progress — keep going!";
-                else if (score >= 50) msg.textContent = "Good start. Let's build momentum.";
-                else msg.textContent = "Every small win counts. You've got this.";
+            if (section === 'money') {
+                renderMoneyList();
             }
         }
 
-        // ==================== LIFE BALANCE RADAR CHART ====================
-        let lifeBalanceChart;
+        function updateDate() {
+            const dateEl = document.getElementById('current-date');
+            const now = new Date();
+            dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        }
 
-        function initLifeBalanceChart() {
-            const ctx = document.getElementById('life-balance-chart');
-            if (!ctx) return;
+        // MIT functionality (unchanged)
+        let mitCompletedToday = false;
 
-            if (lifeBalanceChart) lifeBalanceChart.destroy();
+        function loadMIT() {
+            const savedMIT = localStorage.getItem('forge_mit');
+            const savedCompleted = localStorage.getItem('forge_mit_completed');
+            const savedScore = localStorage.getItem('forge_daily_score');
+            
+            const input = document.getElementById('mit-input');
+            const status = document.getElementById('mit-status');
+            
+            if (savedMIT) input.value = savedMIT;
+            
+            if (savedCompleted === 'true') {
+                mitCompletedToday = true;
+                input.classList.add('completed');
+                status.classList.remove('hidden');
+                document.getElementById('mit-completed-text').textContent = 'Completed today';
+                updateDailyScore(84);
+            } else if (savedScore) {
+                updateDailyScore(parseInt(savedScore));
+            }
+        }
 
-            lifeBalanceChart = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Physical', 'Mental', 'Financial', 'Relationships', 'Productivity', 'Growth'],
-                    datasets: [{
-                        label: 'Current',
-                        data: [75, 82, 60, 70, 85, 78],
-                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
-                        borderColor: '#6366f1',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#6366f1'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: { display: false },
-                            grid: { color: '#27251f' },
-                            angleLines: { color: '#27251f' }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false }
-                    }
-                }
+        function saveMIT() {
+            const input = document.getElementById('mit-input');
+            if (input.value.trim()) {
+                localStorage.setItem('forge_mit', input.value.trim());
+            }
+        }
+
+        function markMITDone() {
+            const input = document.getElementById('mit-input');
+            const status = document.getElementById('mit-status');
+            
+            if (!input.value.trim()) {
+                alert('Set your MIT first!');
+                return;
+            }
+            if (mitCompletedToday) {
+                alert('Already marked done today. Great work!');
+                return;
+            }
+            
+            mitCompletedToday = true;
+            localStorage.setItem('forge_mit_completed', 'true');
+            input.classList.add('completed');
+            status.classList.remove('hidden');
+            document.getElementById('mit-completed-text').textContent = 'Completed today';
+            
+            const newScore = 84;
+            updateDailyScore(newScore);
+            localStorage.setItem('forge_daily_score', newScore);
+        }
+
+        function updateDailyScore(score) {
+            const scoreEl = document.getElementById('daily-score');
+            const barEl = document.getElementById('score-bar');
+            scoreEl.textContent = score;
+            barEl.style.width = score + '%';
+        }
+
+        function initMIT() {
+            const input = document.getElementById('mit-input');
+            loadMIT();
+            input.addEventListener('blur', saveMIT);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') { saveMIT(); input.blur(); }
             });
         }
 
-        // ==================== 30-DAY HABIT CALENDAR ====================
-        function renderHabitCalendar() {
-            const container = document.getElementById('habit-calendar');
-            if (!container) return;
-            
-            container.innerHTML = '';
-            const today = new Date();
-            
-            for (let i = 29; i >= 0; i--) {
-                const checkDate = new Date(today);
-                checkDate.setDate(today.getDate() - i);
-                const dateStr = checkDate.toISOString().split('T')[0];
-                
-                const completed = ritualStatus[dateStr]?.morning && ritualStatus[dateStr]?.evening;
-                
-                const day = document.createElement('div');
-                day.className = `habit-day flex items-center justify-center rounded-lg font-medium cursor-pointer transition-all
-                    ${completed ? 'bg-emerald-500 text-white' : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'}`;
-                
-                day.textContent = checkDate.getDate();
-                day.title = dateStr;
-                
-                container.appendChild(day);
-            }
+        // ========== MONEY MOVES ==========
+        function getMoneyMoves() {
+            return JSON.parse(localStorage.getItem('forge_money_moves') || '[]');
         }
 
-        // ==================== TOAST SYSTEM ====================
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            
-            const colors = {
-                success: 'bg-emerald-600',
-                info: 'bg-sky-600'
-            };
-            
-            toast.className = `toast flex items-center gap-x-3 px-5 py-3 rounded-2xl text-white shadow-lg ${colors[type] || colors.success}`;
-            toast.innerHTML = `
-                <div class="flex items-center gap-x-3">
-                    <i class="fa-solid ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.transition = 'all 0.3s ease';
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 2400);
+        function saveMoneyMoves(moves) {
+            localStorage.setItem('forge_money_moves', JSON.stringify(moves));
         }
 
-        // ==================== FAB ====================
-        function toggleFabMenu() {
-            const menu = document.getElementById('fab-menu');
-            const icon = document.getElementById('fab-icon');
-            
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                icon.classList.remove('fa-plus');
-                icon.classList.add('fa-times');
-            } else {
-                menu.classList.add('hidden');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-plus');
-            }
-        }
+        function addMoneyMove() {
+            const amount = parseFloat(document.getElementById('money-amount').value);
+            const type = document.getElementById('money-type').value;
+            const category = document.getElementById('money-category').value.trim() || 'Uncategorized';
+            const note = document.getElementById('money-note').value.trim();
 
-        function quickAddTask() {
-            document.getElementById('fab-menu').classList.add('hidden');
-            document.getElementById('fab-icon').classList.remove('fa-times');
-            document.getElementById('fab-icon').classList.add('fa-plus');
-            showSection('tasks');
-        }
-
-        function logEnergyQuick() {
-            document.getElementById('fab-menu').classList.add('hidden');
-            document.getElementById('fab-icon').classList.remove('fa-times');
-            document.getElementById('fab-icon').classList.add('fa-plus');
-            showToast('Energy logged (feature coming soon)', 'info');
-        }
-
-        function startFocusFromFab() {
-            document.getElementById('fab-menu').classList.add('hidden');
-            document.getElementById('fab-icon').classList.remove('fa-times');
-            document.getElementById('fab-icon').classList.add('fa-plus');
-            showSection('focus');
-        }
-
-        // ==================== QUICK COMPLETE FUNCTIONS ====================
-        function quickCompleteMorning() {
-            const today = getToday();
-            if (!ritualStatus[today]) ritualStatus[today] = {};
-            ritualStatus[today].morning = true;
-            saveRitualStatus();
-            updateRitualStatusIndicators();
-            updateStreak();
-            updateDailyProgress();
-            updateDailyScore();
-            renderHabitCalendar();
-            showToast('Morning Ritual completed');
-        }
-
-        function quickCompleteEvening() {
-            const today = getToday();
-            if (!ritualStatus[today]) ritualStatus[today] = {};
-            ritualStatus[today].evening = true;
-            saveRitualStatus();
-            updateRitualStatusIndicators();
-            updateStreak();
-            updateDailyProgress();
-            updateDailyScore();
-            renderHabitCalendar();
-            showToast('Evening Ritual completed');
-        }
-
-        function quickCompleteMIT() {
-            if (!currentMIT) return;
-            currentMIT.completed = true;
-            if (currentMIT.completed) currentMIT.streak = (currentMIT.streak || 0) + 1;
-            saveMIT(currentMIT);
-            renderMIT();
-            updateDailyScore();
-            showToast('Priority completed');
-        }
-
-        // ==================== UBER / DRIVE SYSTEM ====================
-        function logUberDay() {
-            const hours = parseFloat(document.getElementById('uber-hours').value) || 0;
-            const trips = parseInt(document.getElementById('uber-trips').value) || 0;
-            const gross = parseFloat(document.getElementById('uber-gross').value) || 0;
-            const expenses = parseFloat(document.getElementById('uber-expenses').value) || 0;
-            
-            if (hours === 0 && trips === 0 && gross === 0) {
-                showToast('Please enter some data', 'info');
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
                 return;
             }
-            
-            const today = getToday();
-            const net = gross - expenses;
-            const perHour = hours > 0 ? (gross / hours).toFixed(2) : 0;
-            const tripsPerHour = hours > 0 ? (trips / hours).toFixed(2) : 0;
-            const goalProgress = Math.min(Math.round((net / uberGoals.daily) * 100), 100);
-            
-            // Expense breakdown
-            const expenseBreakdown = {
-                gas: parseFloat(document.getElementById('expense-gas').value) || 0,
-                maintenance: parseFloat(document.getElementById('expense-maintenance').value) || 0,
-                tolls: parseFloat(document.getElementById('expense-tolls').value) || 0,
-                insurance: parseFloat(document.getElementById('expense-insurance').value) || 0,
-                other: parseFloat(document.getElementById('expense-other').value) || 0
+
+            const move = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                amount: amount,
+                type: type,
+                category: category,
+                note: note
             };
-            
-            uberLogs = uberLogs.filter(log => log.date !== today);
-            
-            const log = {
-                date: today,
-                hours: hours,
-                trips: trips,
-                gross: gross,
-                expenses: expenses,
-                expenseBreakdown: expenseBreakdown,
-                net: net,
-                perHour: parseFloat(perHour),
-                tripsPerHour: parseFloat(tripsPerHour),
-                goalProgress: goalProgress
-            };
-            
-            uberLogs.unshift(log);
-            saveUberLogs();
-            
+
+            const moves = getMoneyMoves();
+            moves.unshift(move);
+            saveMoneyMoves(moves);
+
             // Clear form
-            document.getElementById('uber-hours').value = '';
-            document.getElementById('uber-trips').value = '';
-            document.getElementById('uber-gross').value = '';
-            document.getElementById('uber-expenses').value = '';
-            document.getElementById('expense-gas').value = '';
-            document.getElementById('expense-maintenance').value = '';
-            document.getElementById('expense-tolls').value = '';
-            document.getElementById('expense-insurance').value = '';
-            document.getElementById('expense-other').value = '';
-            
-            showToast('Drive day logged!');
-            renderUberHistory();
-            updateUberTodayStats();
-            updateUberSummaries();
-            updateDailyScore();
+            document.getElementById('money-amount').value = '';
+            document.getElementById('money-category').value = '';
+            document.getElementById('money-note').value = '';
+
+            renderMoneyList();
         }
-        
-        function renderUberHistory() {
-            const container = document.getElementById('uber-history');
-            if (!container) return;
-            
+
+        function renderMoneyList() {
+            const container = document.getElementById('money-list');
+            const moves = getMoneyMoves();
             container.innerHTML = '';
-            
-            if (uberLogs.length === 0) {
-                container.innerHTML = `<div class="text-center py-4 text-zinc-400 text-sm">No drives logged yet.</div>`;
+
+            if (moves.length === 0) {
+                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No money moves logged yet.</div>`;
+                updateMoneySummary(0, 0);
                 return;
             }
-            
-            uberLogs.slice(0, 7).forEach(log => {
+
+            let weekTotal = 0;
+            let net = 0;
+
+            const now = new Date();
+            const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+
+            moves.forEach(move => {
+                const moveDate = new Date(move.date);
+                const isThisWeek = moveDate >= weekStart;
+
+                if (isThisWeek) {
+                    weekTotal += move.type === 'income' ? move.amount : -move.amount;
+                }
+                net += move.type === 'income' ? move.amount : -move.amount;
+
                 const div = document.createElement('div');
-                div.className = `glass border border-zinc-800 px-4 py-3 rounded-2xl text-sm`;
+                div.className = `money-entry glass border border-zinc-800 rounded-2xl p-4 flex justify-between items-start`;
+                
+                const sign = move.type === 'income' ? '+' : '-';
+                const color = move.type === 'income' ? 'text-emerald-400' : 'text-red-400';
+
                 div.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <div class="font-medium">${new Date(log.date).toLocaleDateString('en-US', {month:'short', day:'numeric'})}</div>
-                            <div class="text-xs text-zinc-400">${log.hours}h • ${log.trips} trips</div>
-                        </div>
-                        <div class="text-right">
-                            <div class="font-semibold text-emerald-400">$${log.net}</div>
-                            <div class="text-xs text-zinc-400">$${log.perHour}/hr</div>
-                        </div>
+                    <div>
+                        <div class="font-medium">${move.category}</div>
+                        <div class="text-xs text-zinc-400">${new Date(move.date).toLocaleDateString()} ${move.note ? '• ' + move.note : ''}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="${color} font-semibold">${sign}$${move.amount.toFixed(2)}</div>
+                        <div class="text-[10px] text-zinc-500">${move.type}</div>
                     </div>
                 `;
                 container.appendChild(div);
             });
-        }
-        
-        function updateUberTodayStats() {
-            const today = getToday();
-            const todayLog = uberLogs.find(log => log.date === today);
-            const statsDiv = document.getElementById('uber-today-stats');
-            
-            if (!todayLog) {
-                statsDiv.classList.add('hidden');
-                return;
-            }
-            
-            statsDiv.classList.remove('hidden');
-            document.getElementById('uber-net').textContent = '$' + todayLog.net;
-            document.getElementById('uber-per-hour').textContent = '$' + todayLog.perHour;
-            document.getElementById('uber-trips-per-hour').textContent = todayLog.tripsPerHour;
-            document.getElementById('uber-goal-progress').textContent = todayLog.goalProgress + '%';
+
+            updateMoneySummary(weekTotal, net);
         }
 
-        function updateUberSummaries() {
-            // Weekly
-            const weekNet = uberLogs.slice(0, 7).reduce((sum, log) => sum + log.net, 0);
-            const weekDays = Math.min(uberLogs.length, 7);
-            const weekAvg = weekDays > 0 ? Math.round(weekNet / weekDays) : 0;
-            const weekBest = uberLogs.slice(0, 7).reduce((max, log) => Math.max(max, log.net), 0);
-            
-            document.getElementById('uber-week-net').textContent = '$' + weekNet;
-            document.getElementById('uber-week-avg').textContent = '$' + weekAvg;
-            document.getElementById('uber-week-best').textContent = '$' + weekBest;
-            
-            // Monthly
-            const monthNet = uberLogs.reduce((sum, log) => sum + log.net, 0);
-            const monthDays = uberLogs.length;
-            const monthAvg = monthDays > 0 ? Math.round(monthNet / monthDays) : 0;
-            const monthBest = uberLogs.reduce((max, log) => Math.max(max, log.net), 0);
-            
-            document.getElementById('uber-month-net').textContent = '$' + monthNet;
-            document.getElementById('uber-month-avg').textContent = '$' + monthAvg;
-            document.getElementById('uber-month-best').textContent = '$' + monthBest;
+        function updateMoneySummary(weekTotal, net) {
+            document.getElementById('money-week-total').innerHTML = `$${Math.abs(weekTotal).toFixed(2)}`;
+            document.getElementById('money-net').innerHTML = `$${net.toFixed(2)}`;
+            document.getElementById('money-net').className = net >= 0 ? 'font-semibold text-lg text-emerald-400' : 'font-semibold text-lg text-red-400';
         }
 
-        function updateUberStreak() {
-            let streak = 0;
-            const today = new Date();
-            
-            for (let i = 0; i < 30; i++) {
-                const checkDate = new Date(today);
-                checkDate.setDate(today.getDate() - i);
-                const dateStr = checkDate.toISOString().split('T')[0];
-                
-                if (uberLogs.some(log => log.date === dateStr)) {
-                    streak++;
-                } else {
-                    break;
-                }
-            }
-            
-            const streakEl = document.getElementById('uber-streak');
-            if (streakEl) streakEl.textContent = streak;
-        }
-
-        // ==================== BASIC FUNCTIONS ====================
-        function updateDate() {
-            const dateEl = document.getElementById('current-date');
-            const now = new Date();
-            dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-        }
-
-        function updateRitualStatusIndicators() {
-            const today = getToday();
-            const morningDone = ritualStatus[today]?.morning;
-            const eveningDone = ritualStatus[today]?.evening;
-
-            const morningStatus = document.getElementById('morning-status');
-            const eveningStatus = document.getElementById('evening-status');
-
-            if (morningStatus) {
-                if (morningDone) {
-                    morningStatus.classList.remove('hidden');
-                    document.getElementById('flow-morning').classList.add('flow-done');
-                } else {
-                    morningStatus.classList.add('hidden');
-                    document.getElementById('flow-morning').classList.remove('flow-done');
-                }
-            }
-
-            if (eveningStatus) {
-                if (eveningDone) {
-                    eveningStatus.classList.remove('hidden');
-                    document.getElementById('flow-evening').classList.add('flow-done');
-                } else {
-                    eveningStatus.classList.add('hidden');
-                    document.getElementById('flow-evening').classList.remove('flow-done');
-                }
+        function clearMoneyMoves() {
+            if (confirm('Clear all money moves?')) {
+                localStorage.removeItem('forge_money_moves');
+                renderMoneyList();
             }
         }
 
-        function updateStreak() {
-            const streakEl = document.getElementById('daily-streak');
-            const streakCount = document.getElementById('streak-count');
-            
-            let streak = 0;
-            const today = new Date();
-            
-            for (let i = 0; i < 30; i++) {
-                const checkDate = new Date(today);
-                checkDate.setDate(today.getDate() - i);
-                const dateStr = checkDate.toISOString().split('T')[0];
-                
-                if (ritualStatus[dateStr]?.morning && ritualStatus[dateStr]?.evening) {
-                    streak++;
-                } else {
-                    break;
-                }
-            }
-            
-            if (streak > 0) {
-                streakEl.classList.remove('hidden');
-                streakEl.classList.add('flex');
-                streakCount.textContent = streak;
-            } else {
-                streakEl.classList.add('hidden');
-                streakEl.classList.remove('flex');
-            }
-        }
-
-        function updateDailyProgress() {
-            const today = getToday();
-            const morningDone = ritualStatus[today]?.morning;
-            const eveningDone = ritualStatus[today]?.evening;
-            
-            let completed = 0;
-            if (morningDone) completed++;
-            if (eveningDone) completed++;
-            
-            const hasCompletedTaskToday = todos.some(t => t.completed);
-            if (hasCompletedTaskToday) completed++;
-            
-            const progress = Math.round((completed / 3) * 100);
-            
-            const progressBar = document.getElementById('daily-progress-bar');
-            if (progressBar) progressBar.style.width = progress + '%';
-            
-            const progressText = document.getElementById('daily-progress-text');
-            if (progressText) progressText.textContent = `${completed}/3 completed`;
-        }
-
-        function updateFocusSummary() {
-            const mitContainer = document.getElementById('focus-mit');
-            if (currentMIT && currentMIT.date === getToday()) {
-                mitContainer.innerHTML = `
-                    <div class="flex items-center gap-x-3">
-                        <div class="flex-1 ${currentMIT.completed ? 'line-through opacity-60' : ''}">${currentMIT.text}</div>
-                        ${!currentMIT.completed ? `<button onclick="quickCompleteMIT(); event.stopImmediatePropagation()" class="text-xs px-3 py-1 bg-amber-500/10 text-amber-400 rounded-xl">Done</button>` : ''}
-                    </div>
-                `;
-            } else {
-                mitContainer.innerHTML = `<div class="text-zinc-400 text-sm">No priority set yet</div>`;
-            }
-
-            const tasksContainer = document.getElementById('focus-tasks');
-            const activeTasks = todos.filter(t => !t.completed).slice(0, 3);
-            
-            if (activeTasks.length > 0) {
-                tasksContainer.innerHTML = activeTasks.map((task, index) => `
-                    <div class="flex items-center gap-x-2">
-                        <div class="flex-1">${task.text}</div>
-                        <button onclick="quickCompleteTask(${index}); event.stopImmediatePropagation()" class="text-xs px-2 py-0.5 bg-indigo-500/10 text-indigo-400 rounded-lg">Done</button>
-                    </div>
-                `).join('');
-            } else {
-                tasksContainer.innerHTML = `<div class="text-zinc-400 text-sm">No active tasks</div>`;
-            }
-        }
-
-        function updateWeeklyConsistency() {
-            const container = document.getElementById('weekly-consistency');
-            if (!container) return;
-            
-            container.innerHTML = '';
-            const today = new Date();
-            
-            for (let i = 6; i >= 0; i--) {
-                const checkDate = new Date(today);
-                checkDate.setDate(today.getDate() - i);
-                const dateStr = checkDate.toISOString().split('T')[0];
-                
-                const completed = ritualStatus[dateStr]?.morning && ritualStatus[dateStr]?.evening;
-                
-                const day = document.createElement('div');
-                day.className = `w-8 h-8 rounded-xl flex items-center justify-center text-xs font-medium ${completed ? 'bg-emerald-500 text-white' : 'bg-zinc-800 text-zinc-400'}`;
-                day.textContent = checkDate.toLocaleDateString('en-US', { weekday: 'narrow' });
-                container.appendChild(day);
-            }
-        }
-
-        function quickCompleteTask(index) {
-            const activeTasks = todos.filter(t => !t.completed);
-            const taskToComplete = activeTasks[index];
-            const realIndex = todos.findIndex(t => t === taskToComplete);
-            
-            if (realIndex !== -1) {
-                todos[realIndex].completed = true;
-                saveTodos();
-                updateDailyProgress();
-                updateFocusSummary();
-                updateDailyScore();
-                showToast('Task completed');
-            }
-        }
-
-        function goToRecommendedAction() {
-            const hour = new Date().getHours();
-            if (hour >= 5 && hour < 12) {
-                showSection('morning');
-            } else if (hour >= 12 && hour < 18) {
-                showSection('daily');
-            } else {
-                showSection('evening');
-            }
-        }
-
-        function renderMIT() {
-            const container = document.getElementById('mit-card');
-            if (!container) return;
-            const today = getToday();
-
-            if (!currentMIT || currentMIT.date !== today) {
-                container.innerHTML = `
-                    <div class="text-center py-2">
-                        <p class="text-zinc-400 mb-4">What is the one thing that would make today a win?</p>
-                        <div class="flex gap-2 max-w-md mx-auto">
-                            <input id="mit-input" type="text" placeholder="My #1 priority..." class="flex-1 bg-zinc-900 border border-zinc-700 px-4 py-3 rounded-2xl text-sm focus:outline-none">
-                            <button onclick="setMIT()" class="px-6 bg-amber-500 hover:bg-amber-400 text-black font-medium rounded-2xl text-sm">Set</button>
-                        </div>
-                    </div>`;
-            } else {
-                const done = currentMIT.completed;
-                container.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-x-4 flex-1">
-                            <div onclick="toggleMIT()" class="w-7 h-7 rounded-2xl border flex-shrink-0 flex items-center justify-center cursor-pointer ${done ? 'bg-emerald-500 border-emerald-500' : 'border-amber-400'}">
-                                ${done ? '<i class="fa-solid fa-check text-white text-sm"></i>' : ''}
-                            </div>
-                            <div class="${done ? 'line-through opacity-60' : ''} text-lg">${currentMIT.text}</div>
-                        </div>
-                        <button onclick="clearMIT()" class="text-xs px-3 py-1 text-zinc-400 hover:text-white">Change</button>
-                    </div>`;
-            }
-        }
-
-        function setMIT() {
-            const input = document.getElementById('mit-input');
-            if (!input || !input.value.trim()) return;
-            const newMIT = { date: getToday(), text: input.value.trim(), completed: false, streak: 1 };
-            saveMIT(newMIT);
-            updateFocusSummary();
-            updateDailyScore();
-            showToast('Priority set');
-        }
-
-        function toggleMIT() {
-            if (!currentMIT) return;
-            currentMIT.completed = !currentMIT.completed;
-            if (currentMIT.completed) currentMIT.streak = (currentMIT.streak || 0) + 1;
-            saveMIT(currentMIT);
-            renderMIT();
-            updateFocusSummary();
-            updateDailyScore();
-        }
-
-        function clearMIT() {
-            currentMIT = null;
-            localStorage.removeItem('forge_mit');
-            renderMIT();
-            updateFocusSummary();
-        }
-
-        function quickCapture() {
-            const input = document.getElementById('quick-capture');
-            if (!input || !input.value.trim()) return;
-            inboxItems.unshift({ text: input.value.trim(), timestamp: new Date().toISOString() });
-            input.value = '';
-            saveInbox();
-            updateFocusSummary();
-            showToast('Idea captured');
-        }
-
-        function showSection(section) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('[id^="nav-"]').forEach(n => n.classList.remove('nav-active', 'bg-indigo-600'));
-            document.getElementById(section).classList.add('active');
-            const nav = document.getElementById('nav-' + section);
-            if (nav) nav.classList.add('nav-active', 'bg-indigo-600');
-        }
-
-        function updateDate() {
-            const dateEl = document.getElementById('current-date');
-            const now = new Date();
-            dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-        }
-
-        function updateGreeting() {
-            const hour = new Date().getHours();
-            const greetingEl = document.getElementById('greeting');
-            
-            let greeting = "";
-            
-            if (hour >= 5 && hour < 8) {
-                greeting = "The battlefield is yours. Go dominate, Ishraf.";
-            } 
-            else if (hour >= 8 && hour < 12) {
-                greeting = "Time to forge your legacy. No excuses.";
-            } 
-            else if (hour >= 12 && hour < 17) {
-                greeting = "Weak men rest. Champions keep going. Push harder.";
-            } 
-            else if (hour >= 17 && hour < 21) {
-                greeting = "Pain is temporary. Regret is forever. Finish strong.";
-            } 
-            else {
-                greeting = "While others sleep, legends are built. Get after it.";
-            }
-            
-            greetingEl.textContent = greeting;
-        }
-
-        function initializeApp() {
+        window.onload = function() {
+            initTailwind();
             updateDate();
-            updateGreeting();
-            updateTimeBasedFlow();
-            renderMIT();
-            updateDailyScore();
-            initLifeBalanceChart();
-            renderHabitCalendar();
-            renderUberHistory();
-            updateUberTodayStats();
-            updateUberSummaries();
-            updateUberStreak();
-            document.getElementById('uber-daily-goal').value = uberGoals.daily;
-            document.getElementById('uber-weekly-goal').value = uberGoals.weekly;
-
             document.getElementById('home').classList.add('active');
-            document.getElementById('nav-home').classList.add('nav-active', 'bg-indigo-600');
-
-            if (!currentMIT) {
-                const defaultMIT = { date: getToday(), text: "Set your #1 priority for today", completed: false, streak: 0 };
-                saveMIT(defaultMIT);
-            }
-
-            setInterval(() => {
-                updateGreeting();
-                updateTimeBasedFlow();
-            }, 60000);
+            initMIT();
         }
-
-        function updateTimeBasedFlow() {
-            updateDailyScore();
-        }
-
-        window.onload = initializeApp;
     </script>
 </body>
 </html>
