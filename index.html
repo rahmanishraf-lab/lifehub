@@ -17,60 +17,65 @@
 
         .font-display {
             font-family: 'Space Grotesk', 'Inter', sans-serif;
-            font-weight: 600;
-            letter-spacing: -0.025em;
+            font-weight: 700;
+            letter-spacing: -0.04em;
         }
 
         .dota-panel {
-            background: rgba(18, 22, 30, 0.95);
+            background: #12161e;
             border: 1px solid #2a3344;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45),
-                        inset 0 1px 0 rgba(255,255,255,0.04);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5),
+                        inset 0 1px 0 rgba(255,255,255,0.06),
+                        inset 0 -1px 0 rgba(0,0,0,0.3);
             transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+        }
+
+        .dota-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(197, 164, 110, 0.15), transparent);
+            pointer-events: none;
         }
 
         .dota-panel:hover {
             border-color: #3a4458;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.55),
+                        inset 0 1px 0 rgba(255,255,255,0.08),
+                        inset 0 -1px 0 rgba(0,0,0,0.3);
         }
 
         .section { display: none; }
         .section.active { display: block; }
 
-        .mit-input {
-            background: transparent;
-            border: none;
-            outline: none;
-            font-size: 1.1rem;
-            font-weight: 500;
-            width: 100%;
-            color: #e2e8f0;
-        }
-
-        .mit-input::placeholder {
-            color: #64748b;
-        }
-
-        .completed {
-            text-decoration: line-through;
-            opacity: 0.45;
-        }
-
         .dota-button {
-            background: #c5a46e;
+            background: linear-gradient(145deg, #c5a46e, #b38b4f);
             color: #0a0c10;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.8px;
             transition: all 0.15s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 0 4px 15px rgba(197, 164, 110, 0.3);
+            box-shadow: 0 4px 15px rgba(197, 164, 110, 0.35),
+                        inset 0 1px 0 rgba(255,255,255,0.25),
+                        inset 0 -1px 0 rgba(0,0,0,0.2);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            border: 1px solid #d4af37;
         }
 
         .dota-button:hover {
-            background: #d4af37;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 25px rgba(197, 164, 110, 0.4);
+            background: linear-gradient(145deg, #d4af37, #c5a46e);
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 0 8px 25px rgba(197, 164, 110, 0.45),
+                        inset 0 1px 0 rgba(255,255,255,0.3),
+                        inset 0 -1px 0 rgba(0,0,0,0.2);
         }
 
         .dota-button:active {
-            transform: scale(0.985);
+            transform: translateY(0) scale(0.985);
+            box-shadow: 0 2px 10px rgba(197, 164, 110, 0.3);
         }
 
         .nav-button {
@@ -79,791 +84,811 @@
 
         .nav-button.active {
             color: #c5a46e;
-            text-shadow: 0 0 10px rgba(197, 164, 110, 0.6);
+            text-shadow: 0 0 12px rgba(197, 164, 110, 0.7);
         }
 
-        .nav-button.active i {
-            color: #c5a46e;
-        }
-
-        .habit-row, .money-entry, .capture-item, .blocker-item {
-            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .fab {
-            position: fixed;
-            bottom: 92px;
-            right: 24px;
-            z-index: 60;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.6),
-                        0 0 0 1px #2a3344;
-        }
-
-        /* Dota 2 Style Big Numbers */
         .dota-number {
             font-family: 'Space Grotesk', 'Inter', system_ui, sans-serif;
-            font-weight: 700;
+            font-weight: 800;
             font-feature-settings: "tnum";
-            letter-spacing: -0.04em;
-            text-shadow: 0 0 20px rgba(197, 164, 110, 0.15);
-        }
-
-        .stat-value {
-            font-feature-settings: "tnum";
-            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.05em;
+            text-shadow: 0 0 25px rgba(197, 164, 110, 0.2);
         }
 
         .tactical-label {
-            font-size: 9.5px;
-            letter-spacing: 2.4px;
-            font-weight: 600;
+            font-size: 9px;
+            letter-spacing: 3.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .top-hud {
+            background: #0f131b;
+            border-bottom: 1px solid #2a3344;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .mit-input {
+            background: #0f131b;
+            border: 1px solid #2a3344;
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 15px;
+            color: #e2e8f0;
+            width: 100%;
+            outline: none;
+        }
+
+        .mit-input:focus {
+            border-color: #c5a46e;
+            box-shadow: 0 0 0 3px rgba(197, 164, 110, 0.15);
+        }
+
+        .hud-stat {
+            background: #0f131b;
+            border: 1px solid #3a4458;
+            border-radius: 9999px;
+            padding: 5px 13px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05),
+                        0 2px 8px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+        .hud-stat:hover {
+            border-color: #c5a46e;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08),
+                        0 0 0 1px rgba(197, 164, 110, 0.15);
+        }
+
+        /* Dota 2 Ability Button Style */
+        .dota-ability-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 2px solid #2a3344;
+        }
+
+        .dota-ability-btn:hover {
+            border-color: #c5a46e;
+            transform: scale(1.02);
+            box-shadow: 0 0 0 1px #c5a46e,
+                        0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .dota-ability-btn.active {
+            border-color: #c5a46e;
+            box-shadow: 0 0 0 2px #c5a46e,
+                        0 0 25px rgba(197, 164, 110, 0.3);
+        }
+
+        .dota-ability-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,0.06) 0%,
+                transparent 50%,
+                rgba(0,0,0,0.15) 100%
+            );
+            pointer-events: none;
+        }
+
+        .dota-ability-btn.active::after {
+            background: linear-gradient(
+                145deg,
+                rgba(197, 164, 110, 0.15) 0%,
+                transparent 50%,
+                rgba(0,0,0,0.2) 100%
+            );
+        }
+
+        /* Subtle glow animation for due soon */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 1px rgba(251, 146, 60, 0.3); }
+            50% { box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.5); }
+        }
+
+        .due-soon {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .mission-header {
+            font-size: 10px;
+            letter-spacing: 4px;
+            font-weight: 700;
+            color: #c5a46e;
         }
     </style>
 </head>
 <body class="bg-[#0a0c10] text-zinc-200 pb-24">
 
-    <!-- Top Command Bar -->
-    <div class="sticky top-0 z-50 border-b border-[#2a3344] bg-[#0a0c10]/95 backdrop-blur-lg">
-        <div class="max-w-screen-sm mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Top HUD Bar -->
+    <div class="top-hud sticky top-0 z-50">
+        <div class="max-w-screen-sm mx-auto px-6 py-3 flex items-center justify-between">
             <div class="flex items-center gap-x-3">
-                <div class="w-10 h-10 bg-[#11161f] border border-[#2a3344] rounded-xl flex items-center justify-center shadow-inner">
-                    <i class="fa-solid fa-chess-rook text-[#c5a46e] text-2xl"></i>
+                <div class="w-9 h-9 bg-[#0f131b] border border-[#2a3344] rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-chess-rook text-[#c5a46e]"></i>
                 </div>
                 <div>
-                    <span class="font-display text-3xl font-semibold tracking-tighter">FORGELIFE</span>
-                    <div class="text-[9px] text-[#c5a46e] -mt-1 tracking-[3px]">COMMAND INTERFACE</div>
+                    <span class="font-display text-2xl font-bold tracking-tighter">FORGELIFE</span>
                 </div>
             </div>
-            <div id="current-date" class="font-mono text-xs text-zinc-400 tracking-[2.5px]"></div>
+            
+            <div class="flex items-center gap-3">
+                <div class="hud-stat text-xs">
+                    <i class="fa-solid fa-bullseye text-[#c5a46e]"></i>
+                    <span id="hud-mit" class="font-medium">MIT</span>
+                </div>
+                <div class="hud-stat text-xs">
+                    <i class="fa-solid fa-fire text-[#c5a46e]"></i>
+                    <span id="hud-streak" class="font-medium">0</span>
+                </div>
+                <div class="hud-stat text-xs">
+                    <i class="fa-solid fa-calendar-check text-[#c5a46e]"></i>
+                    <span id="hud-bills-due" class="font-medium">0</span>
+                </div>
+                <div class="hud-stat text-xs">
+                    <i class="fa-solid fa-coins text-[#c5a46e]"></i>
+                    <span id="hud-gold" class="font-medium">0</span>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- HOME -->
-    <div id="home" class="section active max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-8">
-            <h1 class="font-display text-5xl tracking-[-2.5px] text-white leading-none">The battlefield<br>is yours.</h1>
-            <p class="text-zinc-400 mt-3 text-lg">Execute with absolute precision.</p>
+    <div id="home" class="section active max-w-screen-sm mx-auto px-6 pt-6">
+        <div class="mb-7">
+            <h1 class="font-display text-[42px] tracking-[-2.5px] text-white leading-none">The battlefield<br>is yours.</h1>
+            <p class="text-zinc-400 mt-2">Execute with precision.</p>
         </div>
 
-        <!-- Battlefield Score - Dota Style -->
-        <div class="dota-panel rounded-3xl p-7 mb-6">
+        <div class="dota-panel rounded-3xl p-7 mb-5">
             <div class="flex items-end justify-between mb-4">
                 <div>
                     <div class="tactical-label text-[#c5a46e]">BATTLEFIELD SCORE</div>
-                    <div id="daily-score" 
-                         class="dota-number text-[92px] font-bold tracking-[-6px] leading-none text-white">74</div>
+                    <div id="daily-score" class="dota-number text-[78px] font-extrabold tracking-[-5px] text-white">74</div>
                 </div>
                 <div class="text-right pb-1">
-                    <div class="tactical-label text-zinc-500">VICTORY TARGET</div>
-                    <div class="dota-number text-5xl font-bold tracking-tighter text-zinc-400">100</div>
+                    <div class="tactical-label text-zinc-500">TARGET</div>
+                    <div class="dota-number text-5xl font-bold text-zinc-400">100</div>
                 </div>
             </div>
-            <div class="h-2 bg-[#1a202c] rounded-full overflow-hidden border border-[#2a3344]">
-                <div id="score-bar" class="h-2 bg-gradient-to-r from-[#c5a46e] via-[#d4af37] to-[#c5a46e] rounded-full transition-all duration-700" style="width: 74%"></div>
+            <div class="h-[6px] bg-[#1a202c] rounded-full overflow-hidden border border-[#2a3344]">
+                <div id="score-bar" class="h-[6px] bg-gradient-to-r from-[#c5a46e] via-[#d4af37] to-[#c5a46e] rounded-full" style="width: 74%"></div>
             </div>
         </div>
 
-        <!-- Most Important Tactic -->
-        <div class="dota-panel rounded-3xl p-7 mb-6">
-            <div class="flex items-center justify-between mb-4">
+        <div class="dota-panel rounded-3xl p-5 mb-5">
+            <div class="tactical-label text-[#c5a46e] mb-3">TODAY'S FOCUS</div>
+            <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                <div class="flex items-center justify-between">
+                    <span class="text-zinc-400">MIT</span>
+                    <span id="focus-mit" class="font-medium text-emerald-400">—</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-zinc-400">Streak</span>
+                    <span id="focus-streak" class="font-medium">0 days</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-zinc-400">Bills Due</span>
+                    <span id="focus-bills" class="font-medium">0</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-zinc-400">Net Gold</span>
+                    <span id="focus-gold" class="font-medium">$0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="dota-panel rounded-3xl p-6 mb-5">
+            <div class="flex items-center justify-between mb-3">
                 <div class="tactical-label text-[#c5a46e]">MOST IMPORTANT TACTIC</div>
-                <button onclick="markMITDone()"
-                        class="text-xs px-4 py-1.5 rounded-2xl bg-[#c5a46e]/10 text-[#c5a46e] hover:bg-[#c5a46e]/20 active:bg-[#c5a46e]/30 transition flex items-center gap-2 font-medium">
-                    <i class="fa-solid fa-check"></i>
+                <button onclick="markMITDone()" class="text-xs px-4 py-1.5 rounded-2xl bg-[#c5a46e]/10 text-[#c5a46e] flex items-center gap-1.5 font-medium">
+                    <i class="fa-solid fa-check text-xs"></i>
                     <span>EXECUTE</span>
                 </button>
             </div>
-
-            <div class="flex items-center gap-3">
-                <input id="mit-input" type="text"
-                       class="mit-input text-[17px] font-medium placeholder-zinc-500"
-                       placeholder="The one decisive action that alters the outcome">
-                <button onclick="saveMIT()" class="text-[#c5a46e] hover:text-[#d4af37] px-2 text-xl transition">
-                    <i class="fa-solid fa-save"></i>
-                </button>
-            </div>
-
-            <div id="mit-status" class="mt-4 text-sm text-emerald-400 hidden items-center gap-2">
-                <i class="fa-solid fa-check-circle"></i>
-                <span id="mit-completed-text" class="font-medium"></span>
-            </div>
+            <input id="mit-input" type="text" class="mit-input" placeholder="The one move that changes everything">
         </div>
 
-        <!-- Quick Actions -->
         <div class="grid grid-cols-2 gap-3">
-            <button onclick="showSection('money')" class="dota-panel hover:border-[#c5a46e]/50 rounded-3xl py-6 text-sm font-medium flex flex-col items-center justify-center gap-2 active:scale-[0.985]">
-                <i class="fa-solid fa-coins text-2xl text-[#c5a46e]"></i>
-                <span>RESOURCE LOG</span>
+            <button onclick="showSection('money')" class="dota-panel hover:border-[#c5a46e]/50 active:scale-[0.985] rounded-3xl py-5 text-sm font-medium flex flex-col items-center gap-2">
+                <i class="fa-solid fa-coins text-[#c5a46e]"></i>
+                <span>Resource Log</span>
             </button>
-            <button onclick="showSection('blockers')" class="dota-panel hover:border-[#c5a46e]/50 rounded-3xl py-6 text-sm font-medium flex flex-col items-center justify-center gap-2 active:scale-[0.985]">
-                <i class="fa-solid fa-exclamation-triangle text-2xl text-[#c5a46e]"></i>
-                <span>THREATS</span>
+            <button onclick="showSection('bills')" class="dota-panel hover:border-[#c5a46e]/50 active:scale-[0.985] rounded-3xl py-5 text-sm font-medium flex flex-col items-center gap-2">
+                <i class="fa-solid fa-file-invoice-dollar text-[#c5a46e]"></i>
+                <span>Bills</span>
             </button>
-            <button onclick="showSection('energy')" class="dota-panel hover:border-[#c5a46e]/50 rounded-3xl py-6 text-sm font-medium flex flex-col items-center justify-center gap-2 active:scale-[0.985]">
-                <i class="fa-solid fa-battery-full text-2xl text-[#c5a46e]"></i>
-                <span>STAMINA</span>
+            <button onclick="showSection('energy')" class="dota-panel hover:border-[#c5a46e]/50 active:scale-[0.985] rounded-3xl py-5 text-sm font-medium flex flex-col items-center gap-2">
+                <i class="fa-solid fa-battery-full text-[#c5a46e]"></i>
+                <span>Stamina</span>
             </button>
-            <button onclick="showSection('growth')" class="dota-panel hover:border-[#c5a46e]/50 rounded-3xl py-6 text-sm font-medium flex flex-col items-center justify-center gap-2 active:scale-[0.985]">
-                <i class="fa-solid fa-seedling text-2xl text-[#c5a46e]"></i>
-                <span>EVOLUTION</span>
+            <button onclick="showSection('growth')" class="dota-panel hover:border-[#c5a46e]/50 active:scale-[0.985] rounded-3xl py-5 text-sm font-medium flex flex-col items-center gap-2">
+                <i class="fa-solid fa-seedling text-[#c5a46e]"></i>
+                <span>Evolution</span>
             </button>
         </div>
     </div>
 
     <!-- MONEY -->
-    <div id="money" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6">
-            <h2 class="font-display text-4xl tracking-tighter">Resource Log</h2>
-            <p class="text-zinc-400 mt-1">Every transaction is a calculated move.</p>
-        </div>
-
-        <div class="dota-panel rounded-3xl p-7 mb-6">
-            <div class="grid grid-cols-2 gap-4 mb-5">
+    <div id="money" class="section max-w-screen-sm mx-auto px-6 pt-6">
+        <h2 class="font-display text-3xl mb-5 tracking-tight">Resource Log</h2>
+        
+        <div class="dota-panel rounded-3xl p-6 mb-5">
+            <div class="grid grid-cols-2 gap-4 mb-4 items-end">
                 <div>
                     <div class="tactical-label text-[#c5a46e] mb-1.5">AMOUNT</div>
-                    <div class="flex">
-                        <span class="px-4 py-3.5 bg-[#11161f] border border-[#2a3344] rounded-l-2xl text-[#c5a46e]">$</span>
-                        <input id="money-amount" type="number" step="0.01" placeholder="0.00"
-                               class="flex-1 bg-[#11161f] border border-[#2a3344] border-l-0 rounded-r-2xl px-4 py-3.5 text-sm focus:outline-none">
+                    <div class="flex h-[42px]">
+                        <span class="px-3 bg-[#0f131b] border border-[#2a3344] rounded-l-2xl flex items-center text-[#c5a46e]"> <i class="fa-solid fa-coins text-base"></i></span>
+                        <input id="money-amount" type="number" class="flex-1 bg-[#0f131b] border border-[#2a3344] border-l-0 rounded-r-2xl px-3 text-sm focus:outline-none">
                     </div>
                 </div>
                 <div>
                     <div class="tactical-label text-[#c5a46e] mb-1.5">TYPE</div>
-                    <select id="money-type" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
+                    <select id="money-type" class="w-full h-[42px] bg-[#0f131b] border border-[#2a3344] rounded-2xl px-3 text-sm focus:outline-none">
                         <option value="income">GAIN</option>
                         <option value="expense">SPEND</option>
                     </select>
                 </div>
             </div>
 
-            <div class="mb-5">
+            <div class="mb-4">
                 <div class="tactical-label text-[#c5a46e] mb-1.5">CATEGORY</div>
-                <input id="money-category" type="text" placeholder="Uber, Client, Supplies..."
-                       class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
+                <input id="money-category" type="text" class="w-full bg-[#0f131b] border border-[#2a3344] rounded-2xl px-3 py-2.5 text-sm focus:outline-none">
             </div>
-
-            <div class="mb-6">
-                <div class="tactical-label text-[#c5a46e] mb-1.5">NOTES</div>
-                <input id="money-note" type="text" placeholder="Mission notes"
-                       class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
-            </div>
-
-            <button onclick="addMoneyMove()" class="dota-button w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
-                <i class="fa-solid fa-plus"></i>
-                <span>LOG TRANSACTION</span>
-            </button>
+            <button onclick="addMoneyMove()" class="dota-button w-full py-3.5 rounded-2xl text-sm font-semibold">LOG TRANSACTION</button>
         </div>
 
-        <div class="dota-panel rounded-3xl p-6 mb-6 flex justify-between text-sm">
-            <div>
-                <div class="tactical-label text-zinc-400">WEEKLY GOLD</div>
-                <div id="money-week-total" class="dota-number text-5xl font-bold tracking-tighter text-white stat-value">$0</div>
-            </div>
-            <div class="text-right">
-                <div class="tactical-label text-zinc-400">NET POSITION</div>
-                <div id="money-net" class="dota-number text-5xl font-bold tracking-tighter text-white stat-value">$0</div>
+        <div class="dota-panel rounded-3xl p-5 mb-5">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <div class="text-xs text-zinc-400">WEEKLY GOLD</div>
+                    <div id="money-week-total" class="dota-number text-3xl font-bold mt-0.5">$0</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-xs text-zinc-400">NET POSITION</div>
+                    <div id="money-net" class="dota-number text-3xl font-bold mt-0.5">$0</div>
+                </div>
             </div>
         </div>
 
-        <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="tactical-label text-[#c5a46e]">RECENT TRANSACTIONS</div>
-            <button onclick="clearMoneyMoves()" class="text-xs text-red-400 hover:text-red-300">CLEAR</button>
+        <div class="mb-2 px-1 flex justify-between text-xs">
+            <div class="text-[#c5a46e]">RECENT TRANSACTIONS</div>
+            <button onclick="clearMoneyMoves()" class="text-red-400">CLEAR</button>
         </div>
         <div id="money-list" class="space-y-2"></div>
     </div>
 
-    <!-- BLOCKERS -->
-    <div id="blockers" class="section max-w-screen-sm mx-auto px-6 pt-8">
+    <!-- BILLS - DOTA 2 INSPIRED -->
+    <div id="bills" class="section max-w-screen-sm mx-auto px-6 pt-6">
         <div class="mb-6">
-            <h2 class="font-display text-4xl tracking-tighter">Threat Log</h2>
-            <p class="text-zinc-400 mt-1">Identify. Neutralize. Advance.</p>
+            <div class="mission-header mb-1">OBJECTIVE SELECT</div>
+            <h2 class="font-display text-3xl tracking-tight">Bills &amp; Contracts</h2>
         </div>
 
-        <div class="dota-panel rounded-3xl p-7 mb-6">
-            <input id="blocker-input" type="text" placeholder="What stands in your way?"
-                   class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm mb-4 focus:outline-none">
-            <textarea id="blocker-note" rows="2" placeholder="Intelligence on the threat..."
-                      class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm resize-y mb-5 focus:outline-none"></textarea>
+        <!-- Two Big Dota-Style Ability Buttons -->
+        <div class="grid grid-cols-2 gap-4 mb-6" id="bill-type-selector">
+            <!-- Card Payments -->
+            <button onclick="selectBillType('credit-card')" 
+                    id="btn-credit-card"
+                    class="dota-ability-btn dota-panel rounded-3xl p-7 flex flex-col items-center justify-center gap-4 border-2 border-transparent active:scale-[0.985]">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 flex items-center justify-center border border-orange-400/30">
+                    <i class="fa-solid fa-scroll text-4xl text-orange-400"></i>
+                </div>
+                <div class="text-center">
+                    <div class="font-semibold text-xl tracking-tight">Card Payments</div>
+                    <div class="text-xs text-zinc-400 mt-1">Credit Cards • Loans</div>
+                </div>
+            </button>
 
-            <button onclick="addBlocker()" class="dota-button w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
-                <i class="fa-solid fa-exclamation-triangle"></i>
-                <span>REGISTER THREAT</span>
+            <!-- Recurring Payments -->
+            <button onclick="selectBillType('fixed')" 
+                    id="btn-fixed"
+                    class="dota-ability-btn dota-panel rounded-3xl p-7 flex flex-col items-center justify-center gap-4 border-2 border-transparent active:scale-[0.985]">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#c5a46e]/20 to-[#b38b4f]/10 flex items-center justify-center border border-[#c5a46e]/30">
+                    <i class="fa-solid fa-hourglass-half text-4xl text-[#c5a46e]"></i>
+                </div>
+                <div class="text-center">
+                    <div class="font-semibold text-xl tracking-tight">Recurring</div>
+                    <div class="text-xs text-zinc-400 mt-1">Rent • Insurance • Utilities</div>
+                </div>
             </button>
         </div>
 
-        <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="tactical-label text-[#c5a46e]">ACTIVE THREATS</div>
-            <button onclick="clearBlockers()" class="text-xs text-red-400 hover:text-red-300">CLEAR</button>
+        <!-- Credit Card Form -->
+        <div id="form-credit-card" class="hidden mb-6">
+            <div class="dota-panel rounded-3xl p-6 border border-orange-400/40">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <div class="tactical-label text-orange-400">MISSION TYPE</div>
+                        <div class="font-medium text-xl">Credit Card Payment</div>
+                    </div>
+                    <button onclick="hideBillForms()" class="text-xs px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition-colors">CLOSE</button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <div class="tactical-label text-[#c5a46e] mb-1.5">CARD NAME</div>
+                        <input id="cc-name" type="text" placeholder="Amex Platinum" class="w-full bg-[#0f131b] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="tactical-label text-[#c5a46e] mb-1.5">AMOUNT DUE</div>
+                            <div class="flex h-[42px]">
+                                <span class="px-3 bg-[#0f131b] border border-[#2a3344] rounded-l-2xl flex items-center text-[#c5a46e]"> <i class="fa-solid fa-coins text-base"></i></span>
+                                <input id="cc-amount" type="number" class="flex-1 bg-[#0f131b] border border-[#2a3344] border-l-0 rounded-r-2xl px-3 text-sm focus:outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="tactical-label text-[#c5a46e] mb-1.5">FREQUENCY</div>
+                            <select id="cc-frequency" class="w-full h-[42px] bg-[#0f131b] border border-[#2a3344] rounded-2xl px-3 text-sm focus:outline-none">
+                                <option value="monthly">Monthly</option>
+                                <option value="bi-weekly">Bi-weekly</option>
+                                <option value="weekly">Weekly</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="tactical-label text-[#c5a46e] mb-1.5">DUE DAY</div>
+                            <input id="cc-due-day" type="number" min="1" max="31" placeholder="15" class="w-full bg-[#0f131b] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                        </div>
+                        <div>
+                            <div class="tactical-label text-[#c5a46e] mb-1.5">REMIND ME</div>
+                            <div class="flex items-center gap-2">
+                                <input id="cc-reminder-days" type="number" min="0" max="14" value="3" class="flex-1 bg-[#0f131b] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                                <span class="text-xs text-zinc-400">days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="addBill('credit-card')" class="dota-button w-full py-3.5 rounded-2xl text-sm font-semibold mt-6">ADD CARD PAYMENT</button>
+            </div>
         </div>
-        <div id="blocker-list" class="space-y-2"></div>
+
+        <!-- Fixed Form -->
+        <div id="form-fixed" class="hidden mb-6">
+            <div class="dota-panel rounded-3xl p-6 border border-[#c5a46e]/40">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <div class="tactical-label text-[#c5a46e]">MISSION TYPE</div>
+                        <div class="font-medium text-xl">Recurring Payment</div>
+                    </div>
+                    <button onclick="hideBillForms()" class="text-xs px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition-colors">CLOSE</button>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="tactical-label text-[#c5a46e] mb-1.5">FREQUENCY</div>
+                            <select id="fixed-frequency" class="w-full h-[42px] bg-[#0f131b] border border-[#2a3344] rounded-2xl px-3 text-sm focus:outline-none">
+                                <option value="monthly">Monthly</option>
+                                <option value="bi-weekly">Bi-weekly</option>
+                                <option value="weekly">Weekly</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="tactical-label text-[#c5a46e] mb-1.5">DUE DAY</div>
+                            <input id="fixed-due-day" type="number" min="1" max="31" placeholder="1" class="w-full bg-[#0f131b] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div class="tactical-label text-[#c5a46e] mb-1.5">REMIND ME</div>
+                            <div class="flex items-center gap-2">
+                                <input id="fixed-reminder-days" type="number" min="0" max="14" value="3" class="flex-1 bg-[#0f131b] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                                <span class="text-xs text-zinc-400">days</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="tactical-label text-[#c5a46e] mb-1.5">CATEGORY</div>
+                            <select id="fixed-category" class="w-full h-[42px] bg-[#0f131b] border border-[#2a3344] rounded-2xl px-3 text-sm focus:outline-none">
+                                <option value="">-- Select --</option>
+                                <option value="Rent">Rent / Mortgage</option>
+                                <option value="Car">Car Payment</option>
+                                <option value="Insurance">Insurance</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Phone">Phone / Internet</option>
+                                <option value="Subscription">Subscription</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="tactical-label text-[#c5a46e] mb-1.5">NAME</div>
+                        <input id="fixed-name" type="text" placeholder="Rent - Apartment" class="w-full bg-[#0f131b] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                    </div>
+
+                    <div>
+                        <div class="tactical-label text-[#c5a46e] mb-1.5">AMOUNT</div>
+                        <div class="flex h-[42px]">
+                            <span class="px-3 bg-[#0f131b] border border-[#2a3344] rounded-l-2xl flex items-center text-[#c5a46e]"> <i class="fa-solid fa-coins text-base"></i></span>
+                            <input id="fixed-amount" type="number" class="flex-1 bg-[#0f131b] border border-[#2a3344] border-l-0 rounded-r-2xl px-3 text-sm focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="addBill('fixed')" class="dota-button w-full py-3.5 rounded-2xl text-sm font-semibold mt-6">ADD RECURRING PAYMENT</button>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="dota-panel rounded-3xl p-5">
+                <div class="text-xs text-zinc-400">FIXED EXPENSES</div>
+                <div id="bills-fixed-total" class="dota-number text-3xl font-bold mt-1 text-[#c5a46e]"><i class="fa-solid fa-coins mr-1.5 text-base align-middle"></i>0</div>
+            </div>
+            <div class="dota-panel rounded-3xl p-5">
+                <div class="text-xs text-zinc-400">CREDIT CARD PAYMENTS</div>
+                <div id="bills-cc-total" class="dota-number text-3xl font-bold mt-1 text-orange-400"><i class="fa-solid fa-coins mr-1.5 text-base align-middle"></i>0</div>
+            </div>
+        </div>
+
+        <div class="dota-panel rounded-3xl p-5 mb-4">
+            <div class="flex justify-between items-end">
+                <div>
+                    <div class="text-xs text-zinc-400">TOTAL MONTHLY COMMITMENT</div>
+                    <div id="bills-monthly-total" class="dota-number text-4xl font-bold mt-1"><i class="fa-solid fa-coins mr-1.5 text-base align-middle"></i>0</div>
+                </div>
+                <div class="text-right text-xs text-zinc-400">
+                    <div id="bills-count">0 contracts</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bills List -->
+        <div class="mb-2 px-1 flex justify-between text-xs">
+            <div class="text-[#c5a46e]">ACTIVE CONTRACTS</div>
+        </div>
+        <div id="bills-list" class="space-y-2"></div>
     </div>
 
     <!-- CAPTURE -->
-    <div id="capture" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6">
-            <h2 class="font-display text-4xl tracking-tighter">Field Notes</h2>
-            <p class="text-zinc-400 mt-1">Capture intelligence before it fades.</p>
-        </div>
-
-        <div class="dota-panel rounded-3xl p-7 mb-6">
-            <textarea id="capture-input" rows="3" placeholder="Drop any intel, idea, or observation..."
-                      class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm resize-y focus:outline-none"></textarea>
-
-            <button onclick="addCapture()" class="mt-5 dota-button w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
-                <i class="fa-solid fa-inbox"></i>
-                <span>LOG INTEL</span>
-            </button>
-        </div>
-
-        <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="tactical-label text-[#c5a46e]">INTEL ARCHIVE</div>
-            <button onclick="clearCaptures()" class="text-xs text-red-400 hover:text-red-300">CLEAR</button>
+    <div id="capture" class="section max-w-screen-sm mx-auto px-6 pt-6">
+        <h2 class="font-display text-3xl mb-5 tracking-tight">Field Notes</h2>
+        <div class="dota-panel rounded-3xl p-6 mb-5">
+            <textarea id="capture-input" rows="3" placeholder="Drop intel..." class="w-full bg-[#0f131b] border border-[#2a3344] rounded-2xl px-3 py-3 text-sm"></textarea>
+            <button onclick="addCapture()" class="mt-4 dota-button w-full py-3.5 rounded-2xl text-sm font-semibold">LOG INTEL</button>
         </div>
         <div id="capture-list" class="space-y-2"></div>
     </div>
 
     <!-- GROWTH -->
-    <div id="growth" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6">
-            <h2 class="font-display text-4xl tracking-tighter">Evolution</h2>
-            <p class="text-zinc-400 mt-1">Discipline compounds. Become unstoppable.</p>
-        </div>
-
-        <div class="dota-panel rounded-3xl p-7 mb-6">
-            <div class="flex gap-3">
-                <input id="habit-input" type="text" placeholder="New discipline..."
-                       class="flex-1 bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
-                <button onclick="addHabit()" class="dota-button px-8 rounded-2xl text-sm font-semibold">ADD</button>
+    <div id="growth" class="section max-w-screen-sm mx-auto px-6 pt-6">
+        <h2 class="font-display text-3xl mb-5 tracking-tight">Evolution</h2>
+        <div class="dota-panel rounded-3xl p-6 mb-5">
+            <div class="flex gap-2">
+                <input id="habit-input" type="text" placeholder="New discipline" class="flex-1 bg-[#0f131b] border border-[#2a3344] rounded-2xl px-3 py-3 text-sm">
+                <button onclick="addHabit()" class="dota-button px-6 rounded-2xl text-sm font-semibold">ADD</button>
             </div>
-        </div>
-
-        <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="tactical-label text-[#c5a46e]">DISCIPLINE STREAKS</div>
-            <button onclick="resetAllStreaks()" class="text-xs text-red-400 hover:text-red-300">RESET ALL</button>
         </div>
         <div id="habit-list" class="space-y-3"></div>
     </div>
 
-    <!-- FAB -->
-    <button onclick="quickCaptureFromHome()"
-            class="fab w-16 h-16 bg-[#c5a46e] hover:bg-[#d4af37] active:scale-95 transition-all rounded-3xl flex items-center justify-center shadow-2xl">
-        <i class="fa-solid fa-plus text-[#0a0c10] text-3xl"></i>
+    <button onclick="quickCaptureFromHome()" class="fab w-14 h-14 bg-[#c5a46e] hover:bg-[#d4af37] rounded-3xl flex items-center justify-center shadow-2xl">
+        <i class="fa-solid fa-plus text-[#0a0c10] text-2xl"></i>
     </button>
 
-    <!-- Bottom Navigation -->
     <div class="fixed bottom-0 left-0 right-0 bg-[#0a0c10] border-t border-[#2a3344] z-50">
-        <div class="max-w-screen-sm mx-auto flex items-center justify-around py-[13px] text-xs">
-            <button onclick="showSection('home')" id="nav-home"
-                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
-                <i class="fa-solid fa-home text-2xl"></i>
-                <span class="text-[9.5px] mt-px tracking-wider">COMMAND</span>
-            </button>
-            <button onclick="showSection('money')" id="nav-money"
-                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
-                <i class="fa-solid fa-coins text-2xl"></i>
-                <span class="text-[9.5px] mt-px tracking-wider">GOLD</span>
-            </button>
-            <button onclick="showSection('blockers')" id="nav-blockers"
-                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
-                <i class="fa-solid fa-exclamation-triangle text-2xl"></i>
-                <span class="text-[9.5px] mt-px tracking-wider">THREATS</span>
-            </button>
-            <button onclick="showSection('capture')" id="nav-capture"
-                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
-                <i class="fa-solid fa-inbox text-2xl"></i>
-                <span class="text-[9.5px] mt-px tracking-wider">INTEL</span>
-            </button>
-            <button onclick="showSection('growth')" id="nav-growth"
-                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
-                <i class="fa-solid fa-seedling text-2xl"></i>
-                <span class="text-[9.5px] mt-px tracking-wider">EVOLVE</span>
-            </button>
+        <div class="max-w-screen-sm mx-auto flex items-center justify-around py-3 text-xs">
+            <button onclick="showSection('home')" id="nav-home" class="nav-button flex flex-col items-center text-zinc-400"><i class="fa-solid fa-home text-xl"></i><span class="text-[9px] mt-0.5">COMMAND</span></button>
+            <button onclick="showSection('money')" id="nav-money" class="nav-button flex flex-col items-center text-zinc-400"><i class="fa-solid fa-coins text-xl"></i><span class="text-[9px] mt-0.5">GOLD</span></button>
+            <button onclick="showSection('bills')" id="nav-bills" class="nav-button flex flex-col items-center text-zinc-400"><i class="fa-solid fa-file-invoice-dollar text-xl"></i><span class="text-[9px] mt-0.5">BILLS</span></button>
+            <button onclick="showSection('capture')" id="nav-capture" class="nav-button flex flex-col items-center text-zinc-400"><i class="fa-solid fa-inbox text-xl"></i><span class="text-[9px] mt-0.5">INTEL</span></button>
+            <button onclick="showSection('growth')" id="nav-growth" class="nav-button flex flex-col items-center text-zinc-400"><i class="fa-solid fa-seedling text-xl"></i><span class="text-[9px] mt-0.5">EVOLVE</span></button>
         </div>
     </div>
 
     <script>
+        // ==================== BILL TYPE SELECTOR ====================
+        let currentBillType = null;
+
+        function selectBillType(type) {
+            currentBillType = type;
+
+            document.getElementById('btn-credit-card').classList.remove('active', 'border-[#c5a46e]');
+            document.getElementById('btn-fixed').classList.remove('active', 'border-[#c5a46e]');
+
+            if (type === 'credit-card') {
+                document.getElementById('btn-credit-card').classList.add('active', 'border-[#c5a46e]');
+                document.getElementById('form-credit-card').classList.remove('hidden');
+                document.getElementById('form-fixed').classList.add('hidden');
+            } else {
+                document.getElementById('btn-fixed').classList.add('active', 'border-[#c5a46e]');
+                document.getElementById('form-fixed').classList.remove('hidden');
+                document.getElementById('form-credit-card').classList.add('hidden');
+            }
+        }
+
+        function hideBillForms() {
+            document.getElementById('form-credit-card').classList.add('hidden');
+            document.getElementById('form-fixed').classList.add('hidden');
+            document.getElementById('btn-credit-card').classList.remove('active', 'border-[#c5a46e]');
+            document.getElementById('btn-fixed').classList.remove('active', 'border-[#c5a46e]');
+            currentBillType = null;
+        }
+
+        // ==================== DATA ====================
+        function getBills() { return JSON.parse(localStorage.getItem('forge_bills') || '[]'); }
+        function saveBills(bills) { localStorage.setItem('forge_bills', JSON.stringify(bills)); }
+
+        function calculateNextDue(bill) {
+            const today = new Date();
+            const dueDay = parseInt(bill.dueDay) || 1;
+            let nextDue = new Date(today.getFullYear(), today.getMonth(), dueDay);
+            if (nextDue < today) {
+                if (bill.frequency === 'monthly') nextDue.setMonth(nextDue.getMonth() + 1);
+                else if (bill.frequency === 'bi-weekly') nextDue = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000);
+                else if (bill.frequency === 'weekly') nextDue = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+            }
+            return nextDue;
+        }
+
+        function getDaysUntilDue(bill) {
+            const nextDue = calculateNextDue(bill);
+            const diffTime = nextDue - new Date();
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function addBill(type) {
+            let bill = { id: Date.now(), type, lastPaid: null };
+
+            if (type === 'credit-card') {
+                bill.name = document.getElementById('cc-name').value.trim();
+                bill.amount = parseFloat(document.getElementById('cc-amount').value);
+                bill.frequency = document.getElementById('cc-frequency').value;
+                bill.dueDay = parseInt(document.getElementById('cc-due-day').value);
+                bill.reminderDays = parseInt(document.getElementById('cc-reminder-days').value) || 3;
+                if (!bill.name || !bill.amount || !bill.dueDay) { alert('Fill all fields'); return; }
+            } else {
+                bill.name = document.getElementById('fixed-name').value.trim();
+                bill.amount = parseFloat(document.getElementById('fixed-amount').value);
+                bill.frequency = document.getElementById('fixed-frequency').value;
+                bill.dueDay = parseInt(document.getElementById('fixed-due-day').value);
+                bill.reminderDays = parseInt(document.getElementById('fixed-reminder-days').value) || 3;
+                bill.category = document.getElementById('fixed-category').value;
+                if (!bill.name || !bill.amount || !bill.dueDay) { alert('Fill all fields'); return; }
+            }
+
+            const bills = getBills();
+            bills.push(bill);
+            saveBills(bills);
+            hideBillForms();
+            renderBillsList();
+            updateHUDAndFocus();
+        }
+
+        function markBillPaid(id) {
+            const bills = getBills();
+            const bill = bills.find(b => b.id === id);
+            if (bill) { 
+                bill.lastPaid = new Date().toISOString(); 
+                saveBills(bills); 
+                renderBillsList(); 
+                updateHUDAndFocus(); 
+            }
+        }
+
+        function deleteBill(id) {
+            if (!confirm('Delete this contract?')) return;
+            let bills = getBills().filter(b => b.id !== id);
+            saveBills(bills);
+            renderBillsList();
+            updateHUDAndFocus();
+        }
+
+        function renderBillsList() {
+            const container = document.getElementById('bills-list');
+            const bills = getBills();
+            container.innerHTML = '';
+
+            if (!bills.length) {
+                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No active contracts.</div>`;
+                document.getElementById('bills-fixed-total').innerHTML = '<i class="fa-solid fa-coins mr-1.5 text-base align-middle"></i>0';
+                document.getElementById('bills-cc-total').innerHTML = '<i class="fa-solid fa-coins mr-1.5 text-base align-middle"></i>0';
+                document.getElementById('bills-monthly-total').innerHTML = '<i class="fa-solid fa-coins mr-1.5 text-base align-middle"></i>0';
+                document.getElementById('bills-count').textContent = '0 contracts';
+                return;
+            }
+
+            let fixedTotal = 0, ccTotal = 0, dueSoonCount = 0;
+
+            bills.forEach(bill => {
+                const daysUntil = getDaysUntilDue(bill);
+                const nextDue = calculateNextDue(bill);
+                const isDueSoon = daysUntil <= (bill.reminderDays || 3);
+
+                const monthlyAmount = bill.frequency === 'monthly' ? bill.amount :
+                                      bill.frequency === 'bi-weekly' ? bill.amount * 2 :
+                                      bill.amount * 4;
+
+                if (bill.type === 'credit-card') ccTotal += monthlyAmount;
+                else fixedTotal += monthlyAmount;
+
+                if (isDueSoon && daysUntil >= 0) dueSoonCount++;
+
+                const typeBadge = bill.type === 'credit-card' 
+                    ? `<span class="text-[10px] px-2 py-0.5 bg-orange-500/20 text-orange-400 rounded">CARD</span>`
+                    : `<span class="text-[10px] px-2 py-0.5 bg-[#c5a46e]/20 text-[#c5a46e] rounded">FIXED</span>`;
+
+                const catBadge = (bill.type === 'fixed' && bill.category) 
+                    ? `<span class="text-[9px] px-1.5 py-0.5 bg-zinc-700 text-zinc-300 rounded ml-1">${bill.category}</span>` : "";
+
+                const div = document.createElement('div');
+                div.className = `dota-panel rounded-3xl p-4 ${isDueSoon ? 'border border-orange-400/60 due-soon' : ''}`;
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="font-medium flex items-center gap-2">${bill.name} ${typeBadge}${catBadge}</div>
+                            <div class="text-xs text-zinc-400 mt-0.5">${bill.frequency} • Due ${bill.dueDay} • Remind ${bill.reminderDays}d before</div>
+                            <div class="text-xs mt-1 ${isDueSoon ? 'text-orange-400' : 'text-zinc-400'}">${daysUntil >= 0 ? daysUntil + ' days' : 'Overdue'}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-semibold">$${bill.amount}</div>
+                            <div class="text-[10px] text-zinc-500">${nextDue.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-3">
+                        <button onclick="markBillPaid(${bill.id})" class="flex-1 text-xs py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-xl transition-all active:scale-95">MARK PAID</button>
+                        <button onclick="deleteBill(${bill.id})" class="px-3 text-xs py-1.5 text-red-400 hover:bg-red-500/10 rounded-xl transition-all"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('bills-fixed-total').innerHTML = '<i class="fa-solid fa-coins mr-1.5 text-base align-middle"></i>' + Math.round(fixedTotal);
+            document.getElementById('bills-cc-total').innerHTML = '<i class="fa-solid fa-coins mr-1.5 text-base align-middle"></i>' + Math.round(ccTotal);
+            document.getElementById('bills-monthly-total').innerHTML = '<i class="fa-solid fa-coins mr-1.5 text-base align-middle"></i>' + Math.round(fixedTotal + ccTotal);
+            document.getElementById('bills-count').textContent = bills.length + ' contracts';
+        }
+
+        // ==================== REST OF APP ====================
         function showSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(section).classList.add('active');
-
             document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
-            const navMap = {
-                'home': 'nav-home',
-                'money': 'nav-money',
-                'blockers': 'nav-blockers',
-                'capture': 'nav-capture',
-                'growth': 'nav-growth'
-            };
-            if (navMap[section]) {
-                document.getElementById(navMap[section]).classList.add('active');
-            }
+            const navMap = { home: 'nav-home', money: 'nav-money', bills: 'nav-bills', capture: 'nav-capture', growth: 'nav-growth' };
+            if (navMap[section]) document.getElementById(navMap[section]).classList.add('active');
 
             if (section === 'money') renderMoneyList();
             if (section === 'capture') renderCaptureList();
-            if (section === 'blockers') renderBlockerList();
+            if (section === 'bills') { hideBillForms(); renderBillsList(); }
             if (section === 'growth') renderHabitList();
         }
 
-        function updateDate() {
-            const dateEl = document.getElementById('current-date');
-            const now = new Date();
-            dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase();
+        function updateHUDAndFocus() {
+            const mitEl = document.getElementById('hud-mit');
+            const focusMit = document.getElementById('focus-mit');
+            if (localStorage.getItem('forge_mit_completed') === 'true') {
+                mitEl.textContent = 'DONE'; mitEl.className = 'font-medium text-emerald-400';
+                focusMit.textContent = 'Done'; focusMit.className = 'font-medium text-emerald-400';
+            } else {
+                mitEl.textContent = 'MIT'; mitEl.className = 'font-medium';
+                focusMit.textContent = 'Pending'; focusMit.className = 'font-medium text-amber-400';
+            }
+
+            const habits = JSON.parse(localStorage.getItem('forge_habits') || '[]');
+            let maxStreak = 0; habits.forEach(h => maxStreak = Math.max(maxStreak, h.streak || 0));
+            document.getElementById('hud-streak').textContent = maxStreak;
+            document.getElementById('focus-streak').textContent = maxStreak + ' days';
+
+            const bills = getBills();
+            let dueSoon = 0;
+            bills.forEach(b => { if (getDaysUntilDue(b) <= (b.reminderDays || 3) && getDaysUntilDue(b) >= 0) dueSoon++; });
+            document.getElementById('hud-bills-due').textContent = dueSoon;
+            document.getElementById('focus-bills').textContent = dueSoon;
+
+            const moves = JSON.parse(localStorage.getItem('forge_money_moves') || '[]');
+            let net = 0; moves.forEach(m => net += m.type === 'income' ? m.amount : -m.amount);
+            document.getElementById('hud-gold').textContent = Math.floor(net);
+            document.getElementById('focus-gold').textContent = '$' + Math.floor(net);
         }
 
-        // MIT
         let mitCompletedToday = false;
-
         function loadMIT() {
-            const savedMIT = localStorage.getItem('forge_mit');
-            const savedCompleted = localStorage.getItem('forge_mit_completed');
-            const savedScore = localStorage.getItem('forge_daily_score');
             const input = document.getElementById('mit-input');
-            const status = document.getElementById('mit-status');
-
-            if (savedMIT) input.value = savedMIT;
-
-            if (savedCompleted === 'true') {
-                mitCompletedToday = true;
-                input.classList.add('completed');
-                status.classList.remove('hidden');
-                status.classList.add('flex');
-                document.getElementById('mit-completed-text').textContent = 'TACTIC EXECUTED';
-                updateDailyScore(84);
-            } else if (savedScore) {
-                updateDailyScore(parseInt(savedScore));
-            }
+            const saved = localStorage.getItem('forge_mit');
+            if (saved) input.value = saved;
+            if (localStorage.getItem('forge_mit_completed') === 'true') { mitCompletedToday = true; input.classList.add('completed'); }
+            updateHUDAndFocus();
         }
-
-        function saveMIT() {
-            const input = document.getElementById('mit-input');
-            if (input.value.trim()) {
-                localStorage.setItem('forge_mit', input.value.trim());
-            }
-        }
-
         function markMITDone() {
             const input = document.getElementById('mit-input');
-            const status = document.getElementById('mit-status');
-
-            if (!input.value.trim()) {
-                alert('Declare your Most Important Tactic first.');
-                return;
-            }
-            if (mitCompletedToday) {
-                alert('Already executed today.');
-                return;
-            }
-
+            if (!input.value.trim()) return alert('Set your MIT first.');
+            if (mitCompletedToday) return;
             mitCompletedToday = true;
             localStorage.setItem('forge_mit_completed', 'true');
             input.classList.add('completed');
-            status.classList.remove('hidden');
-            status.classList.add('flex');
-            document.getElementById('mit-completed-text').textContent = 'TACTIC EXECUTED';
-
-            const newScore = 84;
-            updateDailyScore(newScore);
-            localStorage.setItem('forge_daily_score', newScore);
+            updateHUDAndFocus();
         }
 
-        function updateDailyScore(score) {
-            const scoreEl = document.getElementById('daily-score');
-            scoreEl.textContent = score;
-        }
-
-        function initMIT() {
-            const input = document.getElementById('mit-input');
-            loadMIT();
-            input.addEventListener('blur', saveMIT);
-            input.addEventListener('keypress', e => {
-                if (e.key === 'Enter') {
-                    saveMIT();
-                    input.blur();
-                }
-            });
-        }
-
-        // Money
-        function getMoneyMoves() {
-            return JSON.parse(localStorage.getItem('forge_money_moves') || '[]');
-        }
-        function saveMoneyMoves(moves) {
-            localStorage.setItem('forge_money_moves', JSON.stringify(moves));
-        }
-
+        function getMoneyMoves() { return JSON.parse(localStorage.getItem('forge_money_moves') || '[]'); }
+        function saveMoneyMoves(m) { localStorage.setItem('forge_money_moves', JSON.stringify(m)); }
         function addMoneyMove() {
             const amount = parseFloat(document.getElementById('money-amount').value);
-            if (!amount || amount <= 0) {
-                alert('Enter a valid amount');
-                return;
-            }
-
-            const move = {
-                id: Date.now(),
-                date: new Date().toISOString(),
-                amount: amount,
-                type: document.getElementById('money-type').value,
-                category: document.getElementById('money-category').value.trim() || 'Uncategorized',
-                note: document.getElementById('money-note').value.trim()
-            };
-
-            const moves = getMoneyMoves();
-            moves.unshift(move);
-            saveMoneyMoves(moves);
-
-            document.getElementById('money-amount').value = '';
-            document.getElementById('money-category').value = '';
-            document.getElementById('money-note').value = '';
-
-            renderMoneyList();
+            if (!amount || amount <= 0) return alert('Valid amount required');
+            const type = document.getElementById('money-type').value;
+            const move = { id: Date.now(), date: new Date().toISOString(), amount, type, category: document.getElementById('money-category').value.trim() || 'Uncategorized' };
+            const moves = getMoneyMoves(); moves.unshift(move); saveMoneyMoves(moves);
+            document.getElementById('money-amount').value = ''; document.getElementById('money-category').value = '';
+            renderMoneyList(); updateHUDAndFocus();
         }
-
         function renderMoneyList() {
-            const container = document.getElementById('money-list');
-            const moves = getMoneyMoves();
-            container.innerHTML = '';
-
-            if (moves.length === 0) {
-                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No transactions logged yet.</div>`;
-                updateMoneySummary(0, 0);
-                return;
-            }
-
-            let weekTotal = 0;
-            let net = 0;
-            const now = new Date();
-            const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
-
-            moves.forEach(move => {
-                const moveDate = new Date(move.date);
-                if (moveDate >= weekStart) {
-                    weekTotal += move.type === 'income' ? move.amount : -move.amount;
-                }
-                net += move.type === 'income' ? move.amount : -move.amount;
-
-                const div = document.createElement('div');
-                div.className = `money-entry dota-panel rounded-3xl p-5 flex justify-between items-start`;
-
-                const sign = move.type === 'income' ? '+' : '-';
-                const color = move.type === 'income' ? 'text-emerald-400' : 'text-red-400';
-
-                div.innerHTML = `
-                    <div class="flex-1 min-w-0">
-                        <div class="font-medium">${move.category}</div>
-                        <div class="text-xs text-zinc-400 mt-0.5">${new Date(move.date).toLocaleDateString()} ${move.note ? '• ' + move.note : ''}</div>
-                    </div>
-                    <div class="text-right pl-4">
-                        <div class="${color} font-semibold text-lg">${sign}$${move.amount.toFixed(2)}</div>
-                        <div class="text-[10px] text-zinc-500">${move.type.toUpperCase()}</div>
-                    </div>
-                `;
+            const container = document.getElementById('money-list'); const moves = getMoneyMoves(); container.innerHTML = '';
+            if (!moves.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No transactions logged.</div>`; return; }
+            let weekTotal = 0, net = 0;
+            const weekStart = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - new Date().getDay());
+            moves.forEach(m => {
+                const d = new Date(m.date); if (d >= weekStart) weekTotal += m.type === 'income' ? m.amount : -m.amount; net += m.type === 'income' ? m.amount : -m.amount;
+                const div = document.createElement('div'); div.className = `dota-panel rounded-3xl p-4 flex justify-between`;
+                const sign = m.type === 'income' ? '+' : '-'; const color = m.type === 'income' ? 'text-emerald-400' : 'text-red-400';
+                div.innerHTML = `<div><div class="font-medium">${m.category}</div><div class="text-xs text-zinc-400">${new Date(m.date).toLocaleDateString()}</div></div><div class="text-right"><div class="${color} font-semibold">${sign}$${m.amount}</div></div>`;
                 container.appendChild(div);
             });
-
-            updateMoneySummary(weekTotal, net);
+            document.getElementById('money-week-total').innerHTML = `$${Math.abs(weekTotal)}`;
+            document.getElementById('money-net').innerHTML = `$${net}`;
         }
+        function clearMoneyMoves() { if (confirm('Clear all?')) { localStorage.removeItem('forge_money_moves'); renderMoneyList(); updateHUDAndFocus(); } }
 
-        function updateMoneySummary(weekTotal, net) {
-            document.getElementById('money-week-total').innerHTML = `$${Math.abs(weekTotal).toFixed(2)}`;
-            const netEl = document.getElementById('money-net');
-            netEl.innerHTML = `$${net.toFixed(2)}`;
-            netEl.className = net >= 0 
-                ? 'dota-number text-5xl font-bold tracking-tighter text-white stat-value'
-                : 'dota-number text-5xl font-bold tracking-tighter text-red-400 stat-value';
-        }
-
-        function clearMoneyMoves() {
-            if (confirm('Clear all resource transactions?')) {
-                localStorage.removeItem('forge_money_moves');
-                renderMoneyList();
-            }
-        }
-
-        // Blockers
-        function getBlockers() {
-            return JSON.parse(localStorage.getItem('forge_blockers') || '[]');
-        }
-        function saveBlockers(blockers) {
-            localStorage.setItem('forge_blockers', JSON.stringify(blockers));
-        }
-
-        function addBlocker() {
-            const text = document.getElementById('blocker-input').value.trim();
-            if (!text) {
-                alert('Declare the threat');
-                return;
-            }
-
-            const blocker = {
-                id: Date.now(),
-                text: text,
-                note: document.getElementById('blocker-note').value.trim(),
-                date: new Date().toISOString(),
-                resolved: false
-            };
-
-            const blockers = getBlockers();
-            blockers.unshift(blocker);
-            saveBlockers(blockers);
-
-            document.getElementById('blocker-input').value = '';
-            document.getElementById('blocker-note').value = '';
-
-            renderBlockerList();
-        }
-
-        function renderBlockerList() {
-            const container = document.getElementById('blocker-list');
-            const blockers = getBlockers();
-            container.innerHTML = '';
-
-            if (blockers.length === 0) {
-                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No active threats. The path is clear.</div>`;
-                return;
-            }
-
-            blockers.forEach((blocker, index) => {
-                const div = document.createElement('div');
-                div.className = `blocker-item dota-panel rounded-3xl p-5 ${blocker.resolved ? 'resolved' : ''}`;
-
-                div.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1 pr-4">
-                            <div class="${blocker.resolved ? 'line-through opacity-50' : ''} font-medium">${blocker.text}</div>
-                            ${blocker.note ? `<div class="text-xs text-zinc-400 mt-1">${blocker.note}</div>` : ''}
-                            <div class="text-[10px] text-zinc-500 mt-1.5">${new Date(blocker.date).toLocaleDateString()}</div>
-                        </div>
-                        <div class="flex gap-3 pt-1">
-                            ${!blocker.resolved ? 
-                                `<button onclick="resolveBlocker(${index})" class="text-emerald-400 hover:text-emerald-300 text-xl"><i class="fa-solid fa-check"></i></button>` : ''}
-                            <button onclick="deleteBlocker(${index})" class="text-red-400 hover:text-red-300 text-xl"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function resolveBlocker(index) {
-            const blockers = getBlockers();
-            blockers[index].resolved = true;
-            saveBlockers(blockers);
-            renderBlockerList();
-        }
-
-        function deleteBlocker(index) {
-            const blockers = getBlockers();
-            blockers.splice(index, 1);
-            saveBlockers(blockers);
-            renderBlockerList();
-        }
-
-        function clearBlockers() {
-            if (confirm('Clear all registered threats?')) {
-                localStorage.removeItem('forge_blockers');
-                renderBlockerList();
-            }
-        }
-
-        // Capture
-        function getCaptures() {
-            return JSON.parse(localStorage.getItem('forge_captures') || '[]');
-        }
-        function saveCaptures(captures) {
+        function getCaptures() { return JSON.parse(localStorage.getItem('forge_captures') || '[]'); }
+        function addCapture() {
+            const val = document.getElementById('capture-input').value.trim(); if (!val) return;
+            const captures = getCaptures(); captures.unshift({ id: Date.now(), text: val, date: new Date().toISOString() });
             localStorage.setItem('forge_captures', JSON.stringify(captures));
+            document.getElementById('capture-input').value = ''; renderCaptureList();
         }
-
-        function addCapture(text = null) {
-            const input = document.getElementById('capture-input');
-            const value = text || input.value.trim();
-            if (!value) return;
-
-            const capture = {
-                id: Date.now(),
-                text: value,
-                date: new Date().toISOString()
-            };
-
-            const captures = getCaptures();
-            captures.unshift(capture);
-            saveCaptures(captures);
-
-            if (!text) input.value = '';
-            renderCaptureList();
-        }
-
         function renderCaptureList() {
-            const container = document.getElementById('capture-list');
-            const captures = getCaptures();
-            container.innerHTML = '';
-
-            if (captures.length === 0) {
-                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No field notes logged.</div>`;
-                return;
-            }
-
-            captures.forEach((capture, index) => {
-                const div = document.createElement('div');
-                div.className = `capture-item dota-panel rounded-3xl p-5 flex justify-between items-start gap-3`;
-
-                div.innerHTML = `
-                    <div class="flex-1">
-                        <div class="text-sm">${capture.text}</div>
-                        <div class="text-[10px] text-zinc-500 mt-1.5">${new Date(capture.date).toLocaleString()}</div>
-                    </div>
-                    <div class="flex gap-3 pt-1">
-                        <button onclick="useCaptureAsMIT(${index})" class="text-[#c5a46e] hover:text-[#d4af37] text-xl" title="Use as MIT">
-                            <i class="fa-solid fa-bullseye"></i>
-                        </button>
-                        <button onclick="deleteCapture(${index})" class="text-red-400 hover:text-red-300 text-xl" title="Delete">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                `;
+            const container = document.getElementById('capture-list'); const captures = getCaptures(); container.innerHTML = '';
+            if (!captures.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No notes.</div>`; return; }
+            captures.forEach((c, i) => {
+                const div = document.createElement('div'); div.className = `dota-panel rounded-3xl p-4 flex justify-between`;
+                div.innerHTML = `<div>${c.text}</div><button onclick="deleteCapture(${i})" class="text-red-400"><i class="fa-solid fa-trash"></i></button>`;
                 container.appendChild(div);
             });
         }
-
-        function deleteCapture(index) {
-            const captures = getCaptures();
-            captures.splice(index, 1);
-            saveCaptures(captures);
-            renderCaptureList();
-        }
-
-        function useCaptureAsMIT(index) {
-            const captures = getCaptures();
-            const text = captures[index].text;
-
-            document.getElementById('mit-input').value = text;
-            saveMIT();
-
-            captures.splice(index, 1);
-            saveCaptures(captures);
-
-            showSection('home');
-        }
-
-        function clearCaptures() {
-            if (confirm('Clear all field notes?')) {
-                localStorage.removeItem('forge_captures');
-                renderCaptureList();
-            }
-        }
-
+        function deleteCapture(i) { const c = getCaptures(); c.splice(i,1); localStorage.setItem('forge_captures', JSON.stringify(c)); renderCaptureList(); }
         function quickCaptureFromHome() {
-            const text = prompt('Field note:');
-            if (text && text.trim()) {
-                const captures = getCaptures();
-                captures.unshift({id: Date.now(), text: text.trim(), date: new Date().toISOString()});
-                saveCaptures(captures);
-            }
+            const text = prompt('Quick note:'); if (text) { const captures = getCaptures(); captures.unshift({id:Date.now(), text, date:new Date().toISOString()}); localStorage.setItem('forge_captures', JSON.stringify(captures)); }
         }
 
-        // Habits
-        function getHabits() {
-            return JSON.parse(localStorage.getItem('forge_habits') || '[]');
-        }
-        function saveHabits(habits) {
-            localStorage.setItem('forge_habits', JSON.stringify(habits));
-        }
-
+        function getHabits() { return JSON.parse(localStorage.getItem('forge_habits') || '[]'); }
         function addHabit() {
-            const input = document.getElementById('habit-input');
-            const name = input.value.trim();
-            if (!name) return;
-
-            const habits = getHabits();
-            habits.push({
-                id: Date.now(),
-                name: name,
-                streak: 0,
-                lastCompleted: null,
-                history: []
-            });
-            saveHabits(habits);
-            input.value = '';
-            renderHabitList();
+            const val = document.getElementById('habit-input').value.trim(); if (!val) return;
+            const habits = getHabits(); habits.push({ id: Date.now(), name: val, streak: 0, lastCompleted: null }); localStorage.setItem('forge_habits', JSON.stringify(habits));
+            document.getElementById('habit-input').value = ''; renderHabitList(); updateHUDAndFocus();
         }
-
-        function toggleHabitDone(habitId) {
-            const habits = getHabits();
-            const habit = habits.find(h => h.id === habitId);
-            if (!habit) return;
-
+        function toggleHabitDone(id) {
+            const habits = getHabits(); const h = habits.find(x => x.id === id); if (!h) return;
             const today = new Date().toISOString().split('T')[0];
-
-            if (habit.lastCompleted === today) {
-                habit.lastCompleted = null;
-                habit.streak = Math.max(0, habit.streak - 1);
-                habit.history = habit.history.filter(d => d !== today);
-            } else {
-                const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-                if (habit.lastCompleted === yesterday || habit.streak === 0) {
-                    habit.streak = (habit.streak || 0) + 1;
-                } else {
-                    habit.streak = 1;
-                }
-                habit.lastCompleted = today;
-                if (!habit.history.includes(today)) habit.history.push(today);
-            }
-
-            saveHabits(habits);
-            renderHabitList();
+            if (h.lastCompleted === today) { h.lastCompleted = null; h.streak = Math.max(0, h.streak - 1); } else { h.streak++; h.lastCompleted = today; }
+            localStorage.setItem('forge_habits', JSON.stringify(habits)); renderHabitList(); updateHUDAndFocus();
         }
-
         function renderHabitList() {
-            const container = document.getElementById('habit-list');
-            const habits = getHabits();
-            container.innerHTML = '';
-
-            if (habits.length === 0) {
-                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No disciplines tracked yet. Add your first one above.</div>`;
-                return;
-            }
-
-            habits.forEach(habit => {
-                const isDoneToday = habit.lastCompleted === new Date().toISOString().split('T')[0];
-
-                const div = document.createElement('div');
-                div.className = `habit-row dota-panel rounded-3xl p-5 flex items-center justify-between`;
-
-                div.innerHTML = `
-                    <div class="flex-1">
-                        <div class="font-medium">${habit.name}</div>
-                        <div class="flex items-center gap-2 mt-1.5">
-                            <span class="text-xs px-3.5 py-1 rounded-2xl border border-[#2a3344] flex items-center gap-1.5 ${habit.streak > 0 ? 'bg-[#c5a46e]/10 text-[#c5a46e]' : 'bg-[#11161f] text-zinc-400'}">
-                                <i class="fa-solid fa-fire ${habit.streak > 0 ? 'text-[#c5a46e]' : ''}"></i>
-                                <span>${habit.streak} DAY STREAK</span>
-                            </span>
-                        </div>
-                    </div>
-                    <button onclick="toggleHabitDone(${habit.id})"
-                            class="w-12 h-12 flex items-center justify-center rounded-2xl border border-[#2a3344] transition-all ${isDoneToday ? 'bg-[#c5a46e] text-[#0a0c10]' : 'bg-[#11161f] hover:bg-[#1a202c]'}">
-                        <i class="fa-solid ${isDoneToday ? 'fa-check' : 'fa-circle'} text-2xl"></i>
-                    </button>
-                `;
+            const container = document.getElementById('habit-list'); const habits = getHabits(); container.innerHTML = '';
+            if (!habits.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No disciplines.</div>`; return; }
+            habits.forEach(h => {
+                const div = document.createElement('div'); div.className = `dota-panel rounded-3xl p-4 flex justify-between`;
+                const done = h.lastCompleted === new Date().toISOString().split('T')[0];
+                div.innerHTML = `<div>${h.name} <span class="text-xs text-[#c5a46e]">(${h.streak} day)</span></div><button onclick="toggleHabitDone(${h.id})" class="${done ? 'text-emerald-400' : 'text-zinc-400'}"><i class="fa-solid fa-check-circle"></i></button>`;
                 container.appendChild(div);
             });
-        }
-
-        function resetAllStreaks() {
-            if (confirm('Reset all discipline streaks?')) {
-                const habits = getHabits();
-                habits.forEach(h => {
-                    h.streak = 0;
-                    h.lastCompleted = null;
-                });
-                saveHabits(habits);
-                renderHabitList();
-            }
         }
 
         window.onload = function() {
-            updateDate();
+            updateHUDAndFocus();
             document.getElementById('home').classList.add('active');
             document.getElementById('nav-home').classList.add('active');
-            initMIT();
+            loadMIT();
         }
     </script>
 </body>
