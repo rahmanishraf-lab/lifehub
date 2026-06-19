@@ -15,9 +15,10 @@
         .mit-input { background: transparent; border: none; outline: none; font-size: 1.125rem; font-weight: 500; width: 100%; }
         .mit-input:focus { outline: none; }
         .completed { text-decoration: line-through; opacity: 0.6; }
-        .money-entry, .capture-item, .blocker-item { transition: all 0.2s ease; }
+        .money-entry, .capture-item, .blocker-item, .habit-row { transition: all 0.2s ease; }
         .fab { position: fixed; bottom: 80px; right: 24px; z-index: 60; }
         .resolved { opacity: 0.5; }
+        .streak-fire { color: #f59e0b; }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-200 pb-20">
@@ -80,7 +81,7 @@
             <button onclick="showSection('money')" class="glass border border-zinc-800 rounded-3xl py-4 text-sm font-medium">Log Money</button>
             <button onclick="showSection('blockers')" class="glass border border-zinc-800 rounded-3xl py-4 text-sm font-medium">Blockers</button>
             <button onclick="showSection('energy')" class="glass border border-zinc-800 rounded-3xl py-4 text-sm font-medium">Log Energy</button>
-            <button onclick="showSection('growth')" class="glass border border-zinc-800 rounded-3xl py-4 text-sm font-medium">Add Win</button>
+            <button onclick="showSection('growth')" class="glass border border-zinc-800 rounded-3xl py-4 text-sm font-medium">Growth</button>
         </div>
     </div>
 
@@ -106,24 +107,13 @@
 
     <!-- BLOCKERS -->
     <div id="blockers" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6">
-            <h2 class="text-2xl font-display tracking-tighter">Blocker Log</h2>
-            <p class="text-zinc-400 text-sm">Name it. Resolve it. Move forward.</p>
-        </div>
-
+        <div class="mb-6"><h2 class="text-2xl font-display tracking-tighter">Blocker Log</h2><p class="text-zinc-400 text-sm">Name it. Resolve it. Move forward.</p></div>
         <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
             <input id="blocker-input" type="text" placeholder="What's blocking you?" class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-4 py-3 text-sm mb-3 focus:outline-none">
-            <textarea id="blocker-note" rows="2" placeholder="Details or context..." class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-4 py-3 text-sm resize-y mb-3 focus:outline-none"></textarea>
-            <button onclick="addBlocker()" class="w-full bg-orange-500 hover:bg-orange-600 transition text-black font-medium py-3 rounded-2xl text-sm flex items-center justify-center gap-2">
-                <i class="fa-solid fa-exclamation-triangle"></i>
-                <span>Log Blocker</span>
-            </button>
+            <textarea id="blocker-note" rows="2" placeholder="Details..." class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-4 py-3 text-sm resize-y mb-3 focus:outline-none"></textarea>
+            <button onclick="addBlocker()" class="w-full bg-orange-500 hover:bg-orange-600 transition text-black font-medium py-3 rounded-2xl text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-exclamation-triangle"></i><span>Log Blocker</span></button>
         </div>
-
-        <div class="mb-2 px-1 flex justify-between items-center">
-            <div class="text-xs font-medium tracking-[1.5px] text-zinc-400">ACTIVE BLOCKERS</div>
-            <button onclick="clearBlockers()" class="text-xs text-red-400 hover:text-red-300">Clear all</button>
-        </div>
+        <div class="mb-2 px-1 flex justify-between items-center"><div class="text-xs font-medium tracking-[1.5px] text-zinc-400">ACTIVE BLOCKERS</div><button onclick="clearBlockers()" class="text-xs text-red-400 hover:text-red-300">Clear all</button></div>
         <div id="blocker-list" class="space-y-2"></div>
     </div>
 
@@ -131,11 +121,35 @@
     <div id="capture" class="section max-w-screen-sm mx-auto px-6 pt-8">
         <div class="mb-6"><h2 class="text-2xl font-display tracking-tighter">Quick Capture</h2><p class="text-zinc-400 text-sm">Empty your mind. Capture everything.</p></div>
         <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
-            <textarea id="capture-input" rows="3" placeholder="Drop anything here — ideas, tasks, blockers, wins..." class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-4 py-3 text-sm resize-y focus:outline-none"></textarea>
+            <textarea id="capture-input" rows="3" placeholder="Drop anything here..." class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-4 py-3 text-sm resize-y focus:outline-none"></textarea>
             <button onclick="addCapture()" class="mt-3 w-full bg-amber-500 hover:bg-amber-600 transition text-black font-medium py-3 rounded-2xl text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-inbox"></i><span>Capture</span></button>
         </div>
         <div class="mb-2 px-1 flex justify-between items-center"><div class="text-xs font-medium tracking-[1.5px] text-zinc-400">INBOX</div><button onclick="clearCaptures()" class="text-xs text-red-400 hover:text-red-300">Clear</button></div>
         <div id="capture-list" class="space-y-2"></div>
+    </div>
+
+    <!-- GROWTH (Habit Streaks) -->
+    <div id="growth" class="section max-w-screen-sm mx-auto px-6 pt-8">
+        <div class="mb-6">
+            <h2 class="text-2xl font-display tracking-tighter">Growth</h2>
+            <p class="text-zinc-400 text-sm">Build the identity of the person you want to become.</p>
+        </div>
+
+        <!-- Add new habit -->
+        <div class="glass border border-zinc-800 rounded-3xl p-6 mb-6">
+            <div class="flex gap-2">
+                <input id="habit-input" type="text" placeholder="New habit (e.g. Read 20 pages)" class="flex-1 bg-zinc-900 border border-zinc-700 rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                <button onclick="addHabit()" class="px-5 bg-emerald-500 hover:bg-emerald-600 text-black rounded-2xl text-sm font-medium">Add</button>
+            </div>
+        </div>
+
+        <!-- Habit Streaks -->
+        <div class="mb-2 px-1 flex justify-between items-center">
+            <div class="text-xs font-medium tracking-[1.5px] text-zinc-400">HABIT STREAKS</div>
+            <button onclick="resetAllStreaks()" class="text-xs text-red-400 hover:text-red-300">Reset all</button>
+        </div>
+
+        <div id="habit-list" class="space-y-3 mb-8"></div>
     </div>
 
     <!-- FAB -->
@@ -161,6 +175,7 @@
             if (section === 'money') renderMoneyList();
             if (section === 'capture') renderCaptureList();
             if (section === 'blockers') renderBlockerList();
+            if (section === 'growth') renderHabitList();
         }
 
         function updateDate() {
@@ -317,6 +332,105 @@
 
         function quickCaptureFromHome() {
             const text = prompt('Quick capture:'); if (text && text.trim()) { const captures = getCaptures(); captures.unshift({id:Date.now(), text:text.trim(), date:new Date().toISOString()}); saveCaptures(captures); }
+        }
+
+        // ========== HABIT STREAKS (Growth) ==========
+        function getHabits() {
+            return JSON.parse(localStorage.getItem('forge_habits') || '[]');
+        }
+        function saveHabits(habits) {
+            localStorage.setItem('forge_habits', JSON.stringify(habits));
+        }
+
+        function addHabit() {
+            const input = document.getElementById('habit-input');
+            const name = input.value.trim();
+            if (!name) return;
+
+            const habits = getHabits();
+            habits.push({
+                id: Date.now(),
+                name: name,
+                streak: 0,
+                lastCompleted: null,
+                history: [] // array of dates completed
+            });
+            saveHabits(habits);
+            input.value = '';
+            renderHabitList();
+        }
+
+        function toggleHabitDone(habitId) {
+            const habits = getHabits();
+            const habit = habits.find(h => h.id === habitId);
+            if (!habit) return;
+
+            const today = new Date().toISOString().split('T')[0];
+
+            if (habit.lastCompleted === today) {
+                // Undo today's completion
+                habit.lastCompleted = null;
+                habit.streak = Math.max(0, habit.streak - 1);
+                habit.history = habit.history.filter(d => d !== today);
+            } else {
+                // Mark as done today
+                const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                
+                if (habit.lastCompleted === yesterday || habit.streak === 0) {
+                    habit.streak = (habit.streak || 0) + 1;
+                } else {
+                    habit.streak = 1; // reset streak if gap
+                }
+                habit.lastCompleted = today;
+                if (!habit.history.includes(today)) habit.history.push(today);
+            }
+
+            saveHabits(habits);
+            renderHabitList();
+        }
+
+        function renderHabitList() {
+            const container = document.getElementById('habit-list');
+            const habits = getHabits();
+            container.innerHTML = '';
+
+            if (habits.length === 0) {
+                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No habits yet. Add your first one above.</div>`;
+                return;
+            }
+
+            habits.forEach(habit => {
+                const isDoneToday = habit.lastCompleted === new Date().toISOString().split('T')[0];
+                
+                const div = document.createElement('div');
+                div.className = `habit-row glass border border-zinc-800 rounded-3xl p-5 flex items-center justify-between`;
+                
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <div class="font-medium">${habit.name}</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-xs px-2 py-0.5 rounded-full ${habit.streak > 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-zinc-800 text-zinc-400'}">
+                                <i class="fa-solid fa-fire mr-1 ${habit.streak > 0 ? 'streak-fire' : ''}"></i>
+                                ${habit.streak} day streak
+                            </span>
+                        </div>
+                    </div>
+                    <button onclick="toggleHabitDone(${habit.id})" 
+                            class="w-11 h-11 flex items-center justify-center rounded-2xl transition-all ${isDoneToday ? 'bg-emerald-500 text-black' : 'bg-zinc-800 hover:bg-zinc-700'}">
+                        <i class="fa-solid ${isDoneToday ? 'fa-check' : 'fa-circle'} text-xl"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function resetAllStreaks() {
+            if (confirm('Reset all habit streaks?')) {
+                const habits = getHabits();
+                habits.forEach(h => { h.streak = 0; h.lastCompleted = null; });
+                saveHabits(habits);
+                renderHabitList();
+            }
         }
 
         window.onload = function() {
