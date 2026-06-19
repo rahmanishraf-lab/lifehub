@@ -61,11 +61,9 @@
     <div class="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-50">
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-x-3">
-                <!-- ForgeLife Logo -->
                 <div class="flex items-center gap-x-3">
                     <div class="w-10 h-10 flex items-center justify-center">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Stylized flame + anvil concept -->
                             <path d="M20 4 L26 14 L32 14 L22 28 L18 28 L8 14 L14 14 Z" fill="#6366f1"/>
                             <path d="M20 10 L24 16 L28 16 L20 24 L16 16 L20 10 Z" fill="#a5b4fc"/>
                             <circle cx="20" cy="32" r="3" fill="#6366f1"/>
@@ -84,8 +82,9 @@
         
         <!-- Greeting -->
         <div class="mb-6 sm:mb-8">
-            <h1 class="text-4xl sm:text-5xl font-display tracking-tighter font-semibold">Good morning, Ishraf.</h1>
+            <h1 id="greeting" class="text-4xl sm:text-5xl font-display tracking-tighter font-semibold"></h1>
             <p class="text-lg sm:text-xl text-zinc-400 mt-1">Your personal operating system.</p>
+            <div id="motivational-message" class="text-sm text-emerald-400 mt-1"></div>
         </div>
 
         <!-- HOME -->
@@ -109,10 +108,11 @@
                     </div>
                     
                     <div class="text-xs text-zinc-400 grid grid-cols-2 gap-x-4 gap-y-1">
-                        <div class="flex justify-between"><span>Morning Ritual</span> <span class="text-emerald-400">+25</span></div>
-                        <div class="flex justify-between"><span>MIT Completed</span> <span class="text-emerald-400">+30</span></div>
-                        <div class="flex justify-between"><span>Tasks Done</span> <span class="text-emerald-400">+25</span></div>
-                        <div class="flex justify-between"><span>Evening Ritual</span> <span class="text-emerald-400">+20</span></div>
+                        <div class="flex justify-between"><span>Morning Ritual</span> <span class="text-emerald-400">+20</span></div>
+                        <div class="flex justify-between"><span>MIT Completed</span> <span class="text-emerald-400">+25</span></div>
+                        <div class="flex justify-between"><span>Tasks Done</span> <span class="text-emerald-400">+20</span></div>
+                        <div class="flex justify-between"><span>Evening Ritual</span> <span class="text-emerald-400">+15</span></div>
+                        <div class="flex justify-between"><span>Uber Performance</span> <span class="text-emerald-400">+20</span></div>
                     </div>
                 </div>
             </div>
@@ -296,6 +296,130 @@
             </div>
         </div>
 
+        <!-- DRIVE SECTION -->
+        <div id="drive" class="section">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-semibold tracking-tighter">Drive Mode</h2>
+                    <p class="text-zinc-400 mt-2">Track your Uber performance</p>
+                </div>
+
+                <!-- Goal Settings -->
+                <div class="glass border border-zinc-800 rounded-3xl p-5 mb-6">
+                    <div class="font-medium mb-4 text-emerald-400">Goals</div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-zinc-400">Daily Earnings Goal</label>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm">$</span>
+                                <input id="uber-daily-goal" type="number" value="200" class="flex-1 bg-zinc-900 border border-zinc-700 px-3 py-2 rounded-xl focus:outline-none" onchange="saveUberGoals()">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs text-zinc-400">Weekly Earnings Goal</label>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm">$</span>
+                                <input id="uber-weekly-goal" type="number" value="1000" class="flex-1 bg-zinc-900 border border-zinc-700 px-3 py-2 rounded-xl focus:outline-none" onchange="saveUberGoals()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Log Form -->
+                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-8">
+                    <div class="font-medium mb-4 text-emerald-400">Log Today's Drive</div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="text-xs text-zinc-400">Hours Online</label>
+                            <input id="uber-hours" type="number" step="0.5" placeholder="7.5" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="text-xs text-zinc-400">Trips</label>
+                            <input id="uber-trips" type="number" placeholder="18" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="text-xs text-zinc-400">Gross Earnings ($)</label>
+                            <input id="uber-gross" type="number" placeholder="187" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="text-xs text-zinc-400">Total Expenses ($)</label>
+                            <input id="uber-expenses" type="number" placeholder="32" class="w-full bg-zinc-900 border border-zinc-700 px-4 py-2 rounded-2xl text-lg focus:outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Expense Breakdown -->
+                    <div class="mb-4">
+                        <div class="text-xs text-zinc-400 mb-2">Expense Breakdown (optional)</div>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
+                            <input id="expense-gas" type="number" placeholder="Gas" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
+                            <input id="expense-maintenance" type="number" placeholder="Maintenance" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
+                            <input id="expense-tolls" type="number" placeholder="Tolls" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
+                            <input id="expense-insurance" type="number" placeholder="Insurance" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
+                            <input id="expense-other" type="number" placeholder="Other" class="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded-xl text-sm focus:outline-none">
+                        </div>
+                    </div>
+                    
+                    <button onclick="logUberDay()" class="mt-2 w-full py-3 bg-emerald-600 hover:bg-emerald-500 rounded-3xl font-medium">Log Drive Day</button>
+                </div>
+
+                <!-- Today's Stats -->
+                <div id="uber-today-stats" class="glass border border-zinc-800 rounded-3xl p-6 mb-8 hidden">
+                    <div class="font-medium mb-4 text-emerald-400">Today's Performance</div>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>Net Profit: <span id="uber-net" class="font-semibold text-emerald-400"></span></div>
+                        <div>Earnings/Hour: <span id="uber-per-hour" class="font-semibold"></span></div>
+                        <div>Trips/Hour: <span id="uber-trips-per-hour" class="font-semibold"></span></div>
+                        <div>Goal Progress: <span id="uber-goal-progress" class="font-semibold"></span></div>
+                    </div>
+                </div>
+
+                <!-- Driving Streak -->
+                <div class="glass border border-zinc-800 rounded-3xl p-5 mb-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-medium text-emerald-400">Driving Streak</div>
+                            <div class="text-xs text-zinc-400">Consecutive days logged</div>
+                        </div>
+                        <div class="text-right">
+                            <div id="uber-streak" class="text-4xl font-bold text-emerald-400">0</div>
+                            <div class="text-xs text-zinc-400">days</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Summary -->
+                <div class="glass border border-zinc-800 rounded-3xl p-6 mb-8">
+                    <div class="font-medium mb-4 text-emerald-400">Performance Summary</div>
+                    
+                    <div class="mb-6">
+                        <div class="text-sm text-zinc-400 mb-2">This Week</div>
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div>Total Net: <span id="uber-week-net" class="font-semibold"></span></div>
+                            <div>Avg/Day: <span id="uber-week-avg" class="font-semibold"></span></div>
+                            <div>Best Day: <span id="uber-week-best" class="font-semibold"></span></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="text-sm text-zinc-400 mb-2">This Month</div>
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div>Total Net: <span id="uber-month-net" class="font-semibold"></span></div>
+                            <div>Avg/Day: <span id="uber-month-avg" class="font-semibold"></span></div>
+                            <div>Best Day: <span id="uber-month-best" class="font-semibold"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div>
+                    <div class="font-medium mb-4 text-emerald-400">Recent Drives</div>
+                    <div id="uber-history" class="space-y-2"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Floating Action Button -->
@@ -347,6 +471,10 @@
                 <i class="fa-solid fa-seedling text-lg"></i>
                 <span class="mt-0.5">Growth</span>
             </button>
+            <button onclick="showSection('drive')" class="flex flex-col items-center px-3 py-1 text-xs">
+                <i class="fa-solid fa-car text-lg"></i>
+                <span class="mt-0.5">Drive</span>
+            </button>
         </div>
     </div>
 
@@ -355,27 +483,42 @@
 
     <script>
         // ==================== DATA ====================
-        let todos = JSON.parse(localStorage.getItem('cakehub_todos')) || [];
-        let inboxItems = JSON.parse(localStorage.getItem('cakehub_inbox')) || [];
-        let currentMIT = JSON.parse(localStorage.getItem('cakehub_mit')) || null;
-        let ritualStatus = JSON.parse(localStorage.getItem('cakehub_ritual_status')) || {};
+        let todos = JSON.parse(localStorage.getItem('forge_todos')) || [];
+        let inboxItems = JSON.parse(localStorage.getItem('forge_inbox')) || [];
+        let currentMIT = JSON.parse(localStorage.getItem('forge_mit')) || null;
+        let ritualStatus = JSON.parse(localStorage.getItem('forge_ritual_status')) || {};
+        let uberLogs = JSON.parse(localStorage.getItem('forge_uber_logs')) || [];
+        let uberGoals = JSON.parse(localStorage.getItem('forge_uber_goals')) || { daily: 200, weekly: 1000 };
 
-        function saveTodos() { localStorage.setItem('cakehub_todos', JSON.stringify(todos)); }
-        function saveInbox() { localStorage.setItem('cakehub_inbox', JSON.stringify(inboxItems)); }
-        function saveMIT(mit) { currentMIT = mit; localStorage.setItem('cakehub_mit', JSON.stringify(mit)); renderMIT(); }
-        function saveRitualStatus() { localStorage.setItem('cakehub_ritual_status', JSON.stringify(ritualStatus)); }
+        function saveTodos() { localStorage.setItem('forge_todos', JSON.stringify(todos)); }
+        function saveInbox() { localStorage.setItem('forge_inbox', JSON.stringify(inboxItems)); }
+        function saveMIT(mit) { currentMIT = mit; localStorage.setItem('forge_mit', JSON.stringify(mit)); renderMIT(); }
+        function saveRitualStatus() { localStorage.setItem('forge_ritual_status', JSON.stringify(ritualStatus)); }
+        function saveUberLogs() { localStorage.setItem('forge_uber_logs', JSON.stringify(uberLogs)); }
+        function saveUberGoals() {
+            uberGoals.daily = parseInt(document.getElementById('uber-daily-goal').value) || 200;
+            uberGoals.weekly = parseInt(document.getElementById('uber-weekly-goal').value) || 1000;
+            localStorage.setItem('forge_uber_goals', JSON.stringify(uberGoals));
+        }
 
         function getToday() { return new Date().toISOString().split('T')[0]; }
 
-        // ==================== DAILY LIFE SCORE ====================
+        // ==================== DAILY LIFE SCORE (Updated with Uber) ====================
         function calculateDailyScore() {
             const today = getToday();
             let score = 0;
             
-            if (ritualStatus[today]?.morning) score += 25;
-            if (currentMIT && currentMIT.date === today && currentMIT.completed) score += 30;
-            if (todos.some(t => t.completed)) score += 25;
-            if (ritualStatus[today]?.evening) score += 20;
+            if (ritualStatus[today]?.morning) score += 20;
+            if (currentMIT && currentMIT.date === today && currentMIT.completed) score += 25;
+            if (todos.some(t => t.completed)) score += 20;
+            if (ritualStatus[today]?.evening) score += 15;
+            
+            // Uber integration
+            const todayLog = uberLogs.find(log => log.date === today);
+            if (todayLog) {
+                const goalProgress = Math.min((todayLog.net / uberGoals.daily) * 100, 100);
+                score += Math.round(goalProgress * 0.2);
+            }
             
             return Math.min(score, 100);
         }
@@ -385,7 +528,6 @@
             document.getElementById('daily-score').textContent = score;
             document.getElementById('daily-score-bar').style.width = score + '%';
             
-            // Motivational message based on score
             const msg = document.getElementById('motivational-message');
             if (msg) {
                 if (score >= 90) msg.textContent = "Excellent work today!";
@@ -402,9 +544,7 @@
             const ctx = document.getElementById('life-balance-chart');
             if (!ctx) return;
 
-            if (lifeBalanceChart) {
-                lifeBalanceChart.destroy();
-            }
+            if (lifeBalanceChart) lifeBalanceChart.destroy();
 
             lifeBalanceChart = new Chart(ctx, {
                 type: 'radar',
@@ -562,6 +702,158 @@
             renderMIT();
             updateDailyScore();
             showToast('Priority completed');
+        }
+
+        // ==================== UBER / DRIVE SYSTEM ====================
+        function logUberDay() {
+            const hours = parseFloat(document.getElementById('uber-hours').value) || 0;
+            const trips = parseInt(document.getElementById('uber-trips').value) || 0;
+            const gross = parseFloat(document.getElementById('uber-gross').value) || 0;
+            const expenses = parseFloat(document.getElementById('uber-expenses').value) || 0;
+            
+            if (hours === 0 && trips === 0 && gross === 0) {
+                showToast('Please enter some data', 'info');
+                return;
+            }
+            
+            const today = getToday();
+            const net = gross - expenses;
+            const perHour = hours > 0 ? (gross / hours).toFixed(2) : 0;
+            const tripsPerHour = hours > 0 ? (trips / hours).toFixed(2) : 0;
+            const goalProgress = Math.min(Math.round((net / uberGoals.daily) * 100), 100);
+            
+            // Expense breakdown
+            const expenseBreakdown = {
+                gas: parseFloat(document.getElementById('expense-gas').value) || 0,
+                maintenance: parseFloat(document.getElementById('expense-maintenance').value) || 0,
+                tolls: parseFloat(document.getElementById('expense-tolls').value) || 0,
+                insurance: parseFloat(document.getElementById('expense-insurance').value) || 0,
+                other: parseFloat(document.getElementById('expense-other').value) || 0
+            };
+            
+            uberLogs = uberLogs.filter(log => log.date !== today);
+            
+            const log = {
+                date: today,
+                hours: hours,
+                trips: trips,
+                gross: gross,
+                expenses: expenses,
+                expenseBreakdown: expenseBreakdown,
+                net: net,
+                perHour: parseFloat(perHour),
+                tripsPerHour: parseFloat(tripsPerHour),
+                goalProgress: goalProgress
+            };
+            
+            uberLogs.unshift(log);
+            saveUberLogs();
+            
+            // Clear form
+            document.getElementById('uber-hours').value = '';
+            document.getElementById('uber-trips').value = '';
+            document.getElementById('uber-gross').value = '';
+            document.getElementById('uber-expenses').value = '';
+            document.getElementById('expense-gas').value = '';
+            document.getElementById('expense-maintenance').value = '';
+            document.getElementById('expense-tolls').value = '';
+            document.getElementById('expense-insurance').value = '';
+            document.getElementById('expense-other').value = '';
+            
+            showToast('Drive day logged!');
+            renderUberHistory();
+            updateUberTodayStats();
+            updateUberSummaries();
+            updateDailyScore();
+        }
+        
+        function renderUberHistory() {
+            const container = document.getElementById('uber-history');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            if (uberLogs.length === 0) {
+                container.innerHTML = `<div class="text-center py-4 text-zinc-400 text-sm">No drives logged yet.</div>`;
+                return;
+            }
+            
+            uberLogs.slice(0, 7).forEach(log => {
+                const div = document.createElement('div');
+                div.className = `glass border border-zinc-800 px-4 py-3 rounded-2xl text-sm`;
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <div class="font-medium">${new Date(log.date).toLocaleDateString('en-US', {month:'short', day:'numeric'})}</div>
+                            <div class="text-xs text-zinc-400">${log.hours}h • ${log.trips} trips</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-semibold text-emerald-400">$${log.net}</div>
+                            <div class="text-xs text-zinc-400">$${log.perHour}/hr</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        function updateUberTodayStats() {
+            const today = getToday();
+            const todayLog = uberLogs.find(log => log.date === today);
+            const statsDiv = document.getElementById('uber-today-stats');
+            
+            if (!todayLog) {
+                statsDiv.classList.add('hidden');
+                return;
+            }
+            
+            statsDiv.classList.remove('hidden');
+            document.getElementById('uber-net').textContent = '$' + todayLog.net;
+            document.getElementById('uber-per-hour').textContent = '$' + todayLog.perHour;
+            document.getElementById('uber-trips-per-hour').textContent = todayLog.tripsPerHour;
+            document.getElementById('uber-goal-progress').textContent = todayLog.goalProgress + '%';
+        }
+
+        function updateUberSummaries() {
+            // Weekly
+            const weekNet = uberLogs.slice(0, 7).reduce((sum, log) => sum + log.net, 0);
+            const weekDays = Math.min(uberLogs.length, 7);
+            const weekAvg = weekDays > 0 ? Math.round(weekNet / weekDays) : 0;
+            const weekBest = uberLogs.slice(0, 7).reduce((max, log) => Math.max(max, log.net), 0);
+            
+            document.getElementById('uber-week-net').textContent = '$' + weekNet;
+            document.getElementById('uber-week-avg').textContent = '$' + weekAvg;
+            document.getElementById('uber-week-best').textContent = '$' + weekBest;
+            
+            // Monthly
+            const monthNet = uberLogs.reduce((sum, log) => sum + log.net, 0);
+            const monthDays = uberLogs.length;
+            const monthAvg = monthDays > 0 ? Math.round(monthNet / monthDays) : 0;
+            const monthBest = uberLogs.reduce((max, log) => Math.max(max, log.net), 0);
+            
+            document.getElementById('uber-month-net').textContent = '$' + monthNet;
+            document.getElementById('uber-month-avg').textContent = '$' + monthAvg;
+            document.getElementById('uber-month-best').textContent = '$' + monthBest;
+        }
+
+        function updateUberStreak() {
+            let streak = 0;
+            const today = new Date();
+            
+            for (let i = 0; i < 30; i++) {
+                const checkDate = new Date(today);
+                checkDate.setDate(today.getDate() - i);
+                const dateStr = checkDate.toISOString().split('T')[0];
+                
+                if (uberLogs.some(log => log.date === dateStr)) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            
+            const streakEl = document.getElementById('uber-streak');
+            if (streakEl) streakEl.textContent = streak;
         }
 
         // ==================== BASIC FUNCTIONS ====================
@@ -776,7 +1068,7 @@
 
         function clearMIT() {
             currentMIT = null;
-            localStorage.removeItem('cakehub_mit');
+            localStorage.removeItem('forge_mit');
             renderMIT();
             updateFocusSummary();
         }
@@ -805,13 +1097,45 @@
             dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
         }
 
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greetingEl = document.getElementById('greeting');
+            
+            let greeting = "";
+            
+            if (hour >= 5 && hour < 8) {
+                greeting = "The battlefield is yours. Go dominate, Ishraf.";
+            } 
+            else if (hour >= 8 && hour < 12) {
+                greeting = "Time to forge your legacy. No excuses.";
+            } 
+            else if (hour >= 12 && hour < 17) {
+                greeting = "Weak men rest. Champions keep going. Push harder.";
+            } 
+            else if (hour >= 17 && hour < 21) {
+                greeting = "Pain is temporary. Regret is forever. Finish strong.";
+            } 
+            else {
+                greeting = "While others sleep, legends are built. Get after it.";
+            }
+            
+            greetingEl.textContent = greeting;
+        }
+
         function initializeApp() {
             updateDate();
+            updateGreeting();
             updateTimeBasedFlow();
             renderMIT();
             updateDailyScore();
             initLifeBalanceChart();
             renderHabitCalendar();
+            renderUberHistory();
+            updateUberTodayStats();
+            updateUberSummaries();
+            updateUberStreak();
+            document.getElementById('uber-daily-goal').value = uberGoals.daily;
+            document.getElementById('uber-weekly-goal').value = uberGoals.weekly;
 
             document.getElementById('home').classList.add('active');
             document.getElementById('nav-home').classList.add('nav-active', 'bg-indigo-600');
@@ -821,7 +1145,10 @@
                 saveMIT(defaultMIT);
             }
 
-            setInterval(updateTimeBasedFlow, 60000);
+            setInterval(() => {
+                updateGreeting();
+                updateTimeBasedFlow();
+            }, 60000);
         }
 
         function updateTimeBasedFlow() {
