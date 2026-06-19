@@ -3,283 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ForgeLife</title>
+    <title>ForgeLife • Command</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
-        
-        body { 
-            font-family: 'Inter', system_ui, sans-serif; 
+
+        :root {
+            --gold: #c5a46e;
+            --dark: #0a0c10;
+            --panel: #12161e;
+        }
+
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
             background: #0a0c10;
-        }
-        .font-display { 
-            font-family: 'Space Grotesk', 'Inter', sans-serif; 
-            font-weight: 600; 
-        }
-        
-        .dota-panel {
-            background: rgba(18, 22, 30, 0.92);
-            border: 1px solid #2a3344;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-        }
-        
-        .dota-gold {
-            color: #c5a46e;
-        }
-        
-        .glass {
-            background: rgba(18, 22, 30, 0.75);
-            border: 1px solid #2a3344;
-            backdrop-filter: blur(20px);
-        }
-        
-        .section { display: none; }
-        .section.active { display: block; }
-        
-        .mit-input { 
-            background: transparent; 
-            border: none; 
-            outline: none; 
-            font-size: 1.125rem; 
-            font-weight: 500; 
-            width: 100%; 
             color: #e2e8f0;
         }
-        .mit-input:focus { outline: none; }
-        
-        .completed { text-decoration: line-through; opacity: 0.5; }
-        
-        .habit-row, .money-entry, .capture-item, .blocker-item {
-            transition: all 0.2s cubic-bezier(0.23, 1.0, 0.32, 1);
+
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
         }
-        
-        .fab {
-            position: fixed;
-            bottom: 88px;
-            right: 24px;
-            z-index: 60;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
+        .dota-panel {
+            background: rgba(18, 22, 30, 0.95);
+            border: 1px solid #2a3344;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45),
+                        inset 0 1px 0 rgba(255,255,255,0.04);
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        
-        .nav-active {
+
+        .dota-panel:hover {
+            border-color: #3a4458;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .mit-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            width: 100%;
+            color: #e2e8f0;
+        }
+
+        .mit-input::placeholder {
+            color: #64748b;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.45;
+        }
+
+        .gold-text {
             color: #c5a46e;
         }
-        
-        .dota-border {
-            border-color: #2a3344;
+
+        .dota-button {
+            background: #c5a46e;
+            color: #0a0c10;
+            font-weight: 600;
+            transition: all 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 4px 15px rgba(197, 164, 110, 0.3);
+        }
+
+        .dota-button:hover {
+            background: #d4af37;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(197, 164, 110, 0.4);
+        }
+
+        .dota-button:active {
+            transform: scale(0.985);
+        }
+
+        .nav-button {
+            transition: all 0.2s ease;
+        }
+
+        .nav-button.active {
+            color: #c5a46e;
+            text-shadow: 0 0 8px rgba(197, 164, 110, 0.5);
+        }
+
+        .nav-button.active i {
+            color: #c5a46e;
+        }
+
+        .habit-row, .money-entry, .capture-item, .blocker-item {
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 92px;
+            right: 24px;
+            z-index: 60;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6),
+                        0 0 0 1px #2a3344;
+        }
+
+        .stat-value {
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
+        }
+
+        .tactical-label {
+            font-size: 9.5px;
+            letter-spacing: 2.2px;
+            font-weight: 600;
         }
     </style>
 </head>
-<body class="bg-[#0a0c10] text-zinc-200 pb-20">
-    
-    <!-- Header -->
-    <div class="border-b border-[#2a3344] bg-[#0a0c10] sticky top-0 z-50">
+<body class="bg-[#0a0c10] text-zinc-200 pb-24">
+
+    <!-- Top Command Bar -->
+    <div class="sticky top-0 z-50 border-b border-[#2a3344] bg-[#0a0c10]/95 backdrop-blur-lg">
         <div class="max-w-screen-sm mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-x-3">
-                <div class="w-9 h-9 bg-[#11161f] border border-[#2a3344] rounded flex items-center justify-center">
-                    <i class="fa-solid fa-chess-rook text-[#c5a46e]"></i>
+                <div class="w-10 h-10 bg-[#11161f] border border-[#2a3344] rounded-xl flex items-center justify-center shadow-inner">
+                    <i class="fa-solid fa-chess-rook text-[#c5a46e] text-2xl"></i>
                 </div>
-                <span class="font-display text-3xl font-semibold tracking-tighter text-white">ForgeLife</span>
+                <div>
+                    <span class="font-display text-3xl font-semibold tracking-tighter">FORGELIFE</span>
+                    <div class="text-[9px] text-[#c5a46e] -mt-1 tracking-[3px]">COMMAND INTERFACE</div>
+                </div>
             </div>
-            <div id="current-date" class="text-xs text-zinc-400 font-mono tracking-[2px]"></div>
+            <div id="current-date" class="font-mono text-xs text-zinc-400 tracking-[2.5px]"></div>
         </div>
     </div>
 
     <!-- HOME -->
     <div id="home" class="section active max-w-screen-sm mx-auto px-6 pt-8">
         <div class="mb-8">
-            <h1 class="text-4xl font-display tracking-tighter text-white">The battlefield is yours.</h1>
-            <p class="text-zinc-400 mt-1">Execute with precision.</p>
+            <h1 class="font-display text-5xl tracking-[-2.5px] text-white leading-none">The battlefield<br>is yours.</h1>
+            <p class="text-zinc-400 mt-3 text-lg">Execute with absolute precision.</p>
         </div>
 
-        <!-- Daily Score -->
-        <div class="dota-panel rounded-3xl p-6 mb-6">
-            <div class="flex items-center justify-between mb-3">
+        <!-- Battlefield Score -->
+        <div class="dota-panel rounded-3xl p-7 mb-6">
+            <div class="flex items-end justify-between mb-4">
                 <div>
-                    <div class="text-[10px] font-medium tracking-[2px] text-[#c5a46e]">BATTLEFIELD SCORE</div>
-                    <div id="daily-score" class="text-7xl font-bold text-white">74</div>
+                    <div class="tactical-label text-[#c5a46e]">BATTLEFIELD SCORE</div>
+                    <div id="daily-score" class="text-[82px] font-bold tracking-tighter leading-none text-white stat-value">74</div>
                 </div>
-                <div class="text-right">
-                    <div class="text-xs text-zinc-500">VICTORY TARGET</div>
-                    <div class="text-2xl font-semibold text-zinc-400">100</div>
+                <div class="text-right pb-1">
+                    <div class="tactical-label text-zinc-500">VICTORY TARGET</div>
+                    <div class="text-4xl font-semibold text-zinc-400">100</div>
                 </div>
             </div>
-            <div class="h-1.5 bg-[#1a202c] rounded-full overflow-hidden border border-[#2a3344]">
-                <div id="score-bar" class="h-1.5 bg-gradient-to-r from-[#c5a46e] to-[#d4af37] rounded-full transition-all" style="width: 74%"></div>
+            <div class="h-2 bg-[#1a202c] rounded-full overflow-hidden border border-[#2a3344]">
+                <div id="score-bar" class="h-2 bg-gradient-to-r from-[#c5a46e] via-[#d4af37] to-[#c5a46e] rounded-full transition-all duration-700" style="width: 74%"></div>
             </div>
         </div>
 
-        <!-- MIT -->
-        <div class="dota-panel rounded-3xl p-6 mb-6">
-            <div class="flex items-center justify-between mb-3">
-                <div class="text-[10px] font-medium tracking-[2px] text-[#c5a46e]">MOST IMPORTANT TACTIC</div>
-                <button onclick="markMITDone()" class="text-xs px-3.5 py-1 rounded-full bg-[#c5a46e]/10 text-[#c5a46e] hover:bg-[#c5a46e]/20 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-check text-xs"></i>
-                    <span class="font-medium">EXECUTE</span>
+        <!-- Most Important Tactic -->
+        <div class="dota-panel rounded-3xl p-7 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="tactical-label text-[#c5a46e]">MOST IMPORTANT TACTIC</div>
+                <button onclick="markMITDone()"
+                        class="text-xs px-4 py-1.5 rounded-2xl bg-[#c5a46e]/10 text-[#c5a46e] hover:bg-[#c5a46e]/20 active:bg-[#c5a46e]/30 transition flex items-center gap-2 font-medium">
+                    <i class="fa-solid fa-check"></i>
+                    <span>EXECUTE</span>
                 </button>
             </div>
-            
+
             <div class="flex items-center gap-3">
-                <input id="mit-input" type="text" class="mit-input text-lg font-medium placeholder-zinc-500" placeholder="The decisive move that changes the outcome">
-                <button onclick="saveMIT()" class="text-[#c5a46e] hover:text-[#d4af37] px-1">
-                    <i class="fa-solid fa-save text-lg"></i>
+                <input id="mit-input" type="text"
+                       class="mit-input text-[17px] font-medium placeholder-zinc-500"
+                       placeholder="The one decisive action that alters the outcome">
+                <button onclick="saveMIT()" class="text-[#c5a46e] hover:text-[#d4af37] px-2 text-xl transition">
+                    <i class="fa-solid fa-save"></i>
                 </button>
             </div>
-            
-            <div id="mit-status" class="mt-3 text-xs text-emerald-400 hidden flex items-center gap-1.5">
+
+            <div id="mit-status" class="mt-4 text-sm text-emerald-400 hidden items-center gap-2">
                 <i class="fa-solid fa-check-circle"></i>
-                <span id="mit-completed-text"></span>
+                <span id="mit-completed-text" class="font-medium"></span>
             </div>
         </div>
 
         <!-- Quick Actions -->
         <div class="grid grid-cols-2 gap-3">
-            <button onclick="showSection('money')" class="dota-panel hover:border-[#c5a46e]/40 transition rounded-3xl py-5 text-sm font-medium flex flex-col items-center justify-center gap-1">
-                <i class="fa-solid fa-dollar-sign text-[#c5a46e]"></i>
+            <button onclick="showSection('money')" class="dota-panel hover:border-[#c5a46e]/50 rounded-3xl py-6 text-sm font-medium flex flex-col items-center justify-center gap-2 active:scale-[0.985]">
+                <i class="fa-solid fa-coins text-2xl text-[#c5a46e]"></i>
                 <span>RESOURCE LOG</span>
             </button>
-            <button onclick="showSection('blockers')" class="dota-panel hover:border-[#c5a46e]/40 transition rounded-3xl py-5 text-sm font-medium flex flex-col items-center justify-center gap-1">
-                <i class="fa-solid fa-exclamation-triangle text-[#c5a46e]"></i>
+            <button onclick="showSection('blockers')" class="dota-panel hover:border-[#c5a46e]/50 rounded-3xl py-6 text-sm font-medium flex flex-col items-center justify-center gap-2 active:scale-[0.985]">
+                <i class="fa-solid fa-exclamation-triangle text-2xl text-[#c5a46e]"></i>
                 <span>THREATS</span>
             </button>
-            <button onclick="showSection('energy')" class="dota-panel hover:border-[#c5a46e]/40 transition rounded-3xl py-5 text-sm font-medium flex flex-col items-center justify-center gap-1">
-                <i class="fa-solid fa-battery-full text-[#c5a46e]"></i>
+            <button onclick="showSection('energy')" class="dota-panel hover:border-[#c5a46e]/50 rounded-3xl py-6 text-sm font-medium flex flex-col items-center justify-center gap-2 active:scale-[0.985]">
+                <i class="fa-solid fa-battery-full text-2xl text-[#c5a46e]"></i>
                 <span>STAMINA</span>
             </button>
-            <button onclick="showSection('growth')" class="dota-panel hover:border-[#c5a46e]/40 transition rounded-3xl py-5 text-sm font-medium flex flex-col items-center justify-center gap-1">
-                <i class="fa-solid fa-seedling text-[#c5a46e]"></i>
+            <button onclick="showSection('growth')" class="dota-panel hover:border-[#c5a46e]/50 rounded-3xl py-6 text-sm font-medium flex flex-col items-center justify-center gap-2 active:scale-[0.985]">
+                <i class="fa-solid fa-seedling text-2xl text-[#c5a46e]"></i>
                 <span>EVOLUTION</span>
             </button>
         </div>
     </div>
 
-    <!-- MONEY -->
+    <!-- MONEY / RESOURCE LOG -->
     <div id="money" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6"><h2 class="text-3xl font-display tracking-tighter text-white">Resource Log</h2><p class="text-zinc-400 text-sm mt-1">Every gold gained or spent is a strategic decision.</p></div>
-        
-        <div class="dota-panel rounded-3xl p-6 mb-6">
-            <div class="grid grid-cols-2 gap-3 mb-4">
+        <div class="mb-6">
+            <h2 class="font-display text-4xl tracking-tighter">Resource Log</h2>
+            <p class="text-zinc-400 mt-1">Every transaction is a calculated move.</p>
+        </div>
+
+        <div class="dota-panel rounded-3xl p-7 mb-6">
+            <div class="grid grid-cols-2 gap-4 mb-5">
                 <div>
-                    <div class="text-[10px] text-[#c5a46e] tracking-widest mb-1">AMOUNT</div>
+                    <div class="tactical-label text-[#c5a46e] mb-1.5">AMOUNT</div>
                     <div class="flex">
-                        <span class="px-4 py-3 bg-[#11161f] border border-[#2a3344] rounded-l-2xl text-[#c5a46e]">$</span>
-                        <input id="money-amount" type="number" step="0.01" placeholder="0.00" class="flex-1 bg-[#11161f] border border-[#2a3344] border-l-0 rounded-r-2xl px-4 py-3 text-sm focus:outline-none">
+                        <span class="px-4 py-3.5 bg-[#11161f] border border-[#2a3344] rounded-l-2xl text-[#c5a46e]">$</span>
+                        <input id="money-amount" type="number" step="0.01" placeholder="0.00"
+                               class="flex-1 bg-[#11161f] border border-[#2a3344] border-l-0 rounded-r-2xl px-4 py-3.5 text-sm focus:outline-none">
                     </div>
                 </div>
                 <div>
-                    <div class="text-[10px] text-[#c5a46e] tracking-widest mb-1">TYPE</div>
-                    <select id="money-type" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                    <div class="tactical-label text-[#c5a46e] mb-1.5">TYPE</div>
+                    <select id="money-type" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
                         <option value="income">GAIN</option>
                         <option value="expense">SPEND</option>
                     </select>
                 </div>
             </div>
-            <div class="mb-4">
-                <div class="text-[10px] text-[#c5a46e] tracking-widest mb-1">CATEGORY</div>
-                <input id="money-category" type="text" placeholder="Uber, Client, Supplies..." class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+
+            <div class="mb-5">
+                <div class="tactical-label text-[#c5a46e] mb-1.5">CATEGORY</div>
+                <input id="money-category" type="text" placeholder="Uber, Client, Supplies..."
+                       class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
             </div>
-            <div class="mb-4">
-                <div class="text-[10px] text-[#c5a46e] tracking-widest mb-1">NOTES</div>
-                <input id="money-note" type="text" placeholder="Mission notes" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+
+            <div class="mb-6">
+                <div class="tactical-label text-[#c5a46e] mb-1.5">NOTES</div>
+                <input id="money-note" type="text" placeholder="Mission notes"
+                       class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
             </div>
-            <button onclick="addMoneyMove()" class="w-full bg-[#c5a46e] hover:bg-[#d4af37] transition text-[#0a0c10] font-semibold py-3.5 rounded-2xl text-sm flex items-center justify-center gap-2">
+
+            <button onclick="addMoneyMove()" class="dota-button w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
                 <i class="fa-solid fa-plus"></i>
                 <span>LOG TRANSACTION</span>
             </button>
         </div>
 
-        <div class="dota-panel rounded-3xl p-5 mb-6 flex justify-between items-center text-sm">
+        <div class="dota-panel rounded-3xl p-6 mb-6 flex justify-between text-sm">
             <div>
-                <div class="text-xs text-zinc-400 tracking-widest">WEEKLY GOLD</div>
-                <div id="money-week-total" class="font-semibold text-2xl text-white">$0</div>
+                <div class="tactical-label text-zinc-400">WEEKLY GOLD</div>
+                <div id="money-week-total" class="font-semibold text-4xl text-white stat-value">$0</div>
             </div>
             <div class="text-right">
-                <div class="text-xs text-zinc-400 tracking-widest">NET POSITION</div>
-                <div id="money-net" class="font-semibold text-2xl text-white">$0</div>
+                <div class="tactical-label text-zinc-400">NET POSITION</div>
+                <div id="money-net" class="font-semibold text-4xl text-white stat-value">$0</div>
             </div>
         </div>
 
         <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">RECENT TRANSACTIONS</div>
+            <div class="tactical-label text-[#c5a46e]">RECENT TRANSACTIONS</div>
             <button onclick="clearMoneyMoves()" class="text-xs text-red-400 hover:text-red-300">CLEAR</button>
         </div>
         <div id="money-list" class="space-y-2"></div>
     </div>
 
-    <!-- BLOCKERS -->
+    <!-- BLOCKERS / THREATS -->
     <div id="blockers" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6"><h2 class="text-3xl font-display tracking-tighter text-white">Threat Log</h2><p class="text-zinc-400 text-sm mt-1">Identify obstacles. Neutralize them. Advance.</p></div>
-        
-        <div class="dota-panel rounded-3xl p-6 mb-6">
-            <input id="blocker-input" type="text" placeholder="What stands in your way?" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm mb-3 focus:outline-none">
-            <textarea id="blocker-note" rows="2" placeholder="Intel on the threat..." class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm resize-y mb-4 focus:outline-none"></textarea>
-            <button onclick="addBlocker()" class="w-full bg-orange-500 hover:bg-orange-600 transition text-black font-semibold py-3.5 rounded-2xl text-sm flex items-center justify-center gap-2">
+        <div class="mb-6">
+            <h2 class="font-display text-4xl tracking-tighter">Threat Log</h2>
+            <p class="text-zinc-400 mt-1">Identify. Neutralize. Advance.</p>
+        </div>
+
+        <div class="dota-panel rounded-3xl p-7 mb-6">
+            <input id="blocker-input" type="text" placeholder="What stands in your way?"
+                   class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm mb-4 focus:outline-none">
+            <textarea id="blocker-note" rows="2" placeholder="Intelligence on the threat..."
+                      class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm resize-y mb-5 focus:outline-none"></textarea>
+
+            <button onclick="addBlocker()" class="dota-button w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
                 <i class="fa-solid fa-exclamation-triangle"></i>
                 <span>REGISTER THREAT</span>
             </button>
         </div>
-        
+
         <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">ACTIVE THREATS</div>
+            <div class="tactical-label text-[#c5a46e]">ACTIVE THREATS</div>
             <button onclick="clearBlockers()" class="text-xs text-red-400 hover:text-red-300">CLEAR</button>
         </div>
         <div id="blocker-list" class="space-y-2"></div>
     </div>
 
-    <!-- CAPTURE -->
+    <!-- CAPTURE / INTEL -->
     <div id="capture" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6"><h2 class="text-3xl font-display tracking-tighter text-white">Field Notes</h2><p class="text-zinc-400 text-sm mt-1">Capture intelligence before it fades.</p></div>
-        
-        <div class="dota-panel rounded-3xl p-6 mb-6">
-            <textarea id="capture-input" rows="3" placeholder="Drop any intel, idea, or observation..." class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm resize-y focus:outline-none"></textarea>
-            <button onclick="addCapture()" class="mt-4 w-full bg-amber-500 hover:bg-amber-600 transition text-black font-semibold py-3.5 rounded-2xl text-sm flex items-center justify-center gap-2">
+        <div class="mb-6">
+            <h2 class="font-display text-4xl tracking-tighter">Field Notes</h2>
+            <p class="text-zinc-400 mt-1">Capture intelligence before it fades.</p>
+        </div>
+
+        <div class="dota-panel rounded-3xl p-7 mb-6">
+            <textarea id="capture-input" rows="3" placeholder="Drop any intel, idea, or observation..."
+                      class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm resize-y focus:outline-none"></textarea>
+
+            <button onclick="addCapture()" class="mt-5 dota-button w-full py-4 rounded-2xl text-sm flex items-center justify-center gap-2">
                 <i class="fa-solid fa-inbox"></i>
                 <span>LOG INTEL</span>
             </button>
         </div>
-        
+
         <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">INTEL ARCHIVE</div>
+            <div class="tactical-label text-[#c5a46e]">INTEL ARCHIVE</div>
             <button onclick="clearCaptures()" class="text-xs text-red-400 hover:text-red-300">CLEAR</button>
         </div>
         <div id="capture-list" class="space-y-2"></div>
     </div>
 
-    <!-- GROWTH -->
+    <!-- GROWTH / EVOLUTION -->
     <div id="growth" class="section max-w-screen-sm mx-auto px-6 pt-8">
         <div class="mb-6">
-            <h2 class="text-3xl font-display tracking-tighter text-white">Evolution</h2>
-            <p class="text-zinc-400 text-sm mt-1">Discipline compounds. Become unstoppable.</p>
+            <h2 class="font-display text-4xl tracking-tighter">Evolution</h2>
+            <p class="text-zinc-400 mt-1">Discipline compounds. Become unstoppable.</p>
         </div>
 
-        <div class="dota-panel rounded-3xl p-6 mb-6">
-            <div class="flex gap-2">
-                <input id="habit-input" type="text" placeholder="New discipline..." class="flex-1 bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
-                <button onclick="addHabit()" class="px-6 bg-[#c5a46e] hover:bg-[#d4af37] text-[#0a0c10] font-semibold rounded-2xl text-sm">ADD</button>
+        <div class="dota-panel rounded-3xl p-7 mb-6">
+            <div class="flex gap-3">
+                <input id="habit-input" type="text" placeholder="New discipline..."
+                       class="flex-1 bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
+                <button onclick="addHabit()" class="dota-button px-8 rounded-2xl text-sm font-semibold">ADD</button>
             </div>
         </div>
 
         <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">DISCIPLINE STREAKS</div>
-            <button onclick="resetAllStreaks()" class="text-xs text-red-400 hover:text-red-300">RESET</button>
+            <div class="tactical-label text-[#c5a46e]">DISCIPLINE STREAKS</div>
+            <button onclick="resetAllStreaks()" class="text-xs text-red-400 hover:text-red-300">RESET ALL</button>
         </div>
         <div id="habit-list" class="space-y-3"></div>
     </div>
 
-    <!-- FAB -->
-    <button onclick="quickCaptureFromHome()" class="fab w-14 h-14 bg-[#c5a46e] hover:bg-[#d4af37] active:scale-95 transition-all rounded-2xl flex items-center justify-center shadow-2xl">
-        <i class="fa-solid fa-plus text-[#0a0c10] text-2xl"></i>
+    <!-- Floating Action Button -->
+    <button onclick="quickCaptureFromHome()"
+            class="fab w-16 h-16 bg-[#c5a46e] hover:bg-[#d4af37] active:scale-95 transition-all rounded-3xl flex items-center justify-center shadow-2xl">
+        <i class="fa-solid fa-plus text-[#0a0c10] text-3xl"></i>
     </button>
 
     <!-- Bottom Navigation -->
     <div class="fixed bottom-0 left-0 right-0 bg-[#0a0c10] border-t border-[#2a3344] z-50">
-        <div class="max-w-screen-sm mx-auto flex items-center justify-around py-3 text-xs">
-            <button onclick="showSection('home')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-home text-xl"></i><span class="mt-0.5 text-[10px]">Command</span></button>
-            <button onclick="showSection('money')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-dollar-sign text-xl"></i><span class="mt-0.5 text-[10px]">Gold</span></button>
-            <button onclick="showSection('blockers')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-exclamation-triangle text-xl"></i><span class="mt-0.5 text-[10px]">Threats</span></button>
-            <button onclick="showSection('capture')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-inbox text-xl"></i><span class="mt-0.5 text-[10px]">Intel</span></button>
-            <button onclick="showSection('growth')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-seedling text-xl"></i><span class="mt-0.5 text-[10px]">Evolve</span></button>
+        <div class="max-w-screen-sm mx-auto flex items-center justify-around py-[13px] text-xs">
+            <button onclick="showSection('home')" id="nav-home"
+                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
+                <i class="fa-solid fa-home text-2xl"></i>
+                <span class="text-[9.5px] mt-px tracking-wider">COMMAND</span>
+            </button>
+            <button onclick="showSection('money')" id="nav-money"
+                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
+                <i class="fa-solid fa-coins text-2xl"></i>
+                <span class="text-[9.5px] mt-px tracking-wider">GOLD</span>
+            </button>
+            <button onclick="showSection('blockers')" id="nav-blockers"
+                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
+                <i class="fa-solid fa-exclamation-triangle text-2xl"></i>
+                <span class="text-[9.5px] mt-px tracking-wider">THREATS</span>
+            </button>
+            <button onclick="showSection('capture')" id="nav-capture"
+                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
+                <i class="fa-solid fa-inbox text-2xl"></i>
+                <span class="text-[9.5px] mt-px tracking-wider">INTEL</span>
+            </button>
+            <button onclick="showSection('growth')" id="nav-growth"
+                    class="nav-button flex flex-col items-center gap-px text-zinc-400 active:text-white">
+                <i class="fa-solid fa-seedling text-2xl"></i>
+                <span class="text-[9.5px] mt-px tracking-wider">EVOLVE</span>
+            </button>
         </div>
     </div>
 
@@ -287,7 +386,20 @@
         function showSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(section).classList.add('active');
-            
+
+            // Update nav active states
+            document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
+            const navMap = {
+                'home': 'nav-home',
+                'money': 'nav-money',
+                'blockers': 'nav-blockers',
+                'capture': 'nav-capture',
+                'growth': 'nav-growth'
+            };
+            if (navMap[section]) {
+                document.getElementById(navMap[section]).classList.add('active');
+            }
+
             if (section === 'money') renderMoneyList();
             if (section === 'capture') renderCaptureList();
             if (section === 'blockers') renderBlockerList();
@@ -300,174 +412,395 @@
             dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase();
         }
 
-        // MIT
+        // MIT System
         let mitCompletedToday = false;
+
         function loadMIT() {
             const savedMIT = localStorage.getItem('forge_mit');
             const savedCompleted = localStorage.getItem('forge_mit_completed');
             const savedScore = localStorage.getItem('forge_daily_score');
             const input = document.getElementById('mit-input');
             const status = document.getElementById('mit-status');
+
             if (savedMIT) input.value = savedMIT;
+
             if (savedCompleted === 'true') {
                 mitCompletedToday = true;
                 input.classList.add('completed');
                 status.classList.remove('hidden');
+                status.classList.add('flex');
                 document.getElementById('mit-completed-text').textContent = 'TACTIC EXECUTED';
                 updateDailyScore(84);
-            } else if (savedScore) updateDailyScore(parseInt(savedScore));
+            } else if (savedScore) {
+                updateDailyScore(parseInt(savedScore));
+            }
         }
+
         function saveMIT() {
             const input = document.getElementById('mit-input');
-            if (input.value.trim()) localStorage.setItem('forge_mit', input.value.trim());
+            if (input.value.trim()) {
+                localStorage.setItem('forge_mit', input.value.trim());
+            }
         }
+
         function markMITDone() {
             const input = document.getElementById('mit-input');
             const status = document.getElementById('mit-status');
-            if (!input.value.trim()) { alert('Declare your Most Important Tactic first.'); return; }
-            if (mitCompletedToday) { alert('Already executed today.'); return; }
+
+            if (!input.value.trim()) {
+                alert('Declare your Most Important Tactic first.');
+                return;
+            }
+            if (mitCompletedToday) {
+                alert('Already executed today.');
+                return;
+            }
+
             mitCompletedToday = true;
             localStorage.setItem('forge_mit_completed', 'true');
             input.classList.add('completed');
             status.classList.remove('hidden');
+            status.classList.add('flex');
             document.getElementById('mit-completed-text').textContent = 'TACTIC EXECUTED';
+
             const newScore = 84;
             updateDailyScore(newScore);
             localStorage.setItem('forge_daily_score', newScore);
         }
+
         function updateDailyScore(score) {
             document.getElementById('daily-score').textContent = score;
             document.getElementById('score-bar').style.width = score + '%';
         }
+
         function initMIT() {
             const input = document.getElementById('mit-input');
             loadMIT();
             input.addEventListener('blur', saveMIT);
-            input.addEventListener('keypress', e => { if (e.key === 'Enter') { saveMIT(); input.blur(); } });
+            input.addEventListener('keypress', e => {
+                if (e.key === 'Enter') {
+                    saveMIT();
+                    input.blur();
+                }
+            });
         }
 
-        // MONEY
-        function getMoneyMoves() { return JSON.parse(localStorage.getItem('forge_money_moves') || '[]'); }
-        function saveMoneyMoves(m) { localStorage.setItem('forge_money_moves', JSON.stringify(m)); }
+        // Money System
+        function getMoneyMoves() {
+            return JSON.parse(localStorage.getItem('forge_money_moves') || '[]');
+        }
+        function saveMoneyMoves(moves) {
+            localStorage.setItem('forge_money_moves', JSON.stringify(moves));
+        }
+
         function addMoneyMove() {
             const amount = parseFloat(document.getElementById('money-amount').value);
-            if (!amount || amount <= 0) { alert('Valid amount required'); return; }
-            const move = { id: Date.now(), date: new Date().toISOString(), amount, type: document.getElementById('money-type').value, category: document.getElementById('money-category').value.trim() || 'Uncategorized', note: document.getElementById('money-note').value.trim() };
-            const moves = getMoneyMoves(); moves.unshift(move); saveMoneyMoves(moves);
-            document.getElementById('money-amount').value = ''; document.getElementById('money-category').value = ''; document.getElementById('money-note').value = '';
+            if (!amount || amount <= 0) {
+                alert('Enter a valid amount');
+                return;
+            }
+
+            const move = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                amount: amount,
+                type: document.getElementById('money-type').value,
+                category: document.getElementById('money-category').value.trim() || 'Uncategorized',
+                note: document.getElementById('money-note').value.trim()
+            };
+
+            const moves = getMoneyMoves();
+            moves.unshift(move);
+            saveMoneyMoves(moves);
+
+            document.getElementById('money-amount').value = '';
+            document.getElementById('money-category').value = '';
+            document.getElementById('money-note').value = '';
+
             renderMoneyList();
         }
+
         function renderMoneyList() {
-            const container = document.getElementById('money-list'); const moves = getMoneyMoves(); container.innerHTML = '';
-            if (!moves.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No transactions logged yet.</div>`; updateMoneySummary(0,0); return; }
-            let weekTotal = 0, net = 0; const weekStart = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - new Date().getDay());
-            moves.forEach(m => {
-                const d = new Date(m.date); if (d >= weekStart) weekTotal += m.type === 'income' ? m.amount : -m.amount; net += m.type === 'income' ? m.amount : -m.amount;
-                const div = document.createElement('div'); div.className = 'money-entry dota-panel rounded-3xl p-4 flex justify-between';
-                const sign = m.type === 'income' ? '+' : '-'; const color = m.type === 'income' ? 'text-emerald-400' : 'text-red-400';
-                div.innerHTML = `<div><div class="font-medium">${m.category}</div><div class="text-xs text-zinc-400">${new Date(m.date).toLocaleDateString()} ${m.note ? '• ' + m.note : ''}</div></div><div class="text-right"><div class="${color} font-semibold">${sign}$${m.amount.toFixed(2)}</div><div class="text-[10px] text-zinc-500">${m.type}</div></div>`;
+            const container = document.getElementById('money-list');
+            const moves = getMoneyMoves();
+            container.innerHTML = '';
+
+            if (moves.length === 0) {
+                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No transactions logged yet.</div>`;
+                updateMoneySummary(0, 0);
+                return;
+            }
+
+            let weekTotal = 0;
+            let net = 0;
+            const now = new Date();
+            const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+
+            moves.forEach(move => {
+                const moveDate = new Date(move.date);
+                const isThisWeek = moveDate >= weekStart;
+
+                if (isThisWeek) {
+                    weekTotal += move.type === 'income' ? move.amount : -move.amount;
+                }
+                net += move.type === 'income' ? move.amount : -move.amount;
+
+                const div = document.createElement('div');
+                div.className = `money-entry dota-panel rounded-3xl p-5 flex justify-between items-start`;
+
+                const sign = move.type === 'income' ? '+' : '-';
+                const color = move.type === 'income' ? 'text-emerald-400' : 'text-red-400';
+
+                div.innerHTML = `
+                    <div class="flex-1 min-w-0">
+                        <div class="font-medium">${move.category}</div>
+                        <div class="text-xs text-zinc-400 mt-0.5">${new Date(move.date).toLocaleDateString()} ${move.note ? '• ' + move.note : ''}</div>
+                    </div>
+                    <div class="text-right pl-4">
+                        <div class="${color} font-semibold text-lg">${sign}$${move.amount.toFixed(2)}</div>
+                        <div class="text-[10px] text-zinc-500">${move.type.toUpperCase()}</div>
+                    </div>
+                `;
                 container.appendChild(div);
             });
+
             updateMoneySummary(weekTotal, net);
         }
-        function updateMoneySummary(w, n) {
-            document.getElementById('money-week-total').innerHTML = `$${Math.abs(w).toFixed(2)}`;
-            const netEl = document.getElementById('money-net'); netEl.innerHTML = `$${n.toFixed(2)}`; netEl.className = n >= 0 ? 'font-semibold text-2xl text-white' : 'font-semibold text-2xl text-red-400';
-        }
-        function clearMoneyMoves() { if (confirm('Clear all transactions?')) { localStorage.removeItem('forge_money_moves'); renderMoneyList(); } }
 
-        // BLOCKERS
-        function getBlockers() { return JSON.parse(localStorage.getItem('forge_blockers') || '[]'); }
-        function saveBlockers(b) { localStorage.setItem('forge_blockers', JSON.stringify(b)); }
+        function updateMoneySummary(weekTotal, net) {
+            document.getElementById('money-week-total').innerHTML = `$${Math.abs(weekTotal).toFixed(2)}`;
+            const netEl = document.getElementById('money-net');
+            netEl.innerHTML = `$${net.toFixed(2)}`;
+            netEl.className = net >= 0
+                ? 'font-semibold text-4xl text-white stat-value'
+                : 'font-semibold text-4xl text-red-400 stat-value';
+        }
+
+        function clearMoneyMoves() {
+            if (confirm('Clear all resource transactions?')) {
+                localStorage.removeItem('forge_money_moves');
+                renderMoneyList();
+            }
+        }
+
+        // Blockers / Threats
+        function getBlockers() {
+            return JSON.parse(localStorage.getItem('forge_blockers') || '[]');
+        }
+        function saveBlockers(blockers) {
+            localStorage.setItem('forge_blockers', JSON.stringify(blockers));
+        }
+
         function addBlocker() {
             const text = document.getElementById('blocker-input').value.trim();
-            if (!text) { alert('Declare the threat'); return; }
-            const blocker = { id: Date.now(), text, note: document.getElementById('blocker-note').value.trim(), date: new Date().toISOString(), resolved: false };
-            const blockers = getBlockers(); blockers.unshift(blocker); saveBlockers(blockers);
-            document.getElementById('blocker-input').value = ''; document.getElementById('blocker-note').value = '';
+            if (!text) {
+                alert('Declare the threat');
+                return;
+            }
+
+            const blocker = {
+                id: Date.now(),
+                text: text,
+                note: document.getElementById('blocker-note').value.trim(),
+                date: new Date().toISOString(),
+                resolved: false
+            };
+
+            const blockers = getBlockers();
+            blockers.unshift(blocker);
+            saveBlockers(blockers);
+
+            document.getElementById('blocker-input').value = '';
+            document.getElementById('blocker-note').value = '';
+
             renderBlockerList();
         }
+
         function renderBlockerList() {
-            const container = document.getElementById('blocker-list'); const blockers = getBlockers(); container.innerHTML = '';
-            if (!blockers.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No active threats. The path is clear.</div>`; return; }
-            blockers.forEach((b, i) => {
+            const container = document.getElementById('blocker-list');
+            const blockers = getBlockers();
+            container.innerHTML = '';
+
+            if (blockers.length === 0) {
+                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No active threats. The path is clear.</div>`;
+                return;
+            }
+
+            blockers.forEach((blocker, index) => {
                 const div = document.createElement('div');
-                div.className = `blocker-item dota-panel rounded-3xl p-4 ${b.resolved ? 'resolved' : ''}`;
+                div.className = `blocker-item dota-panel rounded-3xl p-5 ${blocker.resolved ? 'resolved' : ''}`;
+
                 div.innerHTML = `
                     <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <div class="${b.resolved ? 'line-through' : ''} font-medium">${b.text}</div>
-                            ${b.note ? `<div class="text-xs text-zinc-400 mt-1">${b.note}</div>` : ''}
-                            <div class="text-[10px] text-zinc-500 mt-1">${new Date(b.date).toLocaleDateString()}</div>
+                        <div class="flex-1 pr-4">
+                            <div class="${blocker.resolved ? 'line-through opacity-50' : ''} font-medium">${blocker.text}</div>
+                            ${blocker.note ? `<div class="text-xs text-zinc-400 mt-1">${blocker.note}</div>` : ''}
+                            <div class="text-[10px] text-zinc-500 mt-1.5">${new Date(blocker.date).toLocaleDateString()}</div>
                         </div>
-                        <div class="flex gap-2 pt-1">
-                            ${!b.resolved ? `<button onclick="resolveBlocker(${i})" class="text-emerald-400 text-xs"><i class="fa-solid fa-check"></i></button>` : ''}
-                            <button onclick="deleteBlocker(${i})" class="text-red-400 text-xs"><i class="fa-solid fa-trash"></i></button>
+                        <div class="flex gap-3 pt-1">
+                            ${!blocker.resolved ?
+                                `<button onclick="resolveBlocker(${index})" class="text-emerald-400 hover:text-emerald-300 text-xl"><i class="fa-solid fa-check"></i></button>` : ''}
+                            <button onclick="deleteBlocker(${index})" class="text-red-400 hover:text-red-300 text-xl"><i class="fa-solid fa-trash"></i></button>
                         </div>
-                    </div>`;
+                    </div>
+                `;
                 container.appendChild(div);
             });
         }
+
         function resolveBlocker(index) {
             const blockers = getBlockers();
             blockers[index].resolved = true;
             saveBlockers(blockers);
             renderBlockerList();
         }
-        function deleteBlocker(index) {
-            const blockers = getBlockers(); blockers.splice(index, 1); saveBlockers(blockers); renderBlockerList();
-        }
-        function clearBlockers() { if (confirm('Clear all threats?')) { localStorage.removeItem('forge_blockers'); renderBlockerList(); } }
 
-        // CAPTURE
-        function getCaptures() { return JSON.parse(localStorage.getItem('forge_captures') || '[]'); }
-        function saveCaptures(c) { localStorage.setItem('forge_captures', JSON.stringify(c)); }
-        function addCapture(text = null) {
-            const input = document.getElementById('capture-input'); const value = text || input.value.trim(); if (!value) return;
-            const captures = getCaptures(); captures.unshift({ id: Date.now(), text: value, date: new Date().toISOString() }); saveCaptures(captures);
-            if (!text) input.value = ''; renderCaptureList();
+        function deleteBlocker(index) {
+            const blockers = getBlockers();
+            blockers.splice(index, 1);
+            saveBlockers(blockers);
+            renderBlockerList();
         }
+
+        function clearBlockers() {
+            if (confirm('Clear all registered threats?')) {
+                localStorage.removeItem('forge_blockers');
+                renderBlockerList();
+            }
+        }
+
+        // Capture / Intel
+        function getCaptures() {
+            return JSON.parse(localStorage.getItem('forge_captures') || '[]');
+        }
+        function saveCaptures(captures) {
+            localStorage.setItem('forge_captures', JSON.stringify(captures));
+        }
+
+        function addCapture(text = null) {
+            const input = document.getElementById('capture-input');
+            const value = text || input.value.trim();
+            if (!value) return;
+
+            const capture = {
+                id: Date.now(),
+                text: value,
+                date: new Date().toISOString()
+            };
+
+            const captures = getCaptures();
+            captures.unshift(capture);
+            saveCaptures(captures);
+
+            if (!text) input.value = '';
+            renderCaptureList();
+        }
+
         function renderCaptureList() {
-            const container = document.getElementById('capture-list'); const captures = getCaptures(); container.innerHTML = '';
-            if (!captures.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No field notes yet.</div>`; return; }
-            captures.forEach((c, i) => {
-                const div = document.createElement('div'); div.className = 'capture-item dota-panel rounded-3xl p-4 flex justify-between';
-                div.innerHTML = `<div class="flex-1"><div class="text-sm">${c.text}</div><div class="text-[10px] text-zinc-500">${new Date(c.date).toLocaleString()}</div></div>
-                <div class="flex gap-2 pt-1"><button onclick="useCaptureAsMIT(${i})" class="text-emerald-400 text-xs"><i class="fa-solid fa-bullseye"></i></button><button onclick="deleteCapture(${i})" class="text-red-400 text-xs"><i class="fa-solid fa-trash"></i></button></div>`;
+            const container = document.getElementById('capture-list');
+            const captures = getCaptures();
+            container.innerHTML = '';
+
+            if (captures.length === 0) {
+                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No field notes logged.</div>`;
+                return;
+            }
+
+            captures.forEach((capture, index) => {
+                const div = document.createElement('div');
+                div.className = `capture-item dota-panel rounded-3xl p-5 flex justify-between items-start gap-3`;
+
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <div class="text-sm">${capture.text}</div>
+                        <div class="text-[10px] text-zinc-500 mt-1.5">${new Date(capture.date).toLocaleString()}</div>
+                    </div>
+                    <div class="flex gap-3 pt-1">
+                        <button onclick="useCaptureAsMIT(${index})" class="text-[#c5a46e] hover:text-[#d4af37] text-xl" title="Use as MIT">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </button>
+                        <button onclick="deleteCapture(${index})" class="text-red-400 hover:text-red-300 text-xl" title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
                 container.appendChild(div);
             });
         }
-        function deleteCapture(i) { const c = getCaptures(); c.splice(i,1); saveCaptures(c); renderCaptureList(); }
-        function useCaptureAsMIT(i) {
-            const captures = getCaptures(); const text = captures[i].text;
-            document.getElementById('mit-input').value = text; saveMIT();
-            captures.splice(i,1); saveCaptures(captures);
+
+        function deleteCapture(index) {
+            const captures = getCaptures();
+            captures.splice(index, 1);
+            saveCaptures(captures);
+            renderCaptureList();
+        }
+
+        function useCaptureAsMIT(index) {
+            const captures = getCaptures();
+            const text = captures[index].text;
+
+            document.getElementById('mit-input').value = text;
+            saveMIT();
+
+            captures.splice(index, 1);
+            saveCaptures(captures);
+
             showSection('home');
         }
-        function clearCaptures() { if (confirm('Clear all field notes?')) { localStorage.removeItem('forge_captures'); renderCaptureList(); } }
 
-        function quickCaptureFromHome() {
-            const text = prompt('Field note:'); if (text && text.trim()) { const captures = getCaptures(); captures.unshift({id:Date.now(), text:text.trim(), date:new Date().toISOString()}); saveCaptures(captures); }
+        function clearCaptures() {
+            if (confirm('Clear all field notes?')) {
+                localStorage.removeItem('forge_captures');
+                renderCaptureList();
+            }
         }
 
-        // HABIT STREAKS
-        function getHabits() { return JSON.parse(localStorage.getItem('forge_habits') || '[]'); }
-        function saveHabits(habits) { localStorage.setItem('forge_habits', JSON.stringify(habits)); }
+        function quickCaptureFromHome() {
+            const text = prompt('Field note:');
+            if (text && text.trim()) {
+                const captures = getCaptures();
+                captures.unshift({
+                    id: Date.now(),
+                    text: text.trim(),
+                    date: new Date().toISOString()
+                });
+                saveCaptures(captures);
+            }
+        }
+
+        // Habit Streaks (Evolution)
+        function getHabits() {
+            return JSON.parse(localStorage.getItem('forge_habits') || '[]');
+        }
+        function saveHabits(habits) {
+            localStorage.setItem('forge_habits', JSON.stringify(habits));
+        }
+
         function addHabit() {
             const input = document.getElementById('habit-input');
             const name = input.value.trim();
             if (!name) return;
+
             const habits = getHabits();
-            habits.push({ id: Date.now(), name: name, streak: 0, lastCompleted: null, history: [] });
+            habits.push({
+                id: Date.now(),
+                name: name,
+                streak: 0,
+                lastCompleted: null,
+                history: []
+            });
             saveHabits(habits);
             input.value = '';
             renderHabitList();
         }
+
         function toggleHabitDone(habitId) {
             const habits = getHabits();
             const habit = habits.find(h => h.id === habitId);
             if (!habit) return;
+
             const today = new Date().toISOString().split('T')[0];
+
             if (habit.lastCompleted === today) {
                 habit.lastCompleted = null;
                 habit.streak = Math.max(0, habit.streak - 1);
@@ -482,50 +815,63 @@
                 habit.lastCompleted = today;
                 if (!habit.history.includes(today)) habit.history.push(today);
             }
+
             saveHabits(habits);
             renderHabitList();
         }
+
         function renderHabitList() {
             const container = document.getElementById('habit-list');
             const habits = getHabits();
             container.innerHTML = '';
+
             if (habits.length === 0) {
                 container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No disciplines tracked yet. Add your first one above.</div>`;
                 return;
             }
+
             habits.forEach(habit => {
                 const isDoneToday = habit.lastCompleted === new Date().toISOString().split('T')[0];
+
                 const div = document.createElement('div');
                 div.className = `habit-row dota-panel rounded-3xl p-5 flex items-center justify-between`;
+
                 div.innerHTML = `
                     <div class="flex-1">
                         <div class="font-medium">${habit.name}</div>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="text-xs px-3 py-0.5 rounded-full ${habit.streak > 0 ? 'bg-[#c5a46e]/10 text-[#c5a46e]' : 'bg-[#11161f] text-zinc-400'} border border-[#2a3344]">
-                                <i class="fa-solid fa-fire mr-1.5 ${habit.streak > 0 ? 'text-[#c5a46e]' : ''}"></i>
-                                ${habit.streak} DAY STREAK
+                        <div class="flex items-center gap-2 mt-1.5">
+                            <span class="text-xs px-3.5 py-1 rounded-2xl border border-[#2a3344] flex items-center gap-1.5 ${habit.streak > 0 ? 'bg-[#c5a46e]/10 text-[#c5a46e]' : 'bg-[#11161f] text-zinc-400'}">
+                                <i class="fa-solid fa-fire ${habit.streak > 0 ? 'text-[#c5a46e]' : ''}"></i>
+                                <span>${habit.streak} DAY STREAK</span>
                             </span>
                         </div>
                     </div>
-                    <button onclick="toggleHabitDone(${habit.id})" class="w-11 h-11 flex items-center justify-center rounded-2xl transition-all border border-[#2a3344] ${isDoneToday ? 'bg-[#c5a46e] text-[#0a0c10]' : 'bg-[#11161f] hover:bg-[#1a202c]'}">
-                        <i class="fa-solid ${isDoneToday ? 'fa-check' : 'fa-circle'} text-xl"></i>
+                    <button onclick="toggleHabitDone(${habit.id})"
+                            class="w-12 h-12 flex items-center justify-center rounded-2xl border border-[#2a3344] transition-all ${isDoneToday ? 'bg-[#c5a46e] text-[#0a0c10]' : 'bg-[#11161f] hover:bg-[#1a202c]'}">
+                        <i class="fa-solid ${isDoneToday ? 'fa-check' : 'fa-circle'} text-2xl"></i>
                     </button>
                 `;
                 container.appendChild(div);
             });
         }
+
         function resetAllStreaks() {
             if (confirm('Reset all discipline streaks?')) {
                 const habits = getHabits();
-                habits.forEach(h => { h.streak = 0; h.lastCompleted = null; });
+                habits.forEach(h => {
+                    h.streak = 0;
+                    h.lastCompleted = null;
+                });
                 saveHabits(habits);
                 renderHabitList();
             }
         }
 
+        // Initialize everything
         window.onload = function() {
             updateDate();
             document.getElementById('home').classList.add('active');
+            document.getElementById('nav-home').classList.add('active');
             initMIT();
         }
     </script>
