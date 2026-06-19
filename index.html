@@ -89,19 +89,19 @@
     <!-- HOME -->
     <div id="home" class="section active max-w-screen-sm mx-auto px-6 pt-8">
         <div class="mb-8">
-            <h1 class="text-4xl font-display tracking-tighter text-white">Good morning, Ishraf.</h1>
-            <p class="text-zinc-400 mt-1">The battlefield awaits.</p>
+            <h1 class="text-4xl font-display tracking-tighter text-white">The battlefield is yours.</h1>
+            <p class="text-zinc-400 mt-1">Execute with precision.</p>
         </div>
 
         <!-- Daily Score -->
         <div class="dota-panel rounded-3xl p-6 mb-6">
             <div class="flex items-center justify-between mb-3">
                 <div>
-                    <div class="text-[10px] font-medium tracking-[2px] text-[#c5a46e]">TODAY'S SCORE</div>
+                    <div class="text-[10px] font-medium tracking-[2px] text-[#c5a46e]">BATTLEFIELD SCORE</div>
                     <div id="daily-score" class="text-7xl font-bold text-white">74</div>
                 </div>
                 <div class="text-right">
-                    <div class="text-xs text-zinc-500">TARGET</div>
+                    <div class="text-xs text-zinc-500">VICTORY TARGET</div>
                     <div class="text-2xl font-semibold text-zinc-400">100</div>
                 </div>
             </div>
@@ -113,15 +113,15 @@
         <!-- MIT -->
         <div class="dota-panel rounded-3xl p-6 mb-6">
             <div class="flex items-center justify-between mb-3">
-                <div class="text-[10px] font-medium tracking-[2px] text-[#c5a46e]">TODAY'S PRIORITY • MIT</div>
+                <div class="text-[10px] font-medium tracking-[2px] text-[#c5a46e]">MOST IMPORTANT TACTIC</div>
                 <button onclick="markMITDone()" class="text-xs px-3.5 py-1 rounded-full bg-[#c5a46e]/10 text-[#c5a46e] hover:bg-[#c5a46e]/20 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-check text-xs"></i>
-                    <span class="font-medium">Mark Done</span>
+                    <span class="font-medium">EXECUTE</span>
                 </button>
             </div>
             
             <div class="flex items-center gap-3">
-                <input id="mit-input" type="text" class="mit-input text-lg font-medium placeholder-zinc-500" placeholder="The one move that matters most today">
+                <input id="mit-input" type="text" class="mit-input text-lg font-medium placeholder-zinc-500" placeholder="The decisive move that changes the outcome">
                 <button onclick="saveMIT()" class="text-[#c5a46e] hover:text-[#d4af37] px-1">
                     <i class="fa-solid fa-save text-lg"></i>
                 </button>
@@ -137,26 +137,26 @@
         <div class="grid grid-cols-2 gap-3">
             <button onclick="showSection('money')" class="dota-panel hover:border-[#c5a46e]/40 transition rounded-3xl py-5 text-sm font-medium flex flex-col items-center justify-center gap-1">
                 <i class="fa-solid fa-dollar-sign text-[#c5a46e]"></i>
-                <span>Log Money</span>
+                <span>RESOURCE LOG</span>
             </button>
             <button onclick="showSection('blockers')" class="dota-panel hover:border-[#c5a46e]/40 transition rounded-3xl py-5 text-sm font-medium flex flex-col items-center justify-center gap-1">
                 <i class="fa-solid fa-exclamation-triangle text-[#c5a46e]"></i>
-                <span>Blockers</span>
+                <span>THREATS</span>
             </button>
             <button onclick="showSection('energy')" class="dota-panel hover:border-[#c5a46e]/40 transition rounded-3xl py-5 text-sm font-medium flex flex-col items-center justify-center gap-1">
                 <i class="fa-solid fa-battery-full text-[#c5a46e]"></i>
-                <span>Energy</span>
+                <span>STAMINA</span>
             </button>
             <button onclick="showSection('growth')" class="dota-panel hover:border-[#c5a46e]/40 transition rounded-3xl py-5 text-sm font-medium flex flex-col items-center justify-center gap-1">
                 <i class="fa-solid fa-seedling text-[#c5a46e]"></i>
-                <span>Growth</span>
+                <span>EVOLUTION</span>
             </button>
         </div>
     </div>
 
     <!-- MONEY -->
     <div id="money" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6"><h2 class="text-3xl font-display tracking-tighter text-white">Money Moves</h2><p class="text-zinc-400 text-sm mt-1">Every transaction is a strategic decision.</p></div>
+        <div class="mb-6"><h2 class="text-3xl font-display tracking-tighter text-white">Resource Log</h2><p class="text-zinc-400 text-sm mt-1">Every gold gained or spent is a strategic decision.</p></div>
         
         <div class="dota-panel rounded-3xl p-6 mb-6">
             <div class="grid grid-cols-2 gap-3 mb-4">
@@ -170,38 +170,38 @@
                 <div>
                     <div class="text-[10px] text-[#c5a46e] tracking-widest mb-1">TYPE</div>
                     <select id="money-type" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
-                        <option value="income">Income</option>
-                        <option value="expense">Expense</option>
+                        <option value="income">GAIN</option>
+                        <option value="expense">SPEND</option>
                     </select>
                 </div>
             </div>
             <div class="mb-4">
                 <div class="text-[10px] text-[#c5a46e] tracking-widest mb-1">CATEGORY</div>
-                <input id="money-category" type="text" placeholder="Uber, Client, Rent..." class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                <input id="money-category" type="text" placeholder="Uber, Client, Supplies..." class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
             </div>
             <div class="mb-4">
-                <div class="text-[10px] text-[#c5a46e] tracking-widest mb-1">NOTE</div>
-                <input id="money-note" type="text" placeholder="Optional note" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
+                <div class="text-[10px] text-[#c5a46e] tracking-widest mb-1">NOTES</div>
+                <input id="money-note" type="text" placeholder="Mission notes" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm focus:outline-none">
             </div>
             <button onclick="addMoneyMove()" class="w-full bg-[#c5a46e] hover:bg-[#d4af37] transition text-[#0a0c10] font-semibold py-3.5 rounded-2xl text-sm flex items-center justify-center gap-2">
                 <i class="fa-solid fa-plus"></i>
-                <span>LOG MONEY MOVE</span>
+                <span>LOG TRANSACTION</span>
             </button>
         </div>
 
         <div class="dota-panel rounded-3xl p-5 mb-6 flex justify-between items-center text-sm">
             <div>
-                <div class="text-xs text-zinc-400 tracking-widest">THIS WEEK</div>
+                <div class="text-xs text-zinc-400 tracking-widest">WEEKLY GOLD</div>
                 <div id="money-week-total" class="font-semibold text-2xl text-white">$0</div>
             </div>
             <div class="text-right">
-                <div class="text-xs text-zinc-400 tracking-widest">NET</div>
+                <div class="text-xs text-zinc-400 tracking-widest">NET POSITION</div>
                 <div id="money-net" class="font-semibold text-2xl text-white">$0</div>
             </div>
         </div>
 
         <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">RECENT MOVES</div>
+            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">RECENT TRANSACTIONS</div>
             <button onclick="clearMoneyMoves()" class="text-xs text-red-400 hover:text-red-300">CLEAR</button>
         </div>
         <div id="money-list" class="space-y-2"></div>
@@ -209,19 +209,19 @@
 
     <!-- BLOCKERS -->
     <div id="blockers" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6"><h2 class="text-3xl font-display tracking-tighter text-white">Blocker Log</h2><p class="text-zinc-400 text-sm mt-1">Identify. Neutralize. Advance.</p></div>
+        <div class="mb-6"><h2 class="text-3xl font-display tracking-tighter text-white">Threat Log</h2><p class="text-zinc-400 text-sm mt-1">Identify obstacles. Neutralize them. Advance.</p></div>
         
         <div class="dota-panel rounded-3xl p-6 mb-6">
-            <input id="blocker-input" type="text" placeholder="What's blocking progress?" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm mb-3 focus:outline-none">
-            <textarea id="blocker-note" rows="2" placeholder="Context or details..." class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm resize-y mb-4 focus:outline-none"></textarea>
+            <input id="blocker-input" type="text" placeholder="What stands in your way?" class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm mb-3 focus:outline-none">
+            <textarea id="blocker-note" rows="2" placeholder="Intel on the threat..." class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3 text-sm resize-y mb-4 focus:outline-none"></textarea>
             <button onclick="addBlocker()" class="w-full bg-orange-500 hover:bg-orange-600 transition text-black font-semibold py-3.5 rounded-2xl text-sm flex items-center justify-center gap-2">
                 <i class="fa-solid fa-exclamation-triangle"></i>
-                <span>LOG BLOCKER</span>
+                <span>REGISTER THREAT</span>
             </button>
         </div>
         
         <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">ACTIVE BLOCKERS</div>
+            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">ACTIVE THREATS</div>
             <button onclick="clearBlockers()" class="text-xs text-red-400 hover:text-red-300">CLEAR</button>
         </div>
         <div id="blocker-list" class="space-y-2"></div>
@@ -229,18 +229,18 @@
 
     <!-- CAPTURE -->
     <div id="capture" class="section max-w-screen-sm mx-auto px-6 pt-8">
-        <div class="mb-6"><h2 class="text-3xl font-display tracking-tighter text-white">Quick Capture</h2><p class="text-zinc-400 text-sm mt-1">Empty the mind. Capture the signal.</p></div>
+        <div class="mb-6"><h2 class="text-3xl font-display tracking-tighter text-white">Field Notes</h2><p class="text-zinc-400 text-sm mt-1">Capture intelligence before it fades.</p></div>
         
         <div class="dota-panel rounded-3xl p-6 mb-6">
-            <textarea id="capture-input" rows="3" placeholder="Anything — ideas, tasks, thoughts..." class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm resize-y focus:outline-none"></textarea>
+            <textarea id="capture-input" rows="3" placeholder="Drop any intel, idea, or observation..." class="w-full bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm resize-y focus:outline-none"></textarea>
             <button onclick="addCapture()" class="mt-4 w-full bg-amber-500 hover:bg-amber-600 transition text-black font-semibold py-3.5 rounded-2xl text-sm flex items-center justify-center gap-2">
                 <i class="fa-solid fa-inbox"></i>
-                <span>CAPTURE</span>
+                <span>LOG INTEL</span>
             </button>
         </div>
         
         <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">INBOX</div>
+            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">INTEL ARCHIVE</div>
             <button onclick="clearCaptures()" class="text-xs text-red-400 hover:text-red-300">CLEAR</button>
         </div>
         <div id="capture-list" class="space-y-2"></div>
@@ -249,19 +249,19 @@
     <!-- GROWTH -->
     <div id="growth" class="section max-w-screen-sm mx-auto px-6 pt-8">
         <div class="mb-6">
-            <h2 class="text-3xl font-display tracking-tighter text-white">Growth</h2>
-            <p class="text-zinc-400 text-sm mt-1">Small daily actions. Compound advantage.</p>
+            <h2 class="text-3xl font-display tracking-tighter text-white">Evolution</h2>
+            <p class="text-zinc-400 text-sm mt-1">Discipline compounds. Become unstoppable.</p>
         </div>
 
         <div class="dota-panel rounded-3xl p-6 mb-6">
             <div class="flex gap-2">
-                <input id="habit-input" type="text" placeholder="New habit..." class="flex-1 bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
+                <input id="habit-input" type="text" placeholder="New discipline..." class="flex-1 bg-[#11161f] border border-[#2a3344] rounded-2xl px-4 py-3.5 text-sm focus:outline-none">
                 <button onclick="addHabit()" class="px-6 bg-[#c5a46e] hover:bg-[#d4af37] text-[#0a0c10] font-semibold rounded-2xl text-sm">ADD</button>
             </div>
         </div>
 
         <div class="mb-3 px-1 flex justify-between items-center">
-            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">HABIT STREAKS</div>
+            <div class="text-xs font-medium tracking-[2px] text-[#c5a46e]">DISCIPLINE STREAKS</div>
             <button onclick="resetAllStreaks()" class="text-xs text-red-400 hover:text-red-300">RESET</button>
         </div>
         <div id="habit-list" class="space-y-3"></div>
@@ -275,11 +275,11 @@
     <!-- Bottom Navigation -->
     <div class="fixed bottom-0 left-0 right-0 bg-[#0a0c10] border-t border-[#2a3344] z-50">
         <div class="max-w-screen-sm mx-auto flex items-center justify-around py-3 text-xs">
-            <button onclick="showSection('home')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-home text-xl"></i><span class="mt-0.5 text-[10px]">Home</span></button>
-            <button onclick="showSection('money')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-dollar-sign text-xl"></i><span class="mt-0.5 text-[10px]">Money</span></button>
-            <button onclick="showSection('blockers')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-exclamation-triangle text-xl"></i><span class="mt-0.5 text-[10px]">Blockers</span></button>
-            <button onclick="showSection('capture')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-inbox text-xl"></i><span class="mt-0.5 text-[10px]">Capture</span></button>
-            <button onclick="showSection('growth')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-seedling text-xl"></i><span class="mt-0.5 text-[10px]">Growth</span></button>
+            <button onclick="showSection('home')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-home text-xl"></i><span class="mt-0.5 text-[10px]">Command</span></button>
+            <button onclick="showSection('money')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-dollar-sign text-xl"></i><span class="mt-0.5 text-[10px]">Gold</span></button>
+            <button onclick="showSection('blockers')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-exclamation-triangle text-xl"></i><span class="mt-0.5 text-[10px]">Threats</span></button>
+            <button onclick="showSection('capture')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-inbox text-xl"></i><span class="mt-0.5 text-[10px]">Intel</span></button>
+            <button onclick="showSection('growth')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition"><i class="fa-solid fa-seedling text-xl"></i><span class="mt-0.5 text-[10px]">Evolve</span></button>
         </div>
     </div>
 
@@ -313,7 +313,7 @@
                 mitCompletedToday = true;
                 input.classList.add('completed');
                 status.classList.remove('hidden');
-                document.getElementById('mit-completed-text').textContent = 'COMPLETED TODAY';
+                document.getElementById('mit-completed-text').textContent = 'TACTIC EXECUTED';
                 updateDailyScore(84);
             } else if (savedScore) updateDailyScore(parseInt(savedScore));
         }
@@ -324,13 +324,13 @@
         function markMITDone() {
             const input = document.getElementById('mit-input');
             const status = document.getElementById('mit-status');
-            if (!input.value.trim()) { alert('Set your MIT first!'); return; }
-            if (mitCompletedToday) { alert('Already marked done today.'); return; }
+            if (!input.value.trim()) { alert('Declare your Most Important Tactic first.'); return; }
+            if (mitCompletedToday) { alert('Already executed today.'); return; }
             mitCompletedToday = true;
             localStorage.setItem('forge_mit_completed', 'true');
             input.classList.add('completed');
             status.classList.remove('hidden');
-            document.getElementById('mit-completed-text').textContent = 'COMPLETED TODAY';
+            document.getElementById('mit-completed-text').textContent = 'TACTIC EXECUTED';
             const newScore = 84;
             updateDailyScore(newScore);
             localStorage.setItem('forge_daily_score', newScore);
@@ -359,7 +359,7 @@
         }
         function renderMoneyList() {
             const container = document.getElementById('money-list'); const moves = getMoneyMoves(); container.innerHTML = '';
-            if (!moves.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No money moves logged yet.</div>`; updateMoneySummary(0,0); return; }
+            if (!moves.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No transactions logged yet.</div>`; updateMoneySummary(0,0); return; }
             let weekTotal = 0, net = 0; const weekStart = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - new Date().getDay());
             moves.forEach(m => {
                 const d = new Date(m.date); if (d >= weekStart) weekTotal += m.type === 'income' ? m.amount : -m.amount; net += m.type === 'income' ? m.amount : -m.amount;
@@ -374,14 +374,14 @@
             document.getElementById('money-week-total').innerHTML = `$${Math.abs(w).toFixed(2)}`;
             const netEl = document.getElementById('money-net'); netEl.innerHTML = `$${n.toFixed(2)}`; netEl.className = n >= 0 ? 'font-semibold text-2xl text-white' : 'font-semibold text-2xl text-red-400';
         }
-        function clearMoneyMoves() { if (confirm('Clear all?')) { localStorage.removeItem('forge_money_moves'); renderMoneyList(); } }
+        function clearMoneyMoves() { if (confirm('Clear all transactions?')) { localStorage.removeItem('forge_money_moves'); renderMoneyList(); } }
 
         // BLOCKERS
         function getBlockers() { return JSON.parse(localStorage.getItem('forge_blockers') || '[]'); }
         function saveBlockers(b) { localStorage.setItem('forge_blockers', JSON.stringify(b)); }
         function addBlocker() {
             const text = document.getElementById('blocker-input').value.trim();
-            if (!text) { alert('Enter the blocker'); return; }
+            if (!text) { alert('Declare the threat'); return; }
             const blocker = { id: Date.now(), text, note: document.getElementById('blocker-note').value.trim(), date: new Date().toISOString(), resolved: false };
             const blockers = getBlockers(); blockers.unshift(blocker); saveBlockers(blockers);
             document.getElementById('blocker-input').value = ''; document.getElementById('blocker-note').value = '';
@@ -389,7 +389,7 @@
         }
         function renderBlockerList() {
             const container = document.getElementById('blocker-list'); const blockers = getBlockers(); container.innerHTML = '';
-            if (!blockers.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No blockers logged. Clean slate.</div>`; return; }
+            if (!blockers.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No active threats. The path is clear.</div>`; return; }
             blockers.forEach((b, i) => {
                 const div = document.createElement('div');
                 div.className = `blocker-item dota-panel rounded-3xl p-4 ${b.resolved ? 'resolved' : ''}`;
@@ -417,7 +417,7 @@
         function deleteBlocker(index) {
             const blockers = getBlockers(); blockers.splice(index, 1); saveBlockers(blockers); renderBlockerList();
         }
-        function clearBlockers() { if (confirm('Clear all blockers?')) { localStorage.removeItem('forge_blockers'); renderBlockerList(); } }
+        function clearBlockers() { if (confirm('Clear all threats?')) { localStorage.removeItem('forge_blockers'); renderBlockerList(); } }
 
         // CAPTURE
         function getCaptures() { return JSON.parse(localStorage.getItem('forge_captures') || '[]'); }
@@ -429,7 +429,7 @@
         }
         function renderCaptureList() {
             const container = document.getElementById('capture-list'); const captures = getCaptures(); container.innerHTML = '';
-            if (!captures.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">Inbox is empty.</div>`; return; }
+            if (!captures.length) { container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No field notes yet.</div>`; return; }
             captures.forEach((c, i) => {
                 const div = document.createElement('div'); div.className = 'capture-item dota-panel rounded-3xl p-4 flex justify-between';
                 div.innerHTML = `<div class="flex-1"><div class="text-sm">${c.text}</div><div class="text-[10px] text-zinc-500">${new Date(c.date).toLocaleString()}</div></div>
@@ -444,10 +444,10 @@
             captures.splice(i,1); saveCaptures(captures);
             showSection('home');
         }
-        function clearCaptures() { if (confirm('Clear inbox?')) { localStorage.removeItem('forge_captures'); renderCaptureList(); } }
+        function clearCaptures() { if (confirm('Clear all field notes?')) { localStorage.removeItem('forge_captures'); renderCaptureList(); } }
 
         function quickCaptureFromHome() {
-            const text = prompt('Quick capture:'); if (text && text.trim()) { const captures = getCaptures(); captures.unshift({id:Date.now(), text:text.trim(), date:new Date().toISOString()}); saveCaptures(captures); }
+            const text = prompt('Field note:'); if (text && text.trim()) { const captures = getCaptures(); captures.unshift({id:Date.now(), text:text.trim(), date:new Date().toISOString()}); saveCaptures(captures); }
         }
 
         // HABIT STREAKS
@@ -490,7 +490,7 @@
             const habits = getHabits();
             container.innerHTML = '';
             if (habits.length === 0) {
-                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No habits yet. Add your first one above.</div>`;
+                container.innerHTML = `<div class="text-center text-zinc-500 py-8 text-sm">No disciplines tracked yet. Add your first one above.</div>`;
                 return;
             }
             habits.forEach(habit => {
@@ -515,7 +515,7 @@
             });
         }
         function resetAllStreaks() {
-            if (confirm('Reset all habit streaks?')) {
+            if (confirm('Reset all discipline streaks?')) {
                 const habits = getHabits();
                 habits.forEach(h => { h.streak = 0; h.lastCompleted = null; });
                 saveHabits(habits);
